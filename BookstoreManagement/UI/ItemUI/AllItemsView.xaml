@@ -46,9 +46,8 @@
                 Grid.Column="1"
                 FlowDirection="RightToLeft"
                 Orientation="Horizontal">
-                <TextBlock>Hello world</TextBlock>
-                <TextBlock>Fuck world</TextBlock>
                 <Button Command="{Binding NavigateToCreateItemCommand}">Create</Button>
+                <Button Command="{Binding RefreshListCommand}" IsEnabled="{Binding CanRefreshList}">Refresh</Button>
             </StackPanel>
         </Grid>
 
@@ -73,7 +72,7 @@
                 <DataGridTextColumn Binding="{Binding ItemId}" Header="Id" />
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
                 <DataGridTextColumn
-                    MaxWidth="200"
+                    Width="200"
                     Binding="{Binding Description}"
                     Header="Description" />
                 <DataGridTemplateColumn CanUserResize="False" Header="Commands">

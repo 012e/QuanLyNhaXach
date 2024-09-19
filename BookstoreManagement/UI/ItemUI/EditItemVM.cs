@@ -2,11 +2,6 @@
 using BookstoreManagement.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using BookstoreManagement.Core;
 using BookstoreManagement.Services;
@@ -41,6 +36,8 @@ public partial class EditItemVM : ContextualViewModel<Item>
     private readonly ApplicationDbContext db;
     private readonly INavigatorService<AllItemsVM> allItemsNavigator;
 
+    // BUG: submit will run successfully even when data binding failed
+    // possible fixes: write custom converters or validate data
     [RelayCommand]
     private async Task Submit()
     {
@@ -54,11 +51,12 @@ public partial class EditItemVM : ContextualViewModel<Item>
         {
             MessageBox.Show($"Failed to save {e}");
             return;
-        } finally
+        }
+        finally
         {
             finishSubmitting();
         }
-        
+
         MessageBox.Show("Saved successfully");
     }
 

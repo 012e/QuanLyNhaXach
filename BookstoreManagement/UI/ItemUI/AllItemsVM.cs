@@ -2,14 +2,8 @@
 using BookstoreManagement.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using BookstoreManagement.Core;
 using BookstoreManagement.Services;
@@ -23,7 +17,7 @@ public partial class AllItemsVM : BaseViewModel
     private readonly INavigatorService<CreateItemVM> createItemNavigator;
 
     [ObservableProperty]
-    private ObservableCollection<Item> _items;
+    private ObservableCollection<Item> _items = [];
 
     [ObservableProperty]
     private Boolean _isLoading = false;
@@ -31,11 +25,35 @@ public partial class AllItemsVM : BaseViewModel
     [ObservableProperty]
     private Boolean _canInteractWithTable = false;
 
-    private void updateItems()
+    [ObservableProperty]
+    private Boolean _canRefreshList = false;
+
+    [RelayCommand]
+    private void RefreshList()
+    {
+        Items.Clear();
+        loadDataInBackground();
+    }
+
+    private void UpdateItems()
     {
         db.ChangeTracker.Clear();
         var items = db.Items.ToList();
         Items = new ObservableCollection<Item>(items);
+    }
+
+    private void BeginLoading()
+    {
+        IsLoading = true;
+        CanInteractWithTable = false;
+        CanRefreshList = false;
+    }
+
+    private void FinishLoading()
+    {
+        IsLoading = false;
+        CanInteractWithTable = true;
+        CanRefreshList = true;
     }
 
     private void loadDataInBackground()
@@ -43,25 +61,25 @@ public partial class AllItemsVM : BaseViewModel
         // let 'em load my bruh
         if (IsLoading) return;
 
-        IsLoading = true;
-        CanInteractWithTable = false;
+        BeginLoading();
         BackgroundWorker worker = new();
 
         worker.DoWork += (send, e) =>
         {
-            Thread.Sleep(1000);
-            updateItems();
+            UpdateItems();
         };
 
         worker.RunWorkerCompleted += (send, e) =>
         {
-            IsLoading = false;
-            CanInteractWithTable = true;
+            FinishLoading();
+            if (e.Error is not null)
+            {
+                MessageBox.Show($"Some error occured, couldn't fetch data: {e.Error}.");
+            }
         };
 
         worker.RunWorkerAsync();
     }
-
 
     public override void ResetState()
     {
@@ -74,6 +92,7 @@ public partial class AllItemsVM : BaseViewModel
     [RelayCommand]
     private void NavigateToEditItem(Item item)
     {
+        if (item is null) return;
         editItemNavigator.Navigate(item);
     }
 

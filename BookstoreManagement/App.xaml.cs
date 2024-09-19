@@ -10,6 +10,10 @@ using System.Windows;
 using System.Windows.Controls;
 using BookstoreManagement.Core.Helper;
 using BookstoreManagement.Services;
+using dotenv.net.Utilities;
+using Microsoft.EntityFrameworkCore;
+using dotenv.net;
+using Microsoft.Extensions.Options;
 
 namespace BookstoreManagement;
 
@@ -20,9 +24,11 @@ public partial class App : Application
 
     public App()
     {
+        DotNetEnv.Env.TraversePath().Load();
         HostApplicationBuilder builder = Host.CreateApplicationBuilder();
 
-        builder.Services.AddDbContext<ApplicationDbContext>();
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION")), ServiceLifetime.Transient);
 
         builder.Services.AddViewViewModel<MainWindowView, MainWindowVM>();
         builder.Services.AddViewViewModel<AllItemsView, AllItemsVM>();

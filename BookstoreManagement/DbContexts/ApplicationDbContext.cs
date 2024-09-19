@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Models;
+using dotenv.net.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<Tag> Tags { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Server=ep-misty-sun-28416432.ap-southeast-1.aws.neon.tech;Database=neondb;User Id=012e;Password=bVtiv60apEdG");
+        => optionsBuilder.UseNpgsql(EnvReader.GetStringValue("DATABASE_CONNECTION"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -42,7 +43,7 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("employees");
 
-            entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
+            entity.Property(e => e.EmployeeId).HasColumnName("id");
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
                 .HasColumnName("email");
@@ -67,7 +68,7 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("invoices");
 
-            entity.Property(e => e.InvoiceId).HasColumnName("invoice_id");
+            entity.Property(e => e.InvoiceId).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
@@ -110,7 +111,7 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("items");
 
-            entity.Property(e => e.ItemId).HasColumnName("item_id");
+            entity.Property(e => e.ItemId).HasColumnName("id");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Image).HasColumnName("image");
             entity.Property(e => e.Name)
@@ -141,7 +142,7 @@ public partial class ApplicationDbContext : DbContext
                     {
                         j.HasKey("ItemId", "TagName").HasName("items_tags_pkey");
                         j.ToTable("items_tags");
-                        j.IndexerProperty<int>("ItemId").HasColumnName("item_id");
+                        j.IndexerProperty<int>("ItemId").HasColumnName("id");
                         j.IndexerProperty<string>("TagName")
                             .HasMaxLength(255)
                             .HasColumnName("tag_name");
@@ -154,7 +155,7 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("providers");
 
-            entity.Property(e => e.ProviderId).HasColumnName("provider_id");
+            entity.Property(e => e.ProviderId).HasColumnName("id");
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
                 .HasColumnName("address");
