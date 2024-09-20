@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BookstoreManagement.DbContexts;
+using System;
 using System.Collections.Generic;
 
 namespace BookstoreManagement.Models;
 
-public partial class Employee
+public partial class Employee : ISoftDelete
 {
     public int EmployeeId { get; set; }
 
@@ -18,6 +19,8 @@ public partial class Employee
     public byte[] ProfilePicture { get; set; } = null!;
 
     public bool IsManager { get; set; }
+
+    public bool Deleted { get; set; } = false;
 
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 }
