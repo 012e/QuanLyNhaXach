@@ -32,7 +32,7 @@ public partial class AllItemsVM : BaseViewModel
     private void RefreshList()
     {
         Items.Clear();
-        loadDataInBackground();
+        LoadDataInBackground();
     }
 
     private void UpdateItems()
@@ -56,7 +56,7 @@ public partial class AllItemsVM : BaseViewModel
         CanRefreshList = true;
     }
 
-    private void loadDataInBackground()
+    private void LoadDataInBackground()
     {
         // let 'em load my bruh
         if (IsLoading) return;
@@ -85,7 +85,7 @@ public partial class AllItemsVM : BaseViewModel
     {
         // reset items
         Items = new ObservableCollection<Item>();
-        loadDataInBackground();
+        LoadDataInBackground();
         base.ResetState();
     }
 
@@ -127,6 +127,6 @@ public partial class AllItemsVM : BaseViewModel
         this.db = db;
         this.editItemNavigator = editItemNavigator;
         this.createItemNavigator = createItemNavigator;
-        loadDataInBackground();
+        LoadDataInBackground();
     }
 }

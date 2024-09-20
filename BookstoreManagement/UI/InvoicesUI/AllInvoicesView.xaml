@@ -46,7 +46,7 @@
                 Grid.Column="1"
                 FlowDirection="RightToLeft"
                 Orientation="Horizontal">
-                <Button Command="{Binding RefreshListCommand}" IsEnabled="{Binding CanRefreshList}">Refresh</Button>
+                <Button Command="{Binding RefreshListCommand}">Refresh</Button>
             </StackPanel>
         </Grid>
 
@@ -58,11 +58,11 @@
             AutoGenerateColumns="False"
             IsHitTestVisible="{Binding CanInteractWithTable}"
             IsReadOnly="True"
-            ItemsSource="{Binding Invoices}">
+            ItemsSource="{Binding Items}">
             <DataGrid.InputBindings>
                 <!--  Double click on any row  -->
                 <MouseBinding
-                    Command="{Binding DataContext.NavigateToEditInvoiceCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                    Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                     CommandParameter="{Binding ElementName=InvoicesList, Path=SelectedItem}"
                     Gesture="LeftDoubleClick" />
             </DataGrid.InputBindings>
@@ -74,10 +74,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Button Command="{Binding DataContext.NavigateToEditInvoiceCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
-                                    Edit
-                                </Button>
-                                <Button Command="{Binding DataContext.DeleteInvoiceCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
+                                <Button Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
                                     Delete
                                 </Button>
                             </StackPanel>

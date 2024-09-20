@@ -33,17 +33,14 @@ public partial class App : Application
             options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION")), ServiceLifetime.Transient);
 
         builder.Services.AddViewViewModel<MainWindowView, MainWindowVM>();
+
         builder.Services.AddViewViewModel<AllItemsView, AllItemsVM>();
-        builder.Services.AddViewViewModel<EditItemView, EditItemVM>();
+        builder.Services.AddViewContextualViewModel<EditItemView, EditItemVM, int>();
         builder.Services.AddViewViewModel<CreateItemView, CreateItemVM>();
-        builder.Services.AddNavigatorService<AllItemsVM>();
-        builder.Services.AddNavigatorService<CreateItemVM>();
-        builder.Services.AddContextualNavigatorService<EditItemVM, int>();
 
         builder.Services.AddViewViewModel<AllInvoicesView, AllInvoicesVM>();
-        builder.Services.AddViewViewModel<EditInvoiceView, EditInvoiceVM>();
-        builder.Services.AddNavigatorService<AllInvoicesVM>();
-        builder.Services.AddContextualNavigatorService<EditInvoiceVM, int>();
+        builder.Services.AddViewContextualViewModel<EditInvoiceView, EditInvoiceVM, Invoice>();
+        builder.Services.AddViewViewModel<CreateInvoiceView, CreateInvoiceVM>();
 
 
         builder.Services.AddSingleton<NavigatorStore>();

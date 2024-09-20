@@ -1,6 +1,4 @@
 ﻿using BookstoreManagement.Core;
-using BookstoreManagement.Models;
-using BookstoreManagement.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace BookstoreManagement.UI.InvoicesUI;
 
-public partial class EditInvoiceVM : ContextualViewModel<Invoice>
+public partial class CreateInvoiceVM : BaseViewModel
 {
-    public override Invoice ViewModelContext { get; set; }
 }
