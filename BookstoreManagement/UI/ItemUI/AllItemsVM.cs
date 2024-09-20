@@ -13,7 +13,7 @@ namespace BookstoreManagement.UI.ItemUI;
 public partial class AllItemsVM : BaseViewModel
 {
     private readonly ApplicationDbContext db;
-    private readonly IContextualNavigatorService<EditItemVM, Item> editItemNavigator;
+    private readonly IContextualNavigatorService<EditItemVM, int> editItemNavigator;
     private readonly INavigatorService<CreateItemVM> createItemNavigator;
 
     [ObservableProperty]
@@ -93,7 +93,7 @@ public partial class AllItemsVM : BaseViewModel
     private void NavigateToEditItem(Item item)
     {
         if (item is null) return;
-        editItemNavigator.Navigate(item);
+        editItemNavigator.Navigate(item.ItemId);
     }
 
     [RelayCommand]
@@ -120,7 +120,7 @@ public partial class AllItemsVM : BaseViewModel
     }
 
     public AllItemsVM(ApplicationDbContext db,
-        IContextualNavigatorService<EditItemVM, Item> editItemNavigator,
+        IContextualNavigatorService<EditItemVM, int> editItemNavigator,
         INavigatorService<CreateItemVM> createItemNavigator
     )
     {

@@ -8,9 +8,9 @@ using BookstoreManagement.Services;
 
 namespace BookstoreManagement.UI.ItemUI;
 
-public partial class EditItemVM : ContextualViewModel<Item>
+public partial class EditItemVM : ContextualViewModel<int>
 {
-    public override Item? ViewModelContext { get; set; }
+    public override int ViewModelContext { get; set; }
 
     [ObservableProperty]
     private Item _item;
@@ -60,6 +60,11 @@ public partial class EditItemVM : ContextualViewModel<Item>
         MessageBox.Show("Saved successfully");
     }
 
+    private void GetItemInfomation()
+    {
+        Item = db.Items.Find(ViewModelContext)!;
+    }
+
     [RelayCommand]
     private void NavigateBack()
     {
@@ -68,7 +73,7 @@ public partial class EditItemVM : ContextualViewModel<Item>
 
     public override void OnSwitch()
     {
-        Item = ViewModelContext;
+        GetItemInfomation();
         base.OnSwitch();
     }
 

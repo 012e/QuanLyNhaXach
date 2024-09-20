@@ -36,7 +36,7 @@ public partial class App : Application
         builder.Services.AddViewViewModel<CreateItemView, CreateItemVM>();
         builder.Services.AddNavigatorService<AllItemsVM>();
         builder.Services.AddNavigatorService<CreateItemVM>();
-        builder.Services.AddContextualNavigatorService<EditItemVM, Item>();
+        builder.Services.AddContextualNavigatorService<EditItemVM, int>();
 
 
         builder.Services.AddSingleton<NavigatorStore>();
