@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BookstoreManagement.DbContexts;
+using System;
 using System.Collections.Generic;
 
 namespace BookstoreManagement.Models;
 
-public partial class Item
+public partial class Item : ISoftDelete
 {
     public int ItemId { get; set; }
 
@@ -24,4 +25,5 @@ public partial class Item
     public virtual Provider? Provider { get; set; }
 
     public virtual ICollection<Tag> TagNames { get; set; } = new List<Tag>();
+    public bool Deleted { get; set; } = false;
 }

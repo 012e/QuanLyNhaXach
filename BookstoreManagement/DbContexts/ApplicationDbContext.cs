@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace BookstoreManagement.DbContexts;
 
@@ -33,7 +34,9 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<Tag> Tags { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql(EnvReader.GetStringValue("DATABASE_CONNECTION"));
+        => optionsBuilder
+            .UseNpgsql(EnvReader.GetStringValue("DATABASE_CONNECTION"))
+            .AddInterceptors(new SoftDeleteInterceptor());
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -60,6 +63,9 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Salary)
                 .HasColumnType("money")
                 .HasColumnName("salary");
+            entity.Property(e => e.Deleted).HasDefaultValue(false)
+                .HasColumnName("deleted");
+            entity.HasQueryFilter(entity => entity.Deleted == false);
         });
 
         modelBuilder.Entity<Invoice>(entity =>
@@ -82,6 +88,9 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.EmployeeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("invoices_employee_id_fkey");
+            entity.Property(e => e.Deleted).HasDefaultValue(false)
+                .HasColumnName("deleted");
+            entity.HasQueryFilter(entity => entity.Deleted == false);
         });
 
         modelBuilder.Entity<InvoicesItem>(entity =>
@@ -127,6 +136,9 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.ProviderId)
                 .HasConstraintName("items_provider_id_fkey");
 
+            entity.Property(e => e.Deleted).HasDefaultValue(false)
+                .HasColumnName("deleted");
+
             entity.HasMany(d => d.TagNames).WithMany(p => p.Items)
                 .UsingEntity<Dictionary<string, object>>(
                     "ItemsTag",
@@ -147,6 +159,7 @@ public partial class ApplicationDbContext : DbContext
                             .HasMaxLength(255)
                             .HasColumnName("tag_name");
                     });
+            entity.HasQueryFilter(entity => entity.Deleted == false);
         });
 
         modelBuilder.Entity<Provider>(entity =>
@@ -162,6 +175,9 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("name");
+            entity.Property(e => e.Deleted).HasDefaultValue(false)
+                .HasColumnName("deleted");
+            entity.HasQueryFilter(entity => entity.Deleted == false);
         });
 
         modelBuilder.Entity<Tag>(entity =>
@@ -174,6 +190,9 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("name");
             entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Deleted).HasDefaultValue(false)
+                .HasColumnName("deleted");
+            entity.HasQueryFilter(entity => entity.Deleted == false);
         });
 
         OnModelCreatingPartial(modelBuilder);
