@@ -14,6 +14,8 @@ using dotenv.net.Utilities;
 using Microsoft.EntityFrameworkCore;
 using dotenv.net;
 using Microsoft.Extensions.Options;
+using BookstoreManagement.UI.InvoicesUI;
+using BookstoreManagement.UI;
 
 namespace BookstoreManagement;
 
@@ -37,6 +39,11 @@ public partial class App : Application
         builder.Services.AddNavigatorService<AllItemsVM>();
         builder.Services.AddNavigatorService<CreateItemVM>();
         builder.Services.AddContextualNavigatorService<EditItemVM, int>();
+
+        builder.Services.AddViewViewModel<AllInvoicesView, AllInvoicesVM>();
+        builder.Services.AddViewViewModel<EditInvoiceView, EditInvoiceVM>();
+        builder.Services.AddNavigatorService<AllInvoicesVM>();
+        builder.Services.AddContextualNavigatorService<EditInvoiceVM, int>();
 
 
         builder.Services.AddSingleton<NavigatorStore>();
