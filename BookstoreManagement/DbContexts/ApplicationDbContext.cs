@@ -139,25 +139,23 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Deleted).HasDefaultValue(false)
                 .HasColumnName("deleted");
 
-            entity.HasMany(d => d.TagNames).WithMany(p => p.Items)
+            entity.HasMany(d => d.Tags).WithMany(p => p.Items)
                 .UsingEntity<Dictionary<string, object>>(
                     "ItemsTag",
                     r => r.HasOne<Tag>().WithMany()
-                        .HasForeignKey("TagName")
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("items_tags_tag_name_fkey"),
+                        .HasConstraintName("items_tags_tag_id_fkey"),
                     l => l.HasOne<Item>().WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("items_tags_item_id_fkey"),
                     j =>
                     {
-                        j.HasKey("ItemId", "TagName").HasName("items_tags_pkey");
+                        j.HasKey("ItemId", "TagId").HasName("items_tags_pkey");
                         j.ToTable("items_tags");
-                        j.IndexerProperty<int>("ItemId").HasColumnName("id");
-                        j.IndexerProperty<string>("TagName")
-                            .HasMaxLength(255)
-                            .HasColumnName("tag_name");
+                        j.IndexerProperty<int>("ItemId").HasColumnName("item_id");
+                        j.IndexerProperty<int>("TagId").HasColumnName("tag_id");
                     });
             entity.HasQueryFilter(entity => entity.Deleted == false);
         });
@@ -182,9 +180,10 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Tag>(entity =>
         {
-            entity.HasKey(e => e.Name).HasName("tags_pkey");
+            entity.HasKey(e => e.TagId).HasName("tags_pkey");
 
             entity.ToTable("tags");
+            entity.Property(e => e.TagId).HasColumnName("id");
 
             entity.Property(e => e.Name)
                 .HasMaxLength(255)

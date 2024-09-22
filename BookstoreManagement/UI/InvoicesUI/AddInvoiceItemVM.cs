@@ -10,6 +10,9 @@ using System.Windows;
 
 namespace BookstoreManagement.UI.InvoicesUI;
 
+// TODO: update total of invoice
+// TODO: check for duplicated item
+// TODO: add quantity (currently defaulted to 1)
 public partial class AddInvoiceItemVM : EditItemVM<Invoice>
 {
     protected override ApplicationDbContext Db { get; }

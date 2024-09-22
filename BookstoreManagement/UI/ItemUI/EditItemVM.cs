@@ -28,9 +28,16 @@ public partial class EditItemVM(
         AllItemsNavigator.Navigate();
     }
 
+    public override void ResetState()
+    {
+        base.ResetState();
+        Item = default;
+    }
+
     protected override void LoadItem()
     {
-        Item = ViewModelContext;
+        var itemId = ViewModelContext.ItemId;
+        Item = Db.Items.Include(item => item.Tags).FirstOrDefault(item => item.ItemId == itemId);
     }
 
     protected override void OnSubmittingSuccess()
