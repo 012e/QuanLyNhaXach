@@ -40,6 +40,7 @@ public partial class App : Application
 
         builder.Services.AddViewViewModel<AllInvoicesView, AllInvoicesVM>();
         builder.Services.AddViewContextualViewModel<EditInvoiceView, EditInvoiceVM, Invoice>();
+        builder.Services.AddViewContextualViewModel<AddInvoiceItemView, AddInvoiceItemVM, Invoice>();
         builder.Services.AddViewViewModel<CreateInvoiceView, CreateInvoiceVM>();
 
 

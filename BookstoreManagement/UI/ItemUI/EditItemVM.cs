@@ -19,6 +19,9 @@ public partial class EditItemVM(
 
     public INavigatorService<AllItemsVM> AllItemsNavigator { get; } = allItemsNavigator;
 
+    [ObservableProperty]
+    private Item _item;
+
     [RelayCommand]
     private void NavigateBack()
     {
@@ -36,7 +39,7 @@ public partial class EditItemVM(
         base.OnSubmittingSuccess();
     }
 
-    protected override void SubmitItem()
+    protected override void SubmitItemHandler()
     {
         Db.Items.Update(Item);
         Db.SaveChanges();

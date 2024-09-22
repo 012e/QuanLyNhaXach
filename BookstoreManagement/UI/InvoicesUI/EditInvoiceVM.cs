@@ -23,14 +23,22 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     private ObservableCollection<Item> _invoiceItems = new();
     
     public INavigatorService<AllInvoicesVM> AllInvoicesNavigator { get; }
+    public IContextualNavigatorService<AddInvoiceItemVM, Invoice> AddInvoiceItemNavigator { get; }
 
     [ObservableProperty]
     private Invoice _invoice;
+
 
     [RelayCommand]
     private void GoBack()
     {
         AllInvoicesNavigator.Navigate();
+    }
+
+    [RelayCommand]
+    private void NavigateToAddInvoiceItem()
+    {
+        AddInvoiceItemNavigator.Navigate(Invoice);
     }
 
     public override void ResetState()
@@ -41,20 +49,24 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
 
     protected override void LoadItem()
     {
-        Item = ViewModelContext;
+        Invoice = ViewModelContext;
         var itemsFromInvoice = from items in Db.Items
                     join invoiceItems in Db.InvoicesItems on items.ItemId equals invoiceItems.ItemId
-                    where invoiceItems.InvoiceId == Item.InvoiceId select items;
+                    where invoiceItems.InvoiceId == Invoice.InvoiceId select items;
         InvoiceItems = new ObservableCollection<Item>(itemsFromInvoice);
     }
 
-    protected override void SubmitItem()
+    protected override void SubmitItemHandler()
     {
     }
 
-    public EditInvoiceVM(ApplicationDbContext db, INavigatorService<AllInvoicesVM> allInvoicesNavigator)
+    public EditInvoiceVM(ApplicationDbContext db,
+        INavigatorService<AllInvoicesVM> allInvoicesNavigator,
+        IContextualNavigatorService<AddInvoiceItemVM, Invoice> addInvoiceItemNavigator
+        )
     {
         Db = db;
         AllInvoicesNavigator = allInvoicesNavigator;
+        AddInvoiceItemNavigator = addInvoiceItemNavigator;
     }
 }

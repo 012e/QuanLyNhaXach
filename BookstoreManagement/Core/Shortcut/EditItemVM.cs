@@ -14,34 +14,30 @@ public abstract partial class EditItemVM<TItem> : BaseViewModel, IContextualView
     public TItem ViewModelContext { get; set; }
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(SubmitItemInBackgroundCommand))]
+    [NotifyCanExecuteChangedFor(nameof(SubmitItemCommand))]
     private bool _isLoading = false;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(SubmitItemInBackgroundCommand))]
+    [NotifyCanExecuteChangedFor(nameof(SubmitItemCommand))]
     private bool _isSubmitting = false;
-
-    [ObservableProperty]
-    protected TItem _item;
 
     public override void ResetState()
     {
         IsLoading = false;
         Db.ChangeTracker.Clear();
-        Item = default;
         base.ResetState();
     }
 
 
-    private bool CanSubmitItem => !IsLoading && !IsSubmitting;
+    protected virtual bool CanSubmitItem => !IsLoading && !IsSubmitting;
     [RelayCommand(CanExecute = nameof(CanSubmitItem))]
-    protected void SubmitItemInBackground()
+    protected void SubmitItem()
     {
-        SubmitDataInBackground();
+        SubmitItemInBackground();
     }
 
     protected abstract void LoadItem();
-    protected abstract void SubmitItem();
+    protected abstract void SubmitItemHandler();
 
     private void BeginLoading()
     {
@@ -95,7 +91,7 @@ public abstract partial class EditItemVM<TItem> : BaseViewModel, IContextualView
     {
     }
 
-    private void SubmitDataInBackground()
+    private void SubmitItemInBackground()
     {
         // let 'em load my bruh
         if (IsSubmitting) return;
@@ -105,7 +101,7 @@ public abstract partial class EditItemVM<TItem> : BaseViewModel, IContextualView
 
         worker.DoWork += (send, e) =>
         {
-            SubmitItem();
+            SubmitItemHandler();
         };
 
         worker.RunWorkerCompleted += (send, e) =>

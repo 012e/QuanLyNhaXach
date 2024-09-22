@@ -25,6 +25,6 @@
         <Label>Quantity</Label>
         <TextBox Text="{Binding Item.Quantity}" />
 
-        <Button Command="{Binding SubmitItemInBackgroundCommand}">Submit</Button>
+        <Button Command="{Binding SubmitItemCommand}">Submit</Button>
     </StackPanel>
 </UserControl>

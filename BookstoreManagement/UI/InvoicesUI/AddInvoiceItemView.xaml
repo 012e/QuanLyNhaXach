@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="BookstoreManagement.UI.InvoicesUI.EditInvoiceView"
+    x:Class="BookstoreManagement.UI.InvoicesUI.AddInvoiceItemView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converter="clr-namespace:BookstoreManagement.Converter"
@@ -48,7 +48,7 @@
                 FlowDirection="RightToLeft"
                 Orientation="Horizontal">
                 <Button Command="{Binding GoBackCommand}">Go back</Button>
-                <Button Command="{Binding NavigateToAddInvoiceItemCommand}">Add item</Button>
+                <Button Command="{Binding SubmitItemCommand}">Add this item</Button>
             </StackPanel>
         </Grid>
 
@@ -59,7 +59,8 @@
             Grid.Row="1"
             AutoGenerateColumns="False"
             IsReadOnly="True"
-            ItemsSource="{Binding InvoiceItems}">
+            ItemsSource="{Binding Items}"
+            SelectedItem="{Binding SelectedItem}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding ItemId}" Header="Id" />
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
