@@ -5,81 +5,40 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows;
 using BookstoreManagement.Core;
 using BookstoreManagement.Services;
+using BookstoreManagement.Core.Shortcut;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookstoreManagement.UI.ItemUI;
 
-public partial class EditItemVM : ContextualViewModel<int>
+public partial class EditItemVM(
+    ApplicationDbContext db,
+    INavigatorService<AllItemsVM> allItemsNavigator)
+    : EditItemVM<Item>
 {
-    public override int ViewModelContext { get; set; }
+    protected override ApplicationDbContext Db => db;
 
-    [ObservableProperty]
-    private Item _item;
-
-    [ObservableProperty]
-    private Boolean _canSubmit = true;
-
-    [ObservableProperty]
-    private String _submitButtonText = "Submit";
-
-    private void enterSubmitting()
-    {
-        CanSubmit = false;
-        SubmitButtonText = "Submitting...";
-    }
-
-    private void finishSubmitting()
-    {
-        CanSubmit = true;
-        SubmitButtonText = "Submit";
-    }
-
-    private readonly ApplicationDbContext db;
-    private readonly INavigatorService<AllItemsVM> allItemsNavigator;
-
-    // BUG: submit will run successfully even when data binding failed
-    // possible fixes: write custom converters or validate data
-    [RelayCommand]
-    private async Task Submit()
-    {
-        enterSubmitting();
-        try
-        {
-            db.Update(Item);
-            await db.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            MessageBox.Show($"Failed to save {e}");
-            return;
-        }
-        finally
-        {
-            finishSubmitting();
-        }
-
-        MessageBox.Show("Saved successfully");
-    }
-
-    private void GetItemInfomation()
-    {
-        Item = db.Items.Find(ViewModelContext)!;
-    }
+    public INavigatorService<AllItemsVM> AllItemsNavigator { get; } = allItemsNavigator;
 
     [RelayCommand]
     private void NavigateBack()
     {
-        allItemsNavigator.Navigate();
+        AllItemsNavigator.Navigate();
     }
 
-    public override void OnSwitch()
+    protected override void LoadItem()
     {
-        GetItemInfomation();
-        base.OnSwitch();
+        Item = ViewModelContext;
     }
 
-    public EditItemVM(ApplicationDbContext db, INavigatorService<AllItemsVM> allItemsNavigator)
+    protected override void OnSubmittingSuccess()
     {
-        this.db = db;
-        this.allItemsNavigator = allItemsNavigator;
+        MessageBox.Show("Submitted successfully");
+        base.OnSubmittingSuccess();
+    }
+
+    protected override void SubmitItem()
+    {
+        Db.Items.Update(Item);
+        Db.SaveChanges();
     }
 }

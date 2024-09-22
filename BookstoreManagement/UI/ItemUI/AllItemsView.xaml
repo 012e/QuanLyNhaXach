@@ -12,6 +12,7 @@
     mc:Ignorable="d">
     <Control.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
     </Control.Resources>
 
     <Grid>
@@ -47,7 +48,7 @@
                 FlowDirection="RightToLeft"
                 Orientation="Horizontal">
                 <Button Command="{Binding NavigateToCreateItemCommand}">Create</Button>
-                <Button Command="{Binding RefreshListCommand}" IsEnabled="{Binding CanRefreshList}">Refresh</Button>
+                <Button Command="{Binding RefreshListCommand}">Refresh</Button>
             </StackPanel>
         </Grid>
 
@@ -57,7 +58,6 @@
             Name="ItemsList"
             Grid.Row="1"
             AutoGenerateColumns="False"
-            IsHitTestVisible="{Binding CanInteractWithTable}"
             IsReadOnly="True"
             ItemsSource="{Binding Items}">
             <DataGrid.InputBindings>

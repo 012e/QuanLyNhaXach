@@ -25,9 +25,6 @@
         <Label>Quantity</Label>
         <TextBox Text="{Binding Item.Quantity}" />
 
-        <Button
-            Command="{Binding SubmitCommand}"
-            Content="{Binding SubmitButtonText}"
-            IsEnabled="{Binding CanSubmit}" />
+        <Button Command="{Binding SubmitItemInBackgroundCommand}">Submit</Button>
     </StackPanel>
 </UserControl>

@@ -12,13 +12,18 @@ using System.Windows;
 
 namespace BookstoreManagement.UI.InvoicesUI;
 
-public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM, CreateInvoiceVM>
+public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
 {
     protected override DbContext Db { get; }
 
     protected override IContextualNavigatorService<EditInvoiceVM, Invoice> EditItemNavigator { get; }
+    protected INavigatorService<CreateInvoiceVM> CreateInvoiceNavigator { get; }
 
-    protected override INavigatorService<CreateInvoiceVM> CreateItemNavigator { get; }
+    [RelayCommand]
+    protected void NavigateToCreateInvoice()
+    {
+        CreateInvoiceNavigator.Navigate();
+    }
 
     public AllInvoicesVM(
         ApplicationDbContext db,
@@ -26,8 +31,8 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM, CreateInvoic
         INavigatorService<CreateInvoiceVM> createInvoiceNavigator
         )
     {
-        CreateItemNavigator = createInvoiceNavigator;
         EditItemNavigator = editInvoiceNavigator;
+        CreateInvoiceNavigator = createInvoiceNavigator;
         Db = db;
     }
 }

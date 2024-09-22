@@ -1,129 +1,64 @@
 ﻿using BookstoreManagement.Services;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Reflection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace BookstoreManagement.Core.Shortcut;
 
-
-// # Exposes the following bindings
-// - bool IsLoading
-// - bool CanInteractWithTable
-// - ObservableCollection<TItem> Items
-//
-// # Implements the following commands
-// - void RefreshList()
-// - void DeleteItem(TItem item)
-// - void NavigateToEditItem(TItem item)
-// - void NavigateToCreateItem()
-public abstract partial class ListVM<TItem, TEditItemVM, TCreateItemVM> : BaseViewModel
+/// <summary>
+/// Exposes the following bindings
+/// <list type="bullet">
+/// <item>
+/// bool IsLoading
+/// </item>
+/// <item>
+/// - ObservableCollection<TItem> Items
+/// </item>
+/// </list>
+///
+/// # Implements the following commands
+/// - void RefreshList()
+/// - void DeleteItem(TItem item)
+/// - void NavigateToEditItem(TItem item)
+/// </summary>
+/// <typeparam name="TItem">Type of the resource</typeparam>
+/// <typeparam name="TEditItemVM">Type of the edit view model</typeparam>
+/// <typeparam name="TCreateItemVM">Type of the create view model</typeparam>
+public abstract partial class ListVM<TItem, TEditItemVM> : ImmutableListVM<TItem>
     where TItem : class
-    where TEditItemVM : ContextualViewModel<TItem>
-    where TCreateItemVM : BaseViewModel
+    where TEditItemVM : BaseViewModel, IContextualViewModel<TItem>
 {
-    // Your ef core DbContext
-    protected abstract DbContext Db { get; }
     protected abstract IContextualNavigatorService<TEditItemVM, TItem> EditItemNavigator { get; }
-    protected abstract INavigatorService<TCreateItemVM> CreateItemNavigator { get; }
-
-    [RelayCommand]
-    protected virtual void NavigateToEditItem(TItem item)
-    {
-        EditItemNavigator.Navigate(item);    
-    }
-
-    [RelayCommand]
-    protected virtual void NavigateToCreateItem()
-    {
-        CreateItemNavigator.Navigate();
-    }
-
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(RefreshListCommand))]
-    [NotifyPropertyChangedFor(nameof(CanInteractWithTable))]
-    protected bool _isLoading = false;
-    public bool CanInteractWithTable => !IsLoading;
-
-    [ObservableProperty]
-    protected ObservableCollection<TItem> _items = [];
-
-    private bool CanRefreshList => !IsLoading;
-    [RelayCommand(CanExecute = nameof(CanRefreshList))]
-    private void RefreshList()
-    {
-        Items.Clear();
-        LoadDataInBackground();
-    }
-
-    protected virtual void UpdateItems()
-    {
-        Db.ChangeTracker.Clear();
-        var items = Db.Set<TItem>().ToList();
-        Items = new ObservableCollection<TItem>(items);
-    }
 
     [RelayCommand]
     protected virtual void DeleteItem(TItem item)
     {
-        Db.Remove(item);
-        try
+        if (item == null) return;
+        var result = MessageBox.Show("Do you want to delete this item", "Delete confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+        if (result == MessageBoxResult.Yes)
         {
-            Db.SaveChanges();
-        }
-        catch (Exception e)
-        {
-            MessageBox.Show($"Failed to delete item: {e}");
-            return;
-        }
-        Items.Remove(item);
-        MessageBox.Show("Deleted successfully");
-    }
-
-    private void BeginLoading()
-    {
-        IsLoading = true;
-    }
-
-    private void FinishLoading()
-    {
-        IsLoading = false;
-    }
-
-    private void LoadDataInBackground()
-    {
-        // let 'em load my bruh
-        if (IsLoading) return;
-
-        BeginLoading();
-        BackgroundWorker worker = new();
-
-        worker.DoWork += (send, e) =>
-        {
-            UpdateItems();
-        };
-
-        worker.RunWorkerCompleted += (send, e) =>
-        {
-            FinishLoading();
-            if (e.Error is not null)
+            try
             {
-                MessageBox.Show($"Some error occured, couldn't fetch data: {e.Error}.");
+                Db.Set<TItem>().Remove(item);
+                Db.SaveChanges();
             }
-        };
-
-        worker.RunWorkerAsync();
+            catch (Exception)
+            {
+                MessageBox.Show("Something went wrong. Couldn't delete item.", "Error");
+            }
+            Items.Remove(item);
+            MessageBox.Show("Deleted your item successfully", "Deleted successfully");
+        }
     }
 
-    public override void ResetState()
+    [RelayCommand]
+    protected virtual void NavigateToEditItem(TItem item)
     {
-        // reset items
-        Items = new ObservableCollection<TItem>();
-        LoadDataInBackground();
-        base.ResetState();
+        if (item == null) return;
+        EditItemNavigator.Navigate(item);
     }
-
 }

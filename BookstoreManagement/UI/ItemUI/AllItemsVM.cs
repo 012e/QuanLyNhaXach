@@ -7,126 +7,31 @@ using System.ComponentModel;
 using System.Windows;
 using BookstoreManagement.Core;
 using BookstoreManagement.Services;
+using BookstoreManagement.Core.Shortcut;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookstoreManagement.UI.ItemUI;
 
-public partial class AllItemsVM : BaseViewModel
+public partial class AllItemsVM : ListVM<Item, EditItemVM>
 {
-    private readonly ApplicationDbContext db;
-    private readonly IContextualNavigatorService<EditItemVM, int> editItemNavigator;
-    private readonly INavigatorService<CreateItemVM> createItemNavigator;
-
-    [ObservableProperty]
-    private ObservableCollection<Item> _items = [];
-
-    [ObservableProperty]
-    private Boolean _isLoading = false;
-
-    [ObservableProperty]
-    private Boolean _canInteractWithTable = false;
-
-    [ObservableProperty]
-    private Boolean _canRefreshList = false;
+    protected override ApplicationDbContext Db { get; }
+    protected override IContextualNavigatorService<EditItemVM, Item> EditItemNavigator { get; }
+    protected INavigatorService<CreateItemVM> CreateItemNavigator { get; }
 
     [RelayCommand]
-    private void RefreshList()
+    protected void NavigateToCreateItem()
     {
-        Items.Clear();
-        LoadDataInBackground();
-    }
-
-    private void UpdateItems()
-    {
-        db.ChangeTracker.Clear();
-        var items = db.Items.ToList();
-        Items = new ObservableCollection<Item>(items);
-    }
-
-    private void BeginLoading()
-    {
-        IsLoading = true;
-        CanInteractWithTable = false;
-        CanRefreshList = false;
-    }
-
-    private void FinishLoading()
-    {
-        IsLoading = false;
-        CanInteractWithTable = true;
-        CanRefreshList = true;
-    }
-
-    private void LoadDataInBackground()
-    {
-        // let 'em load my bruh
-        if (IsLoading) return;
-
-        BeginLoading();
-        BackgroundWorker worker = new();
-
-        worker.DoWork += (send, e) =>
-        {
-            UpdateItems();
-        };
-
-        worker.RunWorkerCompleted += (send, e) =>
-        {
-            FinishLoading();
-            if (e.Error is not null)
-            {
-                MessageBox.Show($"Some error occured, couldn't fetch data: {e.Error}.");
-            }
-        };
-
-        worker.RunWorkerAsync();
-    }
-
-    public override void ResetState()
-    {
-        // reset items
-        Items = new ObservableCollection<Item>();
-        LoadDataInBackground();
-        base.ResetState();
-    }
-
-    [RelayCommand]
-    private void NavigateToEditItem(Item item)
-    {
-        if (item is null) return;
-        editItemNavigator.Navigate(item.ItemId);
-    }
-
-    [RelayCommand]
-    private void NavigateToCreateItem()
-    {
-        createItemNavigator.Navigate();
-    }
-
-    [RelayCommand]
-    private void DeleteItem(Item item)
-    {
-        db.Remove(item);
-        try
-        {
-            db.SaveChanges();
-        }
-        catch (Exception e)
-        {
-            MessageBox.Show($"Failed to delete item: {e}");
-            return;
-        }
-        Items.Remove(item);
-        MessageBox.Show("Deleted successfully");
+        CreateItemNavigator.Navigate();
     }
 
     public AllItemsVM(ApplicationDbContext db,
-        IContextualNavigatorService<EditItemVM, int> editItemNavigator,
+        IContextualNavigatorService<EditItemVM, Item> editItemNavigator,
         INavigatorService<CreateItemVM> createItemNavigator
     )
     {
-        this.db = db;
-        this.editItemNavigator = editItemNavigator;
-        this.createItemNavigator = createItemNavigator;
-        LoadDataInBackground();
+        this.Db = db;
+        this.EditItemNavigator = editItemNavigator;
+        this.CreateItemNavigator = createItemNavigator;
     }
+
 }

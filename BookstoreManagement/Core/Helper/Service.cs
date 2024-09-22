@@ -46,7 +46,8 @@ public static class Service
         services.AddSingleton<INavigatorService<T>, NavigatorService<T>>();
     }
 
-    public static void AddContextualNavigatorService<TViewModel, TContext>(this IServiceCollection services) where TViewModel : ContextualViewModel<TContext>
+    public static void AddContextualNavigatorService<TViewModel, TContext>(this IServiceCollection services)
+        where TViewModel : BaseViewModel, IContextualViewModel<TContext>
     {
         services.AddAbstractFactorySingleton<TViewModel>();
         services.AddSingleton<IContextualNavigatorService<TViewModel, TContext>, ContextualNavigatorService<TViewModel, TContext>>();
@@ -69,7 +70,7 @@ public static class Service
     }
     public static void AddViewContextualViewModel<TView, TViewModel, TContext>(this IServiceCollection services)
         where TView : ContentControl, new()
-        where TViewModel : ContextualViewModel<TContext>
+        where TViewModel : BaseViewModel, IContextualViewModel<TContext>
     {
         services.AddContextualNavigatorService<TViewModel, TContext>();
         services.AddAbstractFactorySingleton<TViewModel>();
