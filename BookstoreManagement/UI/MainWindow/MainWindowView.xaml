@@ -7,6 +7,7 @@
     xmlns:item="clr-namespace:BookstoreManagement.UI.ItemUI"
     xmlns:local="clr-namespace:BookstoreManagement"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tag="clr-namespace:BookstoreManagement.UI.TagUI"
     xmlns:vm="clr-namespace:BookstoreManagement.UI.MainWindow"
     Title="MainWindow"
     Width="800"
@@ -32,6 +33,15 @@
             <DataTemplate DataType="{x:Type invoice:AddInvoiceItemVM}">
                 <invoice:AddInvoiceItemView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type tag:AllTagsVM}">
+                <tag:AllTagsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type tag:EditTagVM}">
+                <tag:EditTagView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type tag:CreateTagVM}">
+                <tag:CreateTagView />
+            </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.25*" />
@@ -40,8 +50,9 @@
 
         <!--  Navigator  -->
         <StackPanel Grid.Column="0" Orientation="Vertical">
-            <Button Command="{Binding NavigateToItemCommand}">All items</Button>
-            <Button Command="{Binding NavigateToInvoiceCommand}">All invoices</Button>
+            <Button Command="{Binding NavigateToItemCommand}">Items</Button>
+            <Button Command="{Binding NavigateToInvoiceCommand}">Invoices</Button>
+            <Button Command="{Binding NavigateToTagCommand}">Tags</Button>
         </StackPanel>
 
         <!--  Current view model  -->

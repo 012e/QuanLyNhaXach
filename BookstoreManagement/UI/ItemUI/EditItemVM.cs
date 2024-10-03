@@ -42,8 +42,8 @@ public partial class EditItemVM(
 
     protected override void OnSubmittingSuccess()
     {
-        MessageBox.Show("Submitted successfully");
         base.OnSubmittingSuccess();
+        MessageBox.Show("Submitted successfully");
     }
 
     protected override void SubmitItemHandler()
