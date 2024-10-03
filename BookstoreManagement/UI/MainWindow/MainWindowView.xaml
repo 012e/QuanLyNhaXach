@@ -44,24 +44,79 @@
             </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.25*" />
+            <ColumnDefinition Width="0.17*" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <!--  Navigator  -->
-        <StackPanel Grid.Column="0" Orientation="Vertical">
-            <Button Command="{Binding NavigateToItemCommand}">Items</Button>
-            <Button Command="{Binding NavigateToInvoiceCommand}">Invoices</Button>
-            <Button Command="{Binding NavigateToTagCommand}">Tags</Button>
+        <StackPanel
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Orientation="Vertical">
+            <Button
+                Height="60"
+                Command="{Binding NavigateToItemCommand}"
+                Style="{DynamicResource MaterialDesignFlatButton}">
+                Items
+            </Button>
+            <Button
+                Height="60"
+                Command="{Binding NavigateToInvoiceCommand}"
+                Style="{DynamicResource MaterialDesignFlatButton}">
+                Invoices
+            </Button>
+            <Button
+                Height="60"
+                Command="{Binding NavigateToTagCommand}"
+                Style="{DynamicResource MaterialDesignFlatButton}">
+                Tags
+            </Button>
+            <Button
+                Height="60"
+                Command="{Binding NavigateToTagCommand}"
+                Style="{DynamicResource MaterialDesignFlatButton}">
+                Tags
+            </Button>
+            <Button
+                Height="60"
+                Command="{Binding NavigateToTagCommand}"
+                Style="{DynamicResource MaterialDesignFlatButton}">
+                Tags
+            </Button>
+            <Button
+                Height="60"
+                Command="{Binding NavigateToTagCommand}"
+                Style="{DynamicResource MaterialDesignFlatButton}">
+                Tags
+            </Button>
         </StackPanel>
 
-        <!--  Current view model  -->
-        <ContentControl
-            Grid.Column="1"
-            HorizontalContentAlignment="Stretch"
-            VerticalContentAlignment="Stretch"
-            Content="{Binding NavigatorStore.CurrentViewModel}">
-            <ContentControl.Resources />
-        </ContentControl>
+        <Grid Grid.Column="1" Background="LightBlue">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="100*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="100*" />
+                <RowDefinition Height="3*" />
+            </Grid.RowDefinitions>
+            <!--  Current view model  -->
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Border
+                    Padding="50,30,50,50"
+                    Background="White"
+                    BorderThickness="30"
+                    CornerRadius="30">
+                    <ContentControl
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Content="{Binding NavigatorStore.CurrentViewModel}">
+                        <ContentControl.Resources />
+                    </ContentControl>
+                </Border>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:local="clr-namespace:BookstoreManagement.UI.ItemUI"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -30,7 +31,14 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Margin="7,0,0,7" FontSize="30">
+                <TextBlock
+                    Margin="7,0,0,7"
+                    FontSize="30"
+                    FontWeight="Bold">
+                    <materialDesign:PackIcon
+                        Width="23"
+                        Height="23"
+                        Kind="BookOpenVariant" />
                     Items
                 </TextBlock>
 
@@ -47,8 +55,19 @@
                 Grid.Column="1"
                 FlowDirection="RightToLeft"
                 Orientation="Horizontal">
-                <Button Command="{Binding NavigateToCreateItemCommand}">Create</Button>
-                <Button Command="{Binding RefreshListCommand}">Refresh</Button>
+                <Button
+                    Background="YellowGreen"
+                    BorderThickness="0"
+                    Command="{Binding NavigateToCreateItemCommand}">
+                    <materialDesign:PackIcon Kind="plus" />
+                </Button>
+                <Button
+                    Margin="10,0,0,0"
+                    Background="Navy"
+                    BorderThickness="0"
+                    Command="{Binding RefreshListCommand}">
+                    <materialDesign:PackIcon Kind="reload" />
+                </Button>
             </StackPanel>
         </Grid>
 
@@ -79,11 +98,20 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Button Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
-                                    Edit
+                                <Button
+                                    Margin="5"
+                                    Background="DarkBlue"
+                                    BorderThickness="0"
+                                    Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding}">
+                                    <materialDesign:PackIcon Kind="pencil" />
                                 </Button>
-                                <Button Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
-                                    Delete
+                                <Button
+                                    Background="IndianRed"
+                                    BorderThickness="0"
+                                    Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding}">
+                                    <materialDesign:PackIcon Kind="TrashCanOutline" />
                                 </Button>
                             </StackPanel>
                         </DataTemplate>
