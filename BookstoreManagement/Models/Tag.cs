@@ -6,6 +6,7 @@ namespace BookstoreManagement.Models;
 
 public partial class Tag : ISoftDelete
 {
+    public int TagId { get; set; }
     public string Name { get; set; } = null!;
 
     public string? Description { get; set; }

@@ -14,6 +14,8 @@ using dotenv.net.Utilities;
 using Microsoft.EntityFrameworkCore;
 using dotenv.net;
 using Microsoft.Extensions.Options;
+using BookstoreManagement.UI.InvoicesUI;
+using BookstoreManagement.UI;
 
 namespace BookstoreManagement;
 
@@ -31,12 +33,15 @@ public partial class App : Application
             options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION")), ServiceLifetime.Transient);
 
         builder.Services.AddViewViewModel<MainWindowView, MainWindowVM>();
+
         builder.Services.AddViewViewModel<AllItemsView, AllItemsVM>();
-        builder.Services.AddViewViewModel<EditItemView, EditItemVM>();
+        builder.Services.AddViewContextualViewModel<EditItemView, EditItemVM, Item>();
         builder.Services.AddViewViewModel<CreateItemView, CreateItemVM>();
-        builder.Services.AddNavigatorService<AllItemsVM>();
-        builder.Services.AddNavigatorService<CreateItemVM>();
-        builder.Services.AddContextualNavigatorService<EditItemVM, int>();
+
+        builder.Services.AddViewViewModel<AllInvoicesView, AllInvoicesVM>();
+        builder.Services.AddViewContextualViewModel<EditInvoiceView, EditInvoiceVM, Invoice>();
+        builder.Services.AddViewContextualViewModel<AddInvoiceItemView, AddInvoiceItemVM, Invoice>();
+        builder.Services.AddViewViewModel<CreateInvoiceView, CreateInvoiceVM>();
 
 
         builder.Services.AddSingleton<NavigatorStore>();

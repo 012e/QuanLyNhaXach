@@ -27,7 +27,6 @@ public partial class NavigatorService<TViewModel> : INavigatorService<TViewModel
     public void Navigate()
     {
         var viewModel = ViewModelFactory.Create();
-        viewModel.ResetState();
         NavigatorStore.CurrentViewModel = viewModel;
     }
 }

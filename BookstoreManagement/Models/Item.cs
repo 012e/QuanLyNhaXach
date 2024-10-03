@@ -24,6 +24,6 @@ public partial class Item : ISoftDelete
 
     public virtual Provider? Provider { get; set; }
 
-    public virtual ICollection<Tag> TagNames { get; set; } = new List<Tag>();
+    public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
     public bool Deleted { get; set; } = false;
 }
