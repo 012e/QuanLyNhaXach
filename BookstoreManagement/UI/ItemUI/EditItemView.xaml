@@ -4,27 +4,72 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:BookstoreManagement.UI.ItemUI"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <StackPanel HorizontalAlignment="Center">
-        <Button Command="{Binding NavigateBackCommand}">Go back</Button>
-        <Label>Item Id</Label>
-        <TextBox IsReadOnly="True" Text="{Binding Item.ItemId}" />
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="0.7*" />
+            <ColumnDefinition Width="0.5*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <StackPanel
+                Margin="15"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Margin="-15,10,10,10"
+                    BorderThickness="0"
+                    Command="{Binding NavigateBackCommand}"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon
+                        Width="25"
+                        Height="25"
+                        Foreground="Black"
+                        Kind="ChevronLeft" />
+                </Button>
+                <TextBlock
+                    Margin="5"
+                    FontSize="30"
+                    FontWeight="Bold">
+                    Edit Item
+                </TextBlock>
+            </StackPanel>
+            <Border
+                Grid.Column="1"
+                Padding="30,10,30,10"
+                BorderBrush="Black"
+                BorderThickness=".4"
+                CornerRadius="10">
 
-        <Label>Name</Label>
-        <TextBox Text="{Binding Item.Name}" />
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <Label FontWeight="Bold">Item Id</Label>
+                    <TextBox IsReadOnly="True" Text="{Binding Item.ItemId}" />
 
-        <Label>Description</Label>
-        <TextBox Text="{Binding Item.Description}" />
+                    <Label>Name</Label>
+                    <TextBox Text="{Binding Item.Name}" />
 
-        <Label>Price</Label>
-        <TextBox Text="{Binding Item.Price}" />
+                    <Label>Description</Label>
+                    <TextBox
+                        AcceptsReturn="True"
+                        Text="{Binding Item.Description}"
+                        TextWrapping="Wrap" />
 
-        <Label>Quantity</Label>
-        <TextBox Text="{Binding Item.Quantity}" />
+                    <Label>Price</Label>
+                    <TextBox Text="{Binding Item.Price}" />
 
-        <Button Command="{Binding SubmitItemCommand}">Submit</Button>
-    </StackPanel>
+                    <Label>Quantity</Label>
+                    <TextBox Text="{Binding Item.Quantity}" />
+
+                    <Button Margin="12" Command="{Binding SubmitItemCommand}">Submit</Button>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
 </UserControl>

@@ -18,15 +18,11 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.1*" />
+            <RowDefinition Height="0.2*" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0">
             <StackPanel
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -51,31 +47,48 @@
                     Spin="True"
                     Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" />
             </StackPanel>
-            <StackPanel
-                Grid.Column="1"
-                FlowDirection="RightToLeft"
-                Orientation="Horizontal">
-                <Button
-                    Background="YellowGreen"
-                    BorderThickness="0"
-                    Command="{Binding NavigateToCreateItemCommand}">
-                    <materialDesign:PackIcon Kind="plus" />
-                </Button>
-                <Button
-                    Margin="10,0,0,0"
-                    Background="Navy"
-                    BorderThickness="0"
-                    Command="{Binding RefreshListCommand}">
-                    <materialDesign:PackIcon Kind="reload" />
-                </Button>
-            </StackPanel>
-        </Grid>
+            <Separator />
+            <Grid Grid.Row="0" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock Margin="7,0,0,7">
+                        What is this
+                    </TextBlock>
+
+                </StackPanel>
+                <StackPanel
+                    Grid.Column="1"
+                    FlowDirection="RightToLeft"
+                    Orientation="Horizontal">
+                    <Button
+                        Background="YellowGreen"
+                        BorderThickness="0"
+                        Command="{Binding NavigateToCreateItemCommand}">
+                        <materialDesign:PackIcon Kind="plus" />
+                    </Button>
+                    <Button
+                        Margin="10,0,0,0"
+                        Background="Navy"
+                        BorderThickness="0"
+                        Command="{Binding RefreshListCommand}">
+                        <materialDesign:PackIcon Kind="reload" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
 
         <!--  IsHitTestVisible is for avoiding any kind of interraction with the table when  -->
         <!--  the data is not loaded yet (mostly to avoid SelectedItem being null)  -->
         <DataGrid
             Name="ItemsList"
             Grid.Row="1"
+            HorizontalAlignment="Stretch"
             AutoGenerateColumns="False"
             IsReadOnly="True"
             ItemsSource="{Binding Items}">

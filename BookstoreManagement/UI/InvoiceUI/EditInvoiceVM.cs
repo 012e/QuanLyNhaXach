@@ -38,13 +38,14 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     [RelayCommand]
     private void NavigateToAddInvoiceItem()
     {
+        if (Invoice == null) return;
         AddInvoiceItemNavigator.Navigate(Invoice);
     }
 
     public override void ResetState()
     {
-        InvoiceItems = new();
         base.ResetState();
+        InvoiceItems = new();
     }
 
     protected override void LoadItem()

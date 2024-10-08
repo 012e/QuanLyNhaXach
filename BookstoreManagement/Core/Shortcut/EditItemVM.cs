@@ -8,10 +8,10 @@ using System.Windows;
 namespace BookstoreManagement.Core.Shortcut;
 
 public abstract partial class EditItemVM<TItem> : BaseViewModel, IContextualViewModel<TItem>
+    where TItem : class
 {
     // Your ef core DbContext
     protected abstract DbContext Db { get; }
-    public TItem ViewModelContext { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SubmitItemCommand))]
@@ -30,6 +30,9 @@ public abstract partial class EditItemVM<TItem> : BaseViewModel, IContextualView
 
 
     protected virtual bool CanSubmitItem => !IsLoading && !IsSubmitting;
+
+    public TItem ViewModelContext { get; set; }
+
     [RelayCommand(CanExecute = nameof(CanSubmitItem))]
     protected void SubmitItem()
     {
