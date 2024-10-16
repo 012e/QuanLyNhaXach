@@ -52,8 +52,8 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     {
         Invoice = ViewModelContext;
         var itemsFromInvoice = from items in Db.Items
-                    join invoiceItems in Db.InvoicesItems on items.ItemId equals invoiceItems.ItemId
-                    where invoiceItems.InvoiceId == Invoice.InvoiceId select items;
+                    join invoiceItems in Db.InvoicesItems on items.Id equals invoiceItems.ItemId
+                    where invoiceItems.InvoiceId == Invoice.Id select items;
         InvoiceItems = new ObservableCollection<Item>(itemsFromInvoice);
     }
 

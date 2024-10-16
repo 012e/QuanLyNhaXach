@@ -30,7 +30,7 @@ namespace BookstoreManagement.UI.TagUI
 
         protected override void LoadItem()
         {
-            Tag = Db.Tags.Where(tag => tag.TagId == ViewModelContext.TagId).First();
+            Tag = Db.Tags.Where(tag => tag.Id == ViewModelContext.Id).First();
         }
 
         protected override void SubmitItemHandler()

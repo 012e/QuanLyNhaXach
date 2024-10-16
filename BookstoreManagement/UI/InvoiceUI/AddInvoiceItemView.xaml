@@ -63,7 +63,7 @@
             ItemsSource="{Binding Items}"
             SelectedItem="{Binding SelectedItem}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding ItemId}" Header="Id" />
+                <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
             </DataGrid.Columns>
         </DataGrid>
