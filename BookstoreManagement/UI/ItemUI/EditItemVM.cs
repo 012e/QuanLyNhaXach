@@ -36,8 +36,8 @@ public partial class EditItemVM(
 
     protected override void LoadItem()
     {
-        var itemId = ViewModelContext.ItemId;
-        Item = Db.Items.Include(item => item.Tags).FirstOrDefault(item => item.ItemId == itemId);
+        var itemId = ViewModelContext.Id;
+        Item = Db.Items.Include(item => item.Tags).FirstOrDefault(item => item.Id == itemId);
     }
 
     protected override void OnSubmittingSuccess()

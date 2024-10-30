@@ -1,16 +1,15 @@
-﻿using BookstoreManagement.DbContexts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace BookstoreManagement.Models;
 
-public partial class Tag : ISoftDelete
+public partial class Tag
 {
-    public int TagId { get; set; }
+    public int Id { get; set; }
+
     public string Name { get; set; } = null!;
 
-    public string Description { get; set; }
-    public bool Deleted { get; set; } = false;
+    public string? Description { get; set; }
 
     public virtual ICollection<Item> Items { get; set; } = new List<Item>();
 }

@@ -1,22 +1,23 @@
-﻿using BookstoreManagement.DbContexts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace BookstoreManagement.Models;
 
-public partial class Invoice : ISoftDelete
+public partial class Invoice
 {
-    public int InvoiceId { get; set; }
+    public int Id { get; set; }
 
     public decimal Total { get; set; }
 
     public int EmployeeId { get; set; }
 
+    public int CustomerId { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
-    public virtual Employee Employee { get; set; } = null!;
+    public virtual Customer Customer { get; set; } = null!;
 
-    public bool Deleted { get; set; } = false;
+    public virtual Employee Employee { get; set; } = null!;
 
     public virtual ICollection<InvoicesItem> InvoicesItems { get; set; } = new List<InvoicesItem>();
 }

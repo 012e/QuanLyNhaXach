@@ -47,8 +47,8 @@ public partial class AddInvoiceItemVM : EditItemVM<Invoice>
     {
         Db.InvoicesItems.Add(new InvoicesItem
         {
-            InvoiceId = ViewModelContext.InvoiceId,
-            ItemId = SelectedItem.ItemId,
+            InvoiceId = ViewModelContext.Id,
+            ItemId = SelectedItem.Id,
             Quantity = 1
         });
         Db.SaveChanges();
