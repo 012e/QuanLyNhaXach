@@ -9,7 +9,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignWidth="1080"
     mc:Ignorable="d">
     <Control.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -53,15 +53,50 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <StackPanel
-                    Grid.Column="0"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <TextBlock Margin="7,0,0,7">
-                        What is this
-                    </TextBlock>
 
-                </StackPanel>
+                <!-- Search TextBox-->
+                <Border Background="#fff" CornerRadius="25" BorderThickness="1" BorderBrush="#000" MouseDown="Border_MouseDown">
+                    <Grid
+                        Grid.Column="0"
+                        VerticalAlignment="Center">
+
+                        <TextBlock Padding="10" Margin="10 0 0 0" Panel.ZIndex="1" Foreground="#b0b9c6"
+                                   IsHitTestVisible="False" Visibility="{Binding ElementName=txtSearch,Path=Text.IsEmpty,
+                            Converter={StaticResource BooleanToVisibilityConverter}}"                                   
+                                   VerticalAlignment="Center" FontSize="20">
+                            Search here....
+                        </TextBlock>
+                        
+                        <!--Nhap du lieu-->
+                        <TextBox x:Name="txtSearch" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left"
+                                 Margin="30 0 0 0" VerticalAlignment="Center" FontSize="20" Text="{Binding SearchID, UpdateSourceTrigger=PropertyChanged}">
+                            <TextBox.Template>
+                                <ControlTemplate>
+                                    <Border Background="Transparent">
+                                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden"
+                                                      VerticalScrollBarVisibility="Hidden">
+       
+                                        </ScrollViewer>
+                                    </Border>
+                                </ControlTemplate>
+                            </TextBox.Template>
+                        </TextBox>
+                        
+                        <!--Icon-->
+                        <Button
+                            Width="30"
+                            Height="30"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"                         
+                            BorderThickness="0"
+                            Command="{Binding SearchCommand}">      
+                            <materialDesign:PackIcon Kind="Magnify" Foreground="Black"/>
+                        </Button>
+                    </Grid>
+                </Border>
+                <!--END Search TextBox-->
+
+
                 <StackPanel
                     Grid.Column="1"
                     FlowDirection="RightToLeft"
@@ -91,7 +126,7 @@
             HorizontalAlignment="Stretch"
             AutoGenerateColumns="False"
             IsReadOnly="True"
-            ItemsSource="{Binding Items}">
+            ItemsSource="{Binding FilteredItems}">
             <DataGrid.InputBindings>
                 <!--  Double click on any row  -->
                 <MouseBinding
