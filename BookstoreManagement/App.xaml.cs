@@ -19,6 +19,7 @@ using BookstoreManagement.UI;
 using BookstoreManagement.UI.TagUI;
 using BookstoreManagement.UI.EmployeeUI;
 using BookstoreManagement.UI.ProviderUI;
+using BookstoreManagement.UI.DashboardUI;
 
 namespace BookstoreManagement;
 
@@ -58,6 +59,10 @@ public partial class App : Application
         builder.Services.AddViewViewModel<CreateEmployeeV, CreateEmployeeVM>();
 
         builder.Services.AddSingleton<NavigatorStore>();
+
+        // dashboard
+        builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
+        //builder.Services.AddViewContextualViewModel<>
 
         AppHost = builder.Build();
     }
