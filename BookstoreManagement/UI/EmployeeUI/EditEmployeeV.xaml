@@ -71,8 +71,7 @@
                     <Label>Salary</Label>
                     <TextBox Text="{Binding Item.Salary}" />
 
-                    <Label>Profile Picture</Label>
-                    <TextBox Text="{Binding Item.ProfilePicture}" />
+
 
                     <Label>Is Manager</Label>
                     <CheckBox IsChecked="{Binding Item.IsManager}" />
