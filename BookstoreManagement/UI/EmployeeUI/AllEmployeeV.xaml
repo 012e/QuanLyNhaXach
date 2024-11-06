@@ -152,12 +152,12 @@
                 ItemsSource="{Binding Items}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
-                    <DataGridTextColumn Binding="{Binding FirstName}" Header="FisrtName" />
-                    <DataGridTextColumn Binding="{Binding LastName}" Header="LastName" />
+                    <DataGridTextColumn Binding="{Binding FirstName}" Header="Fisrt Name" />
+                    <DataGridTextColumn Binding="{Binding LastName}" Header="Last Name" />
                     <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
                     <DataGridTextColumn Binding="{Binding Salary}" Header="Salary" />
-                    <DataGridTextColumn Binding="{Binding ProfilePicture}" Header="ProfilePicture" />
-                    <DataGridTextColumn Binding="{Binding IsManager}" Header="IsManager" />
+
+                    <DataGridCheckBoxColumn Binding="{Binding IsManager}" Header="Is Manager" />
                     <DataGridTemplateColumn CanUserResize="False" Header="Commands">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

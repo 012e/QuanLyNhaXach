@@ -59,10 +59,10 @@
                     <Label FontWeight="Bold">Employee ID</Label>
                     <TextBox IsReadOnly="True" Text="{Binding Item.Id}" />
 
-                    <Label>FirstName</Label>
+                    <Label>First Name</Label>
                     <TextBox Text="{Binding Item.FirstName}" />
 
-                    <Label>LastName</Label>
+                    <Label>Last Name</Label>
                     <TextBox Text="{Binding Item.LastName}" />
 
                     <Label>Email</Label>
@@ -75,7 +75,7 @@
                     <TextBox Text="{Binding Item.ProfilePicture}" />
 
                     <Label>Is Manager</Label>
-                    <TextBox Text="{Binding Item.IsManager}" />
+                    <CheckBox IsChecked="{Binding Item.IsManager}" />
 
                     <Button Margin="12" Command="{Binding SubmitItemCommand}">Submit</Button>
                 </StackPanel>
