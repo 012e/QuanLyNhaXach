@@ -39,10 +39,10 @@ public partial class App : Application
         builder.Services.AddViewContextualViewModel<EditItemView, EditItemVM, Item>();
         builder.Services.AddViewViewModel<CreateItemView, CreateItemVM>();
 
-        builder.Services.AddViewViewModel<AllInvoicesView, AllInvoicesVM>();
-        builder.Services.AddViewContextualViewModel<EditInvoiceView, EditInvoiceVM, Invoice>();
-        builder.Services.AddViewContextualViewModel<AddInvoiceItemView, AddInvoiceItemVM, Invoice>();
-        builder.Services.AddViewViewModel<CreateInvoiceView, CreateInvoiceVM>();
+        builder.Services.AddViewViewModel<AllInvoicesV, AllInvoicesVM>();
+        builder.Services.AddViewContextualViewModel<EditInvoiceV, EditInvoiceVM, Invoice>();
+        builder.Services.AddViewContextualViewModel<AddInvoiceItemV, AddInvoiceItemVM, Invoice>();
+        builder.Services.AddViewViewModel<CreateInvoiceV, CreateInvoiceVM>();
 
         builder.Services.AddViewViewModel<AllTagsView, AllTagsVM>();    
         builder.Services.AddViewContextualViewModel<EditTagView, EditTagVM, Tag>();

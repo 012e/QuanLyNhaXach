@@ -25,13 +25,13 @@
                 <item:CreateItemView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type invoice:AllInvoicesVM}">
-                <invoice:AllInvoicesView />
+                <invoice:AllInvoicesV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type invoice:EditInvoiceVM}">
-                <invoice:EditInvoiceView />
+                <invoice:EditInvoiceV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type invoice:AddInvoiceItemVM}">
-                <invoice:AddInvoiceItemView />
+                <invoice:AddInvoiceItemV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type tag:AllTagsVM}">
                 <tag:AllTagsView />
