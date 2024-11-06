@@ -33,7 +33,7 @@ public partial class App : Application
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION")), ServiceLifetime.Transient);
 
-        builder.Services.AddViewViewModel<MainWindowView, MainWindowVM>();
+        builder.Services.AddViewViewModel<MainWindowV, MainWindowVM>();
 
         builder.Services.AddViewViewModel<AllItemsV, AllItemsVM>();
         builder.Services.AddViewContextualViewModel<EditItemV, EditItemVM, Item>();
@@ -57,7 +57,7 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         AppHost.Start();
-        AppHost.Services.GetRequiredService<MainWindowView>().Show();
+        AppHost.Services.GetRequiredService<MainWindowV>().Show();
 
         var navigator = AppHost.Services.GetRequiredService<NavigatorStore>();
         var allItemsVM = AppHost.Services.GetRequiredService<AllItemsVM>();

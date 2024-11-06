@@ -14,9 +14,9 @@ namespace BookstoreManagement
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindowView : Window
+    public partial class MainWindowV : Window
     {
-        public MainWindowView()
+        public MainWindowV()
         {
             InitializeComponent();
         }
