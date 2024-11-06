@@ -146,23 +146,6 @@ public partial class ApplicationDbContext : DbContext
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("items_provider_id_fkey");
 
-            entity.HasMany(d => d.Providers).WithMany(p => p.ItemsNavigation)
-                .UsingEntity<Dictionary<string, object>>(
-                    "ProvidersItem",
-                    r => r.HasOne<Provider>().WithMany()
-                        .HasForeignKey("ProviderId")
-                        .HasConstraintName("providers_items_provider_id_fkey"),
-                    l => l.HasOne<Item>().WithMany()
-                        .HasForeignKey("ItemId")
-                        .HasConstraintName("providers_items_item_id_fkey"),
-                    j =>
-                    {
-                        j.HasKey("ItemId", "ProviderId").HasName("providers_items_pkey");
-                        j.ToTable("providers_items");
-                        j.IndexerProperty<int>("ItemId").HasColumnName("item_id");
-                        j.IndexerProperty<int>("ProviderId").HasColumnName("provider_id");
-                    });
-
             entity.HasMany(d => d.Tags).WithMany(p => p.Items)
                 .UsingEntity<Dictionary<string, object>>(
                     "ItemsTag",

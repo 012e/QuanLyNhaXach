@@ -11,7 +11,7 @@
     <StackPanel HorizontalAlignment="Center">
         <Button Command="{Binding GoBackCommand}">Go back</Button>
         <Label>Id</Label>
-        <TextBox IsReadOnly="True" Text="{Binding Tag.TagId}" />
+        <TextBox IsReadOnly="True" Text="{Binding Tag.Id}" />
         <Label>Name</Label>
         <TextBox Text="{Binding Tag.Name}" />
         <Label>Description</Label>

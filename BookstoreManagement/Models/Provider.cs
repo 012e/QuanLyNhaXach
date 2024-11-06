@@ -12,6 +12,4 @@ public partial class Provider
     public string Address { get; set; } = null!;
 
     public virtual ICollection<Item> Items { get; set; } = new List<Item>();
-
-    public virtual ICollection<Item> ItemsNavigation { get; set; } = new List<Item>();
 }

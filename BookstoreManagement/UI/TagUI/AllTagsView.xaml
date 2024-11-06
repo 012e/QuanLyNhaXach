@@ -69,7 +69,7 @@
             </DataGrid.InputBindings>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding TagId}" Header="Id" />
+                <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
                 <DataGridTemplateColumn CanUserResize="False" Header="Commands">
                     <DataGridTemplateColumn.CellTemplate>

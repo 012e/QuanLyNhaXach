@@ -9,7 +9,7 @@ public partial class Item
 
     public string Name { get; set; } = null!;
 
-    public byte[] Image { get; set; } = null!;
+    public string Image { get; set; } = null!;
 
     public int Quantity { get; set; }
 
@@ -22,8 +22,6 @@ public partial class Item
     public virtual ICollection<InvoicesItem> InvoicesItems { get; set; } = new List<InvoicesItem>();
 
     public virtual Provider? Provider { get; set; }
-
-    public virtual ICollection<Provider> Providers { get; set; } = new List<Provider>();
 
     public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
 }
