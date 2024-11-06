@@ -1,5 +1,5 @@
 ﻿<Window
-    x:Class="BookstoreManagement.MainWindowView"
+    x:Class="BookstoreManagement.MainWindowV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,31 +16,31 @@
     <Grid>
         <Grid.Resources>
             <DataTemplate DataType="{x:Type item:AllItemsVM}">
-                <item:AllItemsView />
+                <item:AllItemsV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type item:EditItemVM}">
-                <item:EditItemView />
+                <item:EditItemV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type item:CreateItemVM}">
-                <item:CreateItemView />
+                <item:CreateItemV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type invoice:AllInvoicesVM}">
-                <invoice:AllInvoicesView />
+                <invoice:AllInvoicesV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type invoice:EditInvoiceVM}">
-                <invoice:EditInvoiceView />
+                <invoice:EditInvoiceV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type invoice:AddInvoiceItemVM}">
-                <invoice:AddInvoiceItemView />
+                <invoice:AddInvoiceItemV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type tag:AllTagsVM}">
-                <tag:AllTagsView />
+                <tag:AllTagsV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type tag:EditTagVM}">
-                <tag:EditTagView />
+                <tag:EditTagV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type tag:CreateTagVM}">
-                <tag:CreateTagView />
+                <tag:CreateTagV />
             </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>

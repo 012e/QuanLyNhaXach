@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BookstoreManagement.UI.InvoicesUI
+namespace BookstoreManagement.UI.TagUI
 {
     /// <summary>
-    /// Interaction logic for AddInvoiceItemView.xaml
+    /// Interaction logic for CreateTagView.xaml
     /// </summary>
-    public partial class AddInvoiceItemView : UserControl
+    public partial class CreateTagV : UserControl
     {
-        public AddInvoiceItemView()
+        public CreateTagV()
         {
             InitializeComponent();
         }
