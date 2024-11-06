@@ -56,6 +56,9 @@ public partial class App : Application
         builder.Services.AddViewViewModel<AllProviderV , AllProviderVM>();
         builder.Services.AddViewContextualViewModel<EditProviderV, EditProviderVM, Provider>();
 
+        builder.Services.AddViewViewModel<AllEmployeeV, AllEmployeeVM>();
+        builder.Services.AddViewContextualViewModel<EditEmployeeV, EditEmployeeVM, Employee>();
+
         builder.Services.AddSingleton<NavigatorStore>();
 
         AppHost = builder.Build();
