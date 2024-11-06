@@ -24,7 +24,7 @@
         CornerRadius="30">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.2*" />
+                <RowDefinition Height="0.3*" />
                 <RowDefinition />
             </Grid.RowDefinitions>
 
@@ -63,10 +63,63 @@
                         Grid.Column="0"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
-                        <TextBlock Margin="7,0,0,7">
-                            What is this
-                        </TextBlock>
+                        <!--  Search by ProviderID  -->
+                        <Border
+                            Padding="7"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="15">
+                            <StackPanel
+                                Margin="5"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <!--  Wrap TextBox and TextBlock in a Grid for placeholder functionality  -->
+                                <Grid Width="200" Height="25">
+                                    <TextBox
+                                        x:Name="SearchTextBox"
+                                        Width="200"
+                                        Height="25"
+                                        Padding="10,0,30,0"
+                                        VerticalAlignment="Center"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        FontSize="14"
+                                        Text="{Binding SearchID, UpdateSourceTrigger=PropertyChanged}" />
 
+                                    <TextBlock
+                                        Margin="10,0,0,0"
+                                        Padding="6,3,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Foreground="DarkGray"
+                                        IsHitTestVisible="False"
+                                        Text="Search by Provider ID">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Text, ElementName=SearchTextBox}" Value="">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                                <Button
+                                    Width="30"
+                                    Height="30"
+                                    Command="{Binding SearchStaffCommand}"
+                                    Style="{DynamicResource MaterialDesignToolButton}">
+                                    <materialDesign:PackIcon
+                                        Width="23"
+                                        Height="23"
+                                        HorizontalAlignment="Center"
+                                        Kind="Magnify" />
+                                </Button>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                     <StackPanel
                         Grid.Column="1"
@@ -94,7 +147,6 @@
             <DataGrid
                 Name="ItemsList"
                 Grid.Row="1"
-                HorizontalAlignment="Stretch"
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
                 ItemsSource="{Binding Items}">
