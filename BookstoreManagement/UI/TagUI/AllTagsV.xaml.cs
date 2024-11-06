@@ -18,9 +18,9 @@ namespace BookstoreManagement.UI.TagUI
     /// <summary>
     /// Interaction logic for AllTagsView.xaml
     /// </summary>
-    public partial class AllTagsView : UserControl
+    public partial class AllTagsV : UserControl
     {
-        public AllTagsView()
+        public AllTagsV()
         {
             InitializeComponent();
         }

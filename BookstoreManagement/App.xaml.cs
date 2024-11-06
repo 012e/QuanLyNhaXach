@@ -44,9 +44,9 @@ public partial class App : Application
         builder.Services.AddViewContextualViewModel<AddInvoiceItemV, AddInvoiceItemVM, Invoice>();
         builder.Services.AddViewViewModel<CreateInvoiceV, CreateInvoiceVM>();
 
-        builder.Services.AddViewViewModel<AllTagsView, AllTagsVM>();    
-        builder.Services.AddViewContextualViewModel<EditTagView, EditTagVM, Tag>();
-        builder.Services.AddViewViewModel<CreateTagView, CreateTagVM>();
+        builder.Services.AddViewViewModel<AllTagsV, AllTagsVM>();    
+        builder.Services.AddViewContextualViewModel<EditTagV, EditTagVM, Tag>();
+        builder.Services.AddViewViewModel<CreateTagV, CreateTagVM>();
 
         builder.Services.AddSingleton<NavigatorStore>();
 

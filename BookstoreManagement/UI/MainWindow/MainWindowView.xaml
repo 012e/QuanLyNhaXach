@@ -34,13 +34,13 @@
                 <invoice:AddInvoiceItemV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type tag:AllTagsVM}">
-                <tag:AllTagsView />
+                <tag:AllTagsV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type tag:EditTagVM}">
-                <tag:EditTagView />
+                <tag:EditTagV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type tag:CreateTagVM}">
-                <tag:CreateTagView />
+                <tag:CreateTagV />
             </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
