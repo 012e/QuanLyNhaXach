@@ -50,7 +50,7 @@
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center">
                     <Label FontWeight="Bold">Item Id</Label>
-                    <TextBox IsReadOnly="True" Text="{Binding Item.ItemId}" />
+                    <TextBox IsReadOnly="True" Text="{Binding Item.Id}" />
 
                     <Label>Name</Label>
                     <TextBox Text="{Binding Item.Name}" />

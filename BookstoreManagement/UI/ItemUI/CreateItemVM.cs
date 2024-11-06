@@ -39,7 +39,7 @@ public partial class CreateItemVM : BaseViewModel
             Description = Description,
             Price = Price,
             Quantity = Quantity,
-            Image = []
+            Image = ""
         };
         try
         {
