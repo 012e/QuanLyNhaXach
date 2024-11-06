@@ -16,13 +16,13 @@
     <Grid>
         <Grid.Resources>
             <DataTemplate DataType="{x:Type item:AllItemsVM}">
-                <item:AllItemsView />
+                <item:AllItemsV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type item:EditItemVM}">
-                <item:EditItemView />
+                <item:EditItemV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type item:CreateItemVM}">
-                <item:CreateItemView />
+                <item:CreateItemV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type invoice:AllInvoicesVM}">
                 <invoice:AllInvoicesV />

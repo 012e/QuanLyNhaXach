@@ -18,9 +18,9 @@ namespace BookstoreManagement.UI.ItemUI
     /// <summary>
     /// Interaction logic for EditItemView.xaml
     /// </summary>
-    public partial class EditItemView : UserControl
+    public partial class EditItemV : UserControl
     {
-        public EditItemView()
+        public EditItemV()
         {
             InitializeComponent();
         }
