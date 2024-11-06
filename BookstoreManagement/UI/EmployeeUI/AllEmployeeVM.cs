@@ -29,5 +29,12 @@ namespace BookstoreManagement.UI.EmployeeUI
             Db = db;
             EditItemNavigator = editItemNavigator;
         }
+        protected override void LoadItems()
+        {
+            Db.ChangeTracker.Clear();
+            var items = Db.Employees.OrderBy(employee => employee.Id).ToList();
+            Items = new ObservableCollection<Employee>(items);
+
+        }
     }
 }

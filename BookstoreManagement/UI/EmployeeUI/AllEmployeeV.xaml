@@ -40,8 +40,15 @@
                             Width="23"
                             Height="23"
                             Kind="AccountGroup" />
-                        Staff
+                        Employees
                     </TextBlock>
+                    <fa:ImageAwesome
+                        Width="15"
+                        Height="15"
+                        Margin="7,0,0,0"
+                        Icon="Refresh"
+                        Spin="True"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                 </StackPanel>
                 <Separator />
