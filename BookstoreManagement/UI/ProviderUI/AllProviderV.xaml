@@ -1,0 +1,144 @@
+﻿<UserControl
+    x:Class="BookstoreManagement.UI.ProviderUI.AllProviderV"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:BookstoreManagement.Converter"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:local="clr-namespace:BookstoreManagement.UI.ProviderUI"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance local:AllProviderVM}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Control.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+    </Control.Resources>
+
+    <Border
+        Padding="50,30,50,50"
+        Background="White"
+        BorderThickness="30"
+        CornerRadius="30">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.2*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <StackPanel
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="7,0,0,7"
+                        FontSize="30"
+                        FontWeight="Bold">
+                        <materialDesign:PackIcon
+                            Width="28"
+                            Height="28"
+                            Kind="AccountTieHat" />
+                        Providers
+                    </TextBlock>
+
+                    <!--  Loading spinner  -->
+                    <fa:ImageAwesome
+                        Width="15"
+                        Height="15"
+                        Margin="7,0,0,0"
+                        Icon="Refresh"
+                        Spin="True"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+                <Separator />
+                <Grid Grid.Row="0" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <TextBlock Margin="7,0,0,7">
+                            What is this
+                        </TextBlock>
+
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Column="1"
+                        FlowDirection="RightToLeft"
+                        Orientation="Horizontal">
+                        <Button
+                            Background="YellowGreen"
+                            BorderThickness="0"
+                            Command="{Binding NavigateToCreateItemCommand}">
+                            <materialDesign:PackIcon Kind="plus" />
+                        </Button>
+                        <Button
+                            Margin="10,0,0,0"
+                            Background="Navy"
+                            BorderThickness="0"
+                            Command="{Binding RefreshListCommand}">
+                            <materialDesign:PackIcon Kind="reload" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+
+            <!--  IsHitTestVisible is for avoiding any kind of interraction with the table when  -->
+            <!--  the data is not loaded yet (mostly to avoid SelectedItem being null)  -->
+            <DataGrid
+                Name="ItemsList"
+                Grid.Row="1"
+                HorizontalAlignment="Stretch"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding Items}">
+                <DataGrid.InputBindings>
+                    <!--  Double click on any row  -->
+                    <MouseBinding
+                        Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        CommandParameter="{Binding ElementName=ItemsList, Path=SelectedItem}"
+                        Gesture="LeftDoubleClick" />
+                </DataGrid.InputBindings>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                    <DataGridTextColumn
+                        Width="200"
+                        Binding="{Binding Address}"
+                        Header="Address" />
+                    <DataGridTemplateColumn CanUserResize="False" Header="Commands">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
+                                        Margin="5"
+                                        Background="DarkBlue"
+                                        BorderThickness="0"
+                                        Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="pencil" />
+                                    </Button>
+                                    <Button
+                                        Background="IndianRed"
+                                        BorderThickness="0"
+                                        Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="TrashCanOutline" />
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Border>
+
+</UserControl>

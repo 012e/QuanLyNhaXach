@@ -24,6 +24,7 @@ public partial class AllItemsVM : ListVM<Item, EditItemVM>
         CreateItemNavigator.Navigate();
     }
 
+
     public AllItemsVM(ApplicationDbContext db,
         IContextualNavigatorService<EditItemVM, Item> editItemNavigator,
         INavigatorService<CreateItemVM> createItemNavigator
