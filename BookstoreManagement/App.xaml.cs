@@ -20,6 +20,7 @@ using BookstoreManagement.UI.TagUI;
 using BookstoreManagement.UI.EmployeeUI;
 using BookstoreManagement.UI.ProviderUI;
 using BookstoreManagement.UI.DashboardUI;
+using BookstoreManagement.UI.CustomerUI;
 
 namespace BookstoreManagement;
 
@@ -63,6 +64,12 @@ public partial class App : Application
         // dashboard
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
         //builder.Services.AddViewContextualViewModel<>
+
+        // customer
+        builder.Services.AddViewViewModel<CustomerV, CustomerVM>();
+
+        // edit customer
+        builder.Services.AddViewContextualViewModel<EditCustomerView, EditCustomerVM, int>();
 
         AppHost = builder.Build();
     }

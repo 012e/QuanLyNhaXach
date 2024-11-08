@@ -67,24 +67,24 @@ public partial class AllItemsVM : ListVM<Item, EditItemVM>
         return false;
     }
 
-    private void LoadData()
-    {
-        ListItems.Clear(); // Clear the existing collection
+    //private void LoadData()
+    //{
+    //    ListItems.Clear(); // Clear the existing collection
         
-        var items = this.Db.Items.ToList();
-        foreach (var item in items)
-        {
-            ListItems.Add(item);
-        }
+    //    var items = this.Db.Items.ToList();
+    //    foreach (var item in items)
+    //    {
+    //        ListItems.Add(item);
+    //    }
 
-    }
-    public override void ResetState()
-    {
+    //}
+    //public override void ResetState()
+    //{
 
-        base.ResetState();
-        LoadData();
-        FilteredItems.Refresh();
-    }
+    //    base.ResetState();
+    //    LoadData();
+    //    FilteredItems.Refresh();
+    //}
 
 
     [RelayCommand]
@@ -92,8 +92,6 @@ public partial class AllItemsVM : ListVM<Item, EditItemVM>
     {
         FilteredItems.Refresh();
     }
-   
-
-
+  
 
 }
