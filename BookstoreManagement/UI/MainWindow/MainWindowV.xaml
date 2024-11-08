@@ -88,16 +88,14 @@
             <Button
                 Height="60"
                 Command="{Binding NavigateToEmployeeCommand}"
-                Command="{Binding NavigateToProviderCommand}"
                 Style="{DynamicResource MaterialDesignFlatButton}">
                 Employee
-                Providers
             </Button>
             <Button
                 Height="60"
-                Command="{Binding NavigateToTagCommand}"
+                Command="{Binding NavigateToProviderCommand}"
                 Style="{DynamicResource MaterialDesignFlatButton}">
-                Tags
+                Providers
             </Button>
             <Button
                 Height="60"
