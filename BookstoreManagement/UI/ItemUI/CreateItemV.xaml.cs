@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BookstoreManagement.UI.TagUI
+namespace BookstoreManagement.UI.ItemUI
 {
     /// <summary>
-    /// Interaction logic for CreateTagView.xaml
+    /// Interaction logic for CreateItemView.xaml
     /// </summary>
-    public partial class CreateTagView : UserControl
+    public partial class CreateItemV : UserControl
     {
-        public CreateTagView()
+        public CreateItemV()
         {
             InitializeComponent();
         }

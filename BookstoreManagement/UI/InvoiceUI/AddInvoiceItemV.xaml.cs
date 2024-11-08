@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace BookstoreManagement.UI.InvoicesUI
 {
     /// <summary>
-    /// Interaction logic for CreateInvoiceView.xaml
+    /// Interaction logic for AddInvoiceItemView.xaml
     /// </summary>
-    public partial class CreateInvoiceView : UserControl
+    public partial class AddInvoiceItemV : UserControl
     {
-        public CreateInvoiceView()
+        public AddInvoiceItemV()
         {
             InitializeComponent();
         }

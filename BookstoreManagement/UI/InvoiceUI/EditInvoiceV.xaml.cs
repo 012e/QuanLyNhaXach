@@ -1,4 +1,8 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BookstoreManagement
+namespace BookstoreManagement.UI.InvoicesUI
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for EditInvoiceView.xaml
     /// </summary>
-    public partial class MainWindowView : Window
+    public partial class EditInvoiceV : UserControl
     {
-        public MainWindowView()
+        public EditInvoiceV()
         {
             InitializeComponent();
         }
