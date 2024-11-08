@@ -10,10 +10,11 @@
     xmlns:tag="clr-namespace:BookstoreManagement.UI.TagUI"
     xmlns:vm="clr-namespace:BookstoreManagement.UI.MainWindow"
     xmlns:dashboard="clr-namespace:BookstoreManagement.UI.DashboardUI"
+    xmlns:customer="clr-namespace:BookstoreManagement.UI.CustomerUI"
     WindowState="Maximized"
     Title="MainWindow"
-    Width="800"
-    Height="450"
+    Width="1411"
+    Height="600"
     mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
@@ -46,6 +47,13 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type tag:CreateTagVM}">
                 <tag:CreateTagView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type customer:CustomerVM}">
+                <customer:CustomerV></customer:CustomerV>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type customer:EditCustomerVM}">
+                <customer:EditCustomerView></customer:EditCustomerView>
             </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
@@ -85,16 +93,17 @@
             </Button>
             <Button
                 Height="60"
-                Command="{Binding NavigateToTagCommand}"
+                Command="{Binding NavigateToCustomerCommand}"
                 Style="{DynamicResource MaterialDesignFlatButton}">
-                Tags
+                Customer
             </Button>
-            <Button
+            
+            <!--<Button
                 Height="60"
                 Command="{Binding NavigateToTagCommand}"
                 Style="{DynamicResource MaterialDesignFlatButton}">
                 
-            </Button>
+            </Button>-->
            
         </StackPanel>
 
