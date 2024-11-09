@@ -8,6 +8,7 @@
     xmlns:item="clr-namespace:BookstoreManagement.UI.ItemUI"
     xmlns:local="clr-namespace:BookstoreManagement"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ncc="clr-namespace:BookstoreManagement.UI.ProviderUI"
     xmlns:tag="clr-namespace:BookstoreManagement.UI.TagUI"
     xmlns:vm="clr-namespace:BookstoreManagement.UI.MainWindow"
     Title="MainWindow"
@@ -49,6 +50,12 @@
             <DataTemplate DataType="{x:Type tag:CreateTagVM}">
                 <tag:CreateTagV />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type ncc:AllProviderVM}">
+                <ncc:AllProviderV />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type ncc:EditProviderVM}">
+                <ncc:EditProviderV />
+            </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.17*" />
@@ -81,8 +88,10 @@
             <Button
                 Height="60"
                 Command="{Binding NavigateToEmployeeCommand}"
+                Command="{Binding NavigateToProviderCommand}"
                 Style="{DynamicResource MaterialDesignFlatButton}">
                 Employee
+                Providers
             </Button>
             <Button
                 Height="60"
