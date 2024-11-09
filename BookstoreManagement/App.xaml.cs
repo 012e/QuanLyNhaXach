@@ -17,6 +17,7 @@ using Microsoft.Extensions.Options;
 using BookstoreManagement.UI.InvoicesUI;
 using BookstoreManagement.UI;
 using BookstoreManagement.UI.TagUI;
+using BookstoreManagement.UI.EmployeeUI;
 
 namespace BookstoreManagement;
 
@@ -47,6 +48,9 @@ public partial class App : Application
         builder.Services.AddViewViewModel<AllTagsV, AllTagsVM>();    
         builder.Services.AddViewContextualViewModel<EditTagV, EditTagVM, Tag>();
         builder.Services.AddViewViewModel<CreateTagV, CreateTagVM>();
+
+        builder.Services.AddViewViewModel<AllEmployeeV, AllEmployeeVM>();
+        builder.Services.AddViewContextualViewModel<EditEmployeeV, EditEmployeeVM, Employee>();
 
         builder.Services.AddSingleton<NavigatorStore>();
 
