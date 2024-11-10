@@ -4,6 +4,7 @@ using BookstoreManagement.Models;
 using BookstoreManagement.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -21,11 +22,16 @@ namespace BookstoreManagement.UI.CustomerUI
         // navigator chuyen den edit
         private readonly IContextualNavigatorService<EditCustomerVM, int> editCustomerNavigator;
 
+        // Navigator chuyen den CreateCustomer
+        protected INavigatorService<CreateCustomerVM> CreateCustomerNavigator { get; }
+
         public CustomerVM(ApplicationDbContext db,
-            IContextualNavigatorService<EditCustomerVM,int> editCustomerNavigator)
+            IContextualNavigatorService<EditCustomerVM,int> editCustomerNavigator,
+            INavigatorService<CreateCustomerVM> createCustomerNavigator)
         {
             this.db = db;
             this.editCustomerNavigator = editCustomerNavigator;
+            this.CreateCustomerNavigator = createCustomerNavigator;
         }
 
 
@@ -33,8 +39,15 @@ namespace BookstoreManagement.UI.CustomerUI
         public override void ResetState()
         {
             base.ResetState();
-            var customers = db.Customers.ToList();
+            var customers = db.Customers.AsNoTracking().ToList();
             Customers = new(customers);
+        }
+
+        // nut chuyen den submit
+        [RelayCommand]
+        private void NavigateToCreateCustomer()
+        {
+            CreateCustomerNavigator.Navigate();
         }
 
         // xoa
@@ -42,8 +55,16 @@ namespace BookstoreManagement.UI.CustomerUI
         private void DeleteCustomer(Customer customer)
         {
             if (customer == null) return;
-            Customers.Remove(customer);
-            //MessageBox.Show("Delete");
+
+            MessageBoxResult result = MessageBox.Show(
+                "Ban co chac muon xoa khach hang nay khong?",
+                "Xac nhan xoa",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+            if(result == MessageBoxResult.Yes)
+            {
+                Customers.Remove(customer);
+            }            
         }
 
         // chinh sua
@@ -52,6 +73,13 @@ namespace BookstoreManagement.UI.CustomerUI
         {
             if (customer == null) return;
             editCustomerNavigator.Navigate(customer.Id);
+        }
+
+        // Refresh du lieu
+        [RelayCommand]
+        private void Refresh()
+        {
+            ResetState();
         }
     }
 }
