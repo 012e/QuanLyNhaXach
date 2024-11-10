@@ -41,12 +41,6 @@
             <DataTemplate DataType="{x:Type employeeUI:EditEmployeeVM}">
                 <employeeUI:EditEmployeeV />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type employeeUI:AllEmployeeVM}">
-                <employeeUI:AllEmployeeV />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type employeeUI:EditEmployeeVM}">
-                <employeeUI:EditEmployeeV />
-            </DataTemplate>
             <DataTemplate DataType="{x:Type employeeUI:CreateEmployeeVM}">
                 <employeeUI:CreateEmployeeV />
             </DataTemplate>

@@ -35,23 +35,23 @@ public partial class App : Application
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION")), ServiceLifetime.Transient);
 
-        builder.Services.AddViewViewModel<MainWindowView, MainWindowVM>();
+        builder.Services.AddViewViewModel<MainWindowV, MainWindowVM>();
 
-        builder.Services.AddViewViewModel<AllItemsView, AllItemsVM>();
-        builder.Services.AddViewContextualViewModel<EditItemView, EditItemVM, Item>();
-        builder.Services.AddViewViewModel<CreateItemView, CreateItemVM>();
+        builder.Services.AddViewViewModel<AllItemsV, AllItemsVM>();
+        builder.Services.AddViewContextualViewModel<EditItemV, EditItemVM, Item>();
+        builder.Services.AddViewViewModel<CreateItemV, CreateItemVM>();
 
-        builder.Services.AddViewViewModel<AllInvoicesView, AllInvoicesVM>();
-        builder.Services.AddViewContextualViewModel<EditInvoiceView, EditInvoiceVM, Invoice>();
-        builder.Services.AddViewContextualViewModel<AddInvoiceItemView, AddInvoiceItemVM, Invoice>();
-        builder.Services.AddViewViewModel<CreateInvoiceView, CreateInvoiceVM>();
+        builder.Services.AddViewViewModel<AllInvoicesV, AllInvoicesVM>();
+        builder.Services.AddViewContextualViewModel<EditInvoiceV, EditInvoiceVM, Invoice>();
+        builder.Services.AddViewContextualViewModel<AddInvoiceItemV, AddInvoiceItemVM, Invoice>();
+        builder.Services.AddViewViewModel<CreateInvoiceV, CreateInvoiceVM>();
 
-        builder.Services.AddViewViewModel<AllTagsView, AllTagsVM>();    
-        builder.Services.AddViewContextualViewModel<EditTagView, EditTagVM, Tag>();
-        builder.Services.AddViewViewModel<CreateTagView, CreateTagVM>();
+        builder.Services.AddViewViewModel<AllTagsV, AllTagsVM>();    
+        builder.Services.AddViewContextualViewModel<EditTagV, EditTagVM, Tag>();
+        builder.Services.AddViewViewModel<CreateTagV, CreateTagVM>();
 
-        builder.Services.AddViewViewModel<AllEmployeeV, AllEmployeeVM>();
-        builder.Services.AddViewContextualViewModel<EditEmployeeV, EditEmployeeVM, Employee>();
+        builder.Services.AddViewViewModel<AllProviderV, AllProviderVM>();
+        builder.Services.AddViewContextualViewModel<EditProviderV, EditProviderVM, Provider>();
 
         builder.Services.AddViewViewModel<AllEmployeeV, AllEmployeeVM>();
         builder.Services.AddViewContextualViewModel<EditEmployeeV, EditEmployeeVM, Employee>();
@@ -66,7 +66,7 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         AppHost.Start();
-        AppHost.Services.GetRequiredService<MainWindowView>().Show();
+        AppHost.Services.GetRequiredService<MainWindowV>().Show();
 
         var navigator = AppHost.Services.GetRequiredService<NavigatorStore>();
         var allItemsVM = AppHost.Services.GetRequiredService<AllItemsVM>();
