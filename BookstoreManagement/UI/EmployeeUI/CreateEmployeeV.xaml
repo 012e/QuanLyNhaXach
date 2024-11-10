@@ -4,12 +4,85 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:BookstoreManagement.UI.EmployeeUI"
+<<<<<<< HEAD
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+=======
+>>>>>>> 809f807bb46b19d4738276393181fada35304ef0
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance local:CreateEmployeeVM}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+<<<<<<< HEAD
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="0.7*" />
+            <ColumnDefinition Width="0.5*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <StackPanel
+                Margin="15"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Margin="-15,10,10,10"
+                    BorderThickness="0"
+                    Command="{Binding NavigateBackCommand}"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon
+                        Width="25"
+                        Height="25"
+                        Foreground="Black"
+                        Kind="ChevronLeft" />
+                </Button>
+                <TextBlock
+                    Margin="5"
+                    FontSize="30"
+                    FontWeight="Bold">
+                    Create new Employee
+                </TextBlock>
+            </StackPanel>
+            <Border
+                Grid.Column="1"
+                Padding="30,10,30,10"
+                Background="White"
+                BorderBrush="Black"
+                BorderThickness=".4"
+                CornerRadius="10">
+
+                <StackPanel
+                    Grid.Column="1"
+                    Width="200"
+                    HorizontalAlignment="Center">
+                    
+
+                    <Label>Frist Name</Label>
+                    <TextBox Text="{Binding Employee.FirstName}" />
+
+                    <Label>Last Name</Label>
+                    <TextBox Text="{Binding Employee.LasttName}" />
+
+                    <Label>Email</Label>
+                    <TextBox Text="{Binding Employee.Email}" />
+
+                    <Label>Salary</Label>
+                    <TextBox Text="{Binding Employee.Salary}" />
+
+                    <Label>Is Manager</Label>
+                    <CheckBox IsChecked="{Binding Employee.IsManager}" />
+
+                    <Button Margin="12" Command="{Binding SubmitCommand}">Submit</Button>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+=======
     <StackPanel>
         <TextBlock>CreateEmployeeV works!</TextBlock>
     </StackPanel>
+>>>>>>> 809f807bb46b19d4738276393181fada35304ef0
 </UserControl>
