@@ -56,11 +56,14 @@ public partial class App : Application
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
         //builder.Services.AddViewContextualViewModel<>
 
-        // customer
+        // Construct View, VM Customer
         builder.Services.AddViewViewModel<CustomerV, CustomerVM>();
 
         // edit customer
         builder.Services.AddViewContextualViewModel<EditCustomerView, EditCustomerVM, int>();
+
+        // Create Customer
+         builder.Services.AddViewViewModel<CreateCustomerView, CreateCustomerVM>();
 
         AppHost = builder.Build();
     }

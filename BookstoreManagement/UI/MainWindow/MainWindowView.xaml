@@ -55,6 +55,9 @@
             <DataTemplate DataType="{x:Type customer:EditCustomerVM}">
                 <customer:EditCustomerView></customer:EditCustomerView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type customer:CreateCustomerVM}">
+                <customer:CreateCustomerView></customer:CreateCustomerView>
+            </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.17*" />
