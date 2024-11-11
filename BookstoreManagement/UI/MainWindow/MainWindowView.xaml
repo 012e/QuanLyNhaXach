@@ -11,6 +11,8 @@
     xmlns:vm="clr-namespace:BookstoreManagement.UI.MainWindow"
     xmlns:dashboard="clr-namespace:BookstoreManagement.UI.DashboardUI"
     xmlns:customer="clr-namespace:BookstoreManagement.UI.CustomerUI"
+    xmlns:promotion="clr-namespace:BookstoreManagement.UI.PromotionUI"
+    
     WindowState="Maximized"
     Title="MainWindow"
     Width="1411"
@@ -48,6 +50,8 @@
             <DataTemplate DataType="{x:Type tag:CreateTagVM}">
                 <tag:CreateTagView />
             </DataTemplate>
+            
+            <!--Customer--> 
             <DataTemplate DataType="{x:Type customer:CustomerVM}">
                 <customer:CustomerV></customer:CustomerV>
             </DataTemplate>
@@ -58,6 +62,13 @@
             <DataTemplate DataType="{x:Type customer:CreateCustomerVM}">
                 <customer:CreateCustomerView></customer:CreateCustomerView>
             </DataTemplate>
+            <!--End Customer-->
+            
+            <!--Promotion-->
+            <DataTemplate DataType="{x:Type promotion:PromotionVM}">
+                <promotion:PromotionView></promotion:PromotionView>
+            </DataTemplate>
+            <!--End Promotion--> 
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.17*" />
@@ -94,19 +105,29 @@
                 Style="{DynamicResource MaterialDesignFlatButton}">
                 Tags
             </Button>
+            
+            <!--Sidebar - Customer--> 
             <Button
                 Height="60"
                 Command="{Binding NavigateToCustomerCommand}"
                 Style="{DynamicResource MaterialDesignFlatButton}">
                 Customer
             </Button>
+            <!--End Sidebar - Customer -->
             
-            <!--<Button
+            <!--Siderbar - Promotion-->
+
+            <Button
                 Height="60"
-                Command="{Binding NavigateToTagCommand}"
-                Style="{DynamicResource MaterialDesignFlatButton}">
-                
-            </Button>-->
+                Command="{Binding NavigateToPromotionCommand}"
+                Style="{DynamicResource MaterialDesignFlatButton}"> 
+                Promotion
+            </Button>
+            <!--End Siderbar - Promotion-->
+            
+            
+            
+          
            
         </StackPanel>
 

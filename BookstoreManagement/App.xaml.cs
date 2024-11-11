@@ -19,6 +19,7 @@ using BookstoreManagement.UI;
 using BookstoreManagement.UI.TagUI;
 using BookstoreManagement.UI.DashboardUI;
 using BookstoreManagement.UI.CustomerUI;
+using BookstoreManagement.UI.PromotionUI;
 
 namespace BookstoreManagement;
 
@@ -65,6 +66,9 @@ public partial class App : Application
         // Create Customer
          builder.Services.AddViewViewModel<CreateCustomerView, CreateCustomerVM>();
 
+
+        // Construct View, ViewModel Promotion
+        builder.Services.AddViewViewModel<PromotionView,PromotionVM>();
         AppHost = builder.Build();
     }
 

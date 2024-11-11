@@ -12,6 +12,7 @@ using BookstoreManagement.UI.InvoicesUI;
 using BookstoreManagement.UI.TagUI;
 using BookstoreManagement.UI.DashboardUI;
 using BookstoreManagement.UI.CustomerUI;
+using BookstoreManagement.UI.PromotionUI;
 
 namespace BookstoreManagement.UI.MainWindow;
 
@@ -25,6 +26,7 @@ public partial class MainWindowVM : BaseViewModel
     private readonly INavigatorService<AllTagsVM> tagNaviator;
     private readonly INavigatorService<DashBoardVM> dashboardNavigator;
     private readonly INavigatorService<CustomerVM> customerNavigator;
+    private readonly INavigatorService<PromotionVM> promotionNavigator;
 
 
     [ObservableProperty]
@@ -59,13 +61,20 @@ public partial class MainWindowVM : BaseViewModel
         customerNavigator.Navigate();
     }
 
+    [RelayCommand]
+    private void NavigateToPromotion()
+    {
+        promotionNavigator.Navigate();
+    }
+
     public MainWindowVM(
         NavigatorStore navigatorStore,
         INavigatorService<AllItemsVM> itemNavigator,
         INavigatorService<AllInvoicesVM> invoiceNavigator,
         INavigatorService<AllTagsVM> tagNaviator,
         INavigatorService<DashBoardVM> dashBoardNavigator,
-        INavigatorService<CustomerVM> customerNavigator
+        INavigatorService<CustomerVM> customerNavigator,
+        INavigatorService<PromotionVM> promotionNavigator
     )
     {
         this._navigatorStore = navigatorStore;
@@ -74,5 +83,6 @@ public partial class MainWindowVM : BaseViewModel
         this.tagNaviator = tagNaviator;
         this.dashboardNavigator = dashBoardNavigator;
         this.customerNavigator = customerNavigator;
+        this.promotionNavigator = promotionNavigator;
     }
 }
