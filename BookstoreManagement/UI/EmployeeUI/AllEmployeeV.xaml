@@ -127,7 +127,7 @@
                         <Button
                             Background="YellowGreen"
                             BorderThickness="0"
-                            Command="{Binding NavigateToCreateItemCommand}">
+                            Command="{Binding NavigateToCreateEmployeeCommand}">
                             <materialDesign:PackIcon Kind="plus" />
                         </Button>
                         <Button
