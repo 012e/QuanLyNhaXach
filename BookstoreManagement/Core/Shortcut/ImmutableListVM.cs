@@ -12,20 +12,20 @@ namespace BookstoreManagement.Core.Shortcut;
 
 
 /// <summary>
-/// Exposes the following bindings
+/// Exposes the following bindings:
 /// <list type="bullet">
-/// <item>
-/// bool IsLoading
-/// </item>
-/// <item>
-/// - ObservableCollection<TItem> Items
-/// </item>
+///   <item><description>bool IsLoading</description></item>
+///   <item><description>ObservableCollection&lt;TItem&gt; Items</description></item>
 /// </list>
-///
-/// # Implements the following commands
-/// - void RefreshList()
+/// Implements the following commands:
+/// <list type="bullet">
+///   <item><description>void RefreshList()</description></item>
+///   <item><description>void DeleteItem(TItem item)</description></item>
+///   <item><description>void NavigateToEditItem(TItem item)</description></item>
+/// </list>
 /// </summary>
-/// <typeparam name="TItem">Type of the resource</typeparam>
+/// <typeparam name="TItem">Type of the resource.</typeparam>
+/// <typeparam name="TEditItemVM">Type of the edit view model.</typeparam>
 public abstract partial class ImmutableListVM<TItem> : BaseViewModel
     where TItem : class
 {
