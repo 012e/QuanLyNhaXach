@@ -9,7 +9,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignWidth="1080"
     mc:Ignorable="d">
     <Control.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -53,15 +53,66 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <StackPanel
-                    Grid.Column="0"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <TextBlock Margin="7,0,0,7">
-                        What is this
-                    </TextBlock>
 
-                </StackPanel>
+                <!--  Search TextBox  -->
+                <Border
+                    Background="#fff"
+                    BorderBrush="#000"
+                    BorderThickness="1"
+                    CornerRadius="25"
+                    MouseDown="Border_MouseDown">
+                    <Grid Grid.Column="0" VerticalAlignment="Center">
+
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            Padding="10"
+                            VerticalAlignment="Center"
+                            Panel.ZIndex="1"
+                            FontSize="20"
+                            Foreground="#b0b9c6"
+                            IsHitTestVisible="False"
+                            Visibility="{Binding ElementName=txtSearch, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            Search here....
+                        </TextBlock>
+
+                        <!--  Nhap du lieu  -->
+                        <TextBox
+                            x:Name="txtSearch"
+                            Margin="30,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            FontSize="20"
+                            Text="{Binding SearchID, UpdateSourceTrigger=PropertyChanged}">
+                            <TextBox.Template>
+                                <ControlTemplate>
+                                    <Border Background="Transparent">
+                                        <ScrollViewer
+                                            x:Name="PART_ContentHost"
+                                            Focusable="False"
+                                            HorizontalScrollBarVisibility="Hidden"
+                                            VerticalScrollBarVisibility="Hidden" />
+                                    </Border>
+                                </ControlTemplate>
+                            </TextBox.Template>
+                        </TextBox>
+
+                        <!--  Icon  -->
+                        <Button
+                            Width="30"
+                            Height="30"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            BorderThickness="0"
+                            Command="{Binding SearchCommand}">
+                            <materialDesign:PackIcon Foreground="Black" Kind="Magnify" />
+                        </Button>
+                    </Grid>
+                </Border>
+                <!--  END Search TextBox  -->
+
+
                 <StackPanel
                     Grid.Column="1"
                     FlowDirection="RightToLeft"
