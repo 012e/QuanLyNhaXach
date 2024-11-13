@@ -50,11 +50,12 @@ public partial class App : Application
         builder.Services.AddViewContextualViewModel<EditTagV, EditTagVM, Tag>();
         builder.Services.AddViewViewModel<CreateTagV, CreateTagVM>();
 
+        builder.Services.AddViewViewModel<AllProviderV, AllProviderVM>();
+        builder.Services.AddViewContextualViewModel<EditProviderV, EditProviderVM, Provider>();
+
         builder.Services.AddViewViewModel<AllEmployeeV, AllEmployeeVM>();
         builder.Services.AddViewContextualViewModel<EditEmployeeV, EditEmployeeVM, Employee>();
-
-        builder.Services.AddViewViewModel<AllProviderV , AllProviderVM>();
-        builder.Services.AddViewContextualViewModel<EditProviderV, EditProviderVM, Provider>();
+        builder.Services.AddViewViewModel<CreateEmployeeV, CreateEmployeeVM>();
 
         builder.Services.AddSingleton<NavigatorStore>();
 
