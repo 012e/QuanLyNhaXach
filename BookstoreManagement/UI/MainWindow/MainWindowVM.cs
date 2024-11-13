@@ -77,16 +77,17 @@ public partial class MainWindowVM : BaseViewModel
         NavigatorStore navigatorStore,
         INavigatorService<AllItemsVM> itemNavigator,
         INavigatorService<AllInvoicesVM> invoiceNavigator,
-        INavigatorService<AllTagsVM> tagNaviator,
+        INavigatorService<AllTagsVM> tagNavigator,
         INavigatorService<DashBoardVM> dashBoardNavigator,
         INavigatorService<AllProviderVM> providerNavigator,
-        INavigatorService<AllEmployeeVM> employeeNavigator
+        INavigatorService<AllEmployeeVM> employeeNavigator,
+        INavigatorService<CustomerVM> customerNavigator
     )
     {
         this.NavigatorStore = navigatorStore;
         this.itemNavigator = itemNavigator;
         this.invoiceNavigator = invoiceNavigator;
-        this.tagNavigator = tagNaviator;
+        this.tagNavigator = tagNavigator;
         this.dashboardNavigator = dashBoardNavigator;
         this.providerNavigator = providerNavigator;
         this.employeeNavigator = employeeNavigator;

@@ -54,47 +54,63 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <!-- Search TextBox-->
-                <Border Background="#fff" CornerRadius="25" BorderThickness="1" BorderBrush="#000" MouseDown="Border_MouseDown">
-                    <Grid
-                        Grid.Column="0"
-                        VerticalAlignment="Center">
+                <!--  Search TextBox  -->
+                <Border
+                    Background="#fff"
+                    BorderBrush="#000"
+                    BorderThickness="1"
+                    CornerRadius="25"
+                    MouseDown="Border_MouseDown">
+                    <Grid Grid.Column="0" VerticalAlignment="Center">
 
-                        <TextBlock Padding="10" Margin="10 0 0 0" Panel.ZIndex="1" Foreground="#b0b9c6"
-                                   IsHitTestVisible="False" Visibility="{Binding ElementName=txtSearch,Path=Text.IsEmpty,
-                            Converter={StaticResource BooleanToVisibilityConverter}}"                                   
-                                   VerticalAlignment="Center" FontSize="20">
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            Padding="10"
+                            VerticalAlignment="Center"
+                            Panel.ZIndex="1"
+                            FontSize="20"
+                            Foreground="#b0b9c6"
+                            IsHitTestVisible="False"
+                            Visibility="{Binding ElementName=txtSearch, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
                             Search here....
                         </TextBlock>
-                        
-                        <!--Nhap du lieu-->
-                        <TextBox x:Name="txtSearch" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left"
-                                 Margin="30 0 0 0" VerticalAlignment="Center" FontSize="20" Text="{Binding SearchID, UpdateSourceTrigger=PropertyChanged}">
+
+                        <!--  Nhap du lieu  -->
+                        <TextBox
+                            x:Name="txtSearch"
+                            Margin="30,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            FontSize="20"
+                            Text="{Binding SearchID, UpdateSourceTrigger=PropertyChanged}">
                             <TextBox.Template>
                                 <ControlTemplate>
                                     <Border Background="Transparent">
-                                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden"
-                                                      VerticalScrollBarVisibility="Hidden">
-       
-                                        </ScrollViewer>
+                                        <ScrollViewer
+                                            x:Name="PART_ContentHost"
+                                            Focusable="False"
+                                            HorizontalScrollBarVisibility="Hidden"
+                                            VerticalScrollBarVisibility="Hidden" />
                                     </Border>
                                 </ControlTemplate>
                             </TextBox.Template>
                         </TextBox>
-                        
-                        <!--Icon-->
+
+                        <!--  Icon  -->
                         <Button
                             Width="30"
                             Height="30"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Center"
-                            HorizontalAlignment="Right"                         
                             BorderThickness="0"
-                            Command="{Binding SearchCommand}">      
-                            <materialDesign:PackIcon Kind="Magnify" Foreground="Black"/>
+                            Command="{Binding SearchCommand}">
+                            <materialDesign:PackIcon Foreground="Black" Kind="Magnify" />
                         </Button>
                     </Grid>
                 </Border>
-                <!--END Search TextBox-->
+                <!--  END Search TextBox  -->
 
 
                 <StackPanel
@@ -126,7 +142,7 @@
             HorizontalAlignment="Stretch"
             AutoGenerateColumns="False"
             IsReadOnly="True"
-            ItemsSource="{Binding FilteredItems}">
+            ItemsSource="{Binding Items}">
             <DataGrid.InputBindings>
                 <!--  Double click on any row  -->
                 <MouseBinding

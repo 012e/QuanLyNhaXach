@@ -48,7 +48,7 @@ public partial class App : Application
         builder.Services.AddViewContextualViewModel<AddInvoiceItemV, AddInvoiceItemVM, Invoice>();
         builder.Services.AddViewViewModel<CreateInvoiceV, CreateInvoiceVM>();
 
-        builder.Services.AddViewViewModel<AllTagsV, AllTagsVM>();    
+        builder.Services.AddViewViewModel<AllTagsV, AllTagsVM>();
         builder.Services.AddViewContextualViewModel<EditTagV, EditTagVM, Tag>();
         builder.Services.AddViewViewModel<CreateTagV, CreateTagVM>();
 
@@ -61,18 +61,11 @@ public partial class App : Application
 
         builder.Services.AddSingleton<NavigatorStore>();
 
-        // dashboard
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
-        //builder.Services.AddViewContextualViewModel<>
 
-        // Construct View, VM Customer
-        builder.Services.AddViewViewModel<CustomerV, CustomerVM>();
-
-        // edit customer
-        builder.Services.AddViewContextualViewModel<EditCustomerView, EditCustomerVM, int>();
-
-        // Create Customer
-         builder.Services.AddViewViewModel<CreateCustomerView, CreateCustomerVM>();
+        builder.Services.AddViewViewModel<AllCustomersV, CustomerVM>();
+        builder.Services.AddViewContextualViewModel<EditCustomerV, EditCustomerVM, int>();
+        builder.Services.AddViewViewModel<CreateCustomerV, CreateCustomerVM>();
 
         AppHost = builder.Build();
     }

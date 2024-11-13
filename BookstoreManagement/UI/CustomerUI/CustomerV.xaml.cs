@@ -2,9 +2,9 @@
 
 namespace BookstoreManagement.UI.CustomerUI
 {
-    public partial class CustomerV : UserControl
+    public partial class AllCustomersV : UserControl
     {
-        public CustomerV()
+        public AllCustomersV()
         {
             InitializeComponent();
         }

@@ -66,14 +66,14 @@
                 <ncc:EditProviderV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type customer:CustomerVM}">
-                <customer:CustomerV />
+                <customer:AllCustomersV />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type customer:EditCustomerVM}">
-                <customer:EditCustomerView />
+                <customer:EditCustomerV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type customer:CreateCustomerVM}">
-                <customer:CreateCustomerView></customer:CreateCustomerView>
+                <customer:CreateCustomerV></customer:CreateCustomerV>
             </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>

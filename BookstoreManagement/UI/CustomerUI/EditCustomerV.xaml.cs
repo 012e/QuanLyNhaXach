@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace BookstoreManagement.UI.CustomerUI
 {
     /// <summary>
-    /// Interaction logic for CreateCustomerView.xaml
+    /// Interaction logic for EditCustomerView.xaml
     /// </summary>
-    public partial class CreateCustomerView : UserControl
+    public partial class EditCustomerV : UserControl
     {
-        public CreateCustomerView()
+        public EditCustomerV()
         {
             InitializeComponent();
         }
