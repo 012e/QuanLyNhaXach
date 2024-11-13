@@ -19,6 +19,8 @@ using BookstoreManagement.UI;
 using BookstoreManagement.UI.TagUI;
 using BookstoreManagement.UI.EmployeeUI;
 using BookstoreManagement.UI.ProviderUI;
+using BookstoreManagement.UI.DashboardUI;
+using BookstoreManagement.UI.CustomerUI;
 
 namespace BookstoreManagement;
 
@@ -46,7 +48,7 @@ public partial class App : Application
         builder.Services.AddViewContextualViewModel<AddInvoiceItemV, AddInvoiceItemVM, Invoice>();
         builder.Services.AddViewViewModel<CreateInvoiceV, CreateInvoiceVM>();
 
-        builder.Services.AddViewViewModel<AllTagsV, AllTagsVM>();    
+        builder.Services.AddViewViewModel<AllTagsV, AllTagsVM>();
         builder.Services.AddViewContextualViewModel<EditTagV, EditTagVM, Tag>();
         builder.Services.AddViewViewModel<CreateTagV, CreateTagVM>();
 
@@ -58,6 +60,12 @@ public partial class App : Application
         builder.Services.AddViewViewModel<CreateEmployeeV, CreateEmployeeVM>();
 
         builder.Services.AddSingleton<NavigatorStore>();
+
+        builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
+
+        builder.Services.AddViewViewModel<AllCustomersV, CustomerVM>();
+        builder.Services.AddViewContextualViewModel<EditCustomerV, EditCustomerVM, int>();
+        builder.Services.AddViewViewModel<CreateCustomerV, CreateCustomerVM>();
 
         AppHost = builder.Build();
     }

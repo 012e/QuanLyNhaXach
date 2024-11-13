@@ -13,18 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BookstoreManagement.UI.ItemUI;
-
-public partial class AllItemsV : UserControl
+namespace BookstoreManagement.UI.CustomerUI
 {
-    public AllItemsV()
+    /// <summary>
+    /// Interaction logic for EditCustomerView.xaml
+    /// </summary>
+    public partial class EditCustomerV : UserControl
     {
-        InitializeComponent();
+        public EditCustomerV()
+        {
+            InitializeComponent();
+        }
     }
-    private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-        txtSearch.Focus();
-    }
-
- 
 }
