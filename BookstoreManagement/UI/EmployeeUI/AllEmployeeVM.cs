@@ -21,13 +21,21 @@ namespace BookstoreManagement.UI.EmployeeUI
     public partial class AllEmployeeVM : ListVM<Employee, EditEmployeeVM>
     {
         protected override IContextualNavigatorService<EditEmployeeVM, Employee> EditItemNavigator { get; }
+        protected INavigatorService<CreateEmployeeVM> createEmployeeNavigator;    
 
         protected override ApplicationDbContext Db { get; }
         public AllEmployeeVM(ApplicationDbContext db, 
-            IContextualNavigatorService<EditEmployeeVM, Employee> editItemNavigator)
+            IContextualNavigatorService<EditEmployeeVM, Employee> editItemNavigator,
+            INavigatorService<CreateEmployeeVM> createEmployeeNavigator)
         {
             Db = db;
             EditItemNavigator = editItemNavigator;
+            this.createEmployeeNavigator = createEmployeeNavigator;
+        }
+        [RelayCommand]
+        protected void NavigateToCreateEmployee()
+        {
+            createEmployeeNavigator.Navigate();
         }
         protected override void LoadItems()
         {

@@ -5,12 +5,12 @@
     xmlns:customer="clr-namespace:BookstoreManagement.UI.CustomerUI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dashboard="clr-namespace:BookstoreManagement.UI.DashboardUI"
-    xmlns:employeeUI="clr-namespace:BookstoreManagement.UI.EmployeeUI"
+    xmlns:employee="clr-namespace:BookstoreManagement.UI.EmployeeUI"
     xmlns:invoice="clr-namespace:BookstoreManagement.UI.InvoicesUI"
     xmlns:item="clr-namespace:BookstoreManagement.UI.ItemUI"
     xmlns:local="clr-namespace:BookstoreManagement"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ncc="clr-namespace:BookstoreManagement.UI.ProviderUI"
+    xmlns:provider="clr-namespace:BookstoreManagement.UI.ProviderUI"
     xmlns:tag="clr-namespace:BookstoreManagement.UI.TagUI"
     xmlns:vm="clr-namespace:BookstoreManagement.UI.MainWindow"
     Title="MainWindow"
@@ -41,14 +41,14 @@
             <DataTemplate DataType="{x:Type invoice:AddInvoiceItemVM}">
                 <invoice:AddInvoiceItemV />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type employeeUI:AllEmployeeVM}">
-                <employeeUI:AllEmployeeV />
+            <DataTemplate DataType="{x:Type employee:AllEmployeeVM}">
+                <employee:AllEmployeeV />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type employeeUI:EditEmployeeVM}">
-                <employeeUI:EditEmployeeV />
+            <DataTemplate DataType="{x:Type employee:EditEmployeeVM}">
+                <employee:EditEmployeeV />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type employeeUI:CreateEmployeeVM}">
-                <employeeUI:CreateEmployeeV />
+            <DataTemplate DataType="{x:Type employee:CreateEmployeeVM}">
+                <employee:CreateEmployeeV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type tag:AllTagsVM}">
                 <tag:AllTagsV />
@@ -59,21 +59,20 @@
             <DataTemplate DataType="{x:Type tag:CreateTagVM}">
                 <tag:CreateTagV />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type ncc:AllProviderVM}">
-                <ncc:AllProviderV />
+            <DataTemplate DataType="{x:Type provider:AllProviderVM}">
+                <provider:AllProviderV />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type ncc:EditProviderVM}">
-                <ncc:EditProviderV />
+            <DataTemplate DataType="{x:Type provider:EditProviderVM}">
+                <provider:EditProviderV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type customer:CustomerVM}">
                 <customer:AllCustomersV />
             </DataTemplate>
-
             <DataTemplate DataType="{x:Type customer:EditCustomerVM}">
                 <customer:EditCustomerV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type customer:CreateCustomerVM}">
-                <customer:CreateCustomerV></customer:CreateCustomerV>
+                <customer:CreateCustomerV />
             </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
