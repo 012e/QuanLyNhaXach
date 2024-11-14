@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace BookstoreManagement.UI.CustomerUI
 {
-    public partial class CustomerVM : BaseViewModel
+    public partial class AllCustomersVM : BaseViewModel
     {
         // database
         private readonly ApplicationDbContext db;
@@ -25,7 +25,7 @@ namespace BookstoreManagement.UI.CustomerUI
         // Navigator chuyen den CreateCustomer
         protected INavigatorService<CreateCustomerVM> CreateCustomerNavigator { get; }
 
-        public CustomerVM(ApplicationDbContext db,
+        public AllCustomersVM(ApplicationDbContext db,
             IContextualNavigatorService<EditCustomerVM,int> editCustomerNavigator,
             INavigatorService<CreateCustomerVM> createCustomerNavigator)
         {

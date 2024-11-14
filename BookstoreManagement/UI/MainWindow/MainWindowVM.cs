@@ -28,7 +28,7 @@ public partial class MainWindowVM : BaseViewModel
     private readonly INavigatorService<DashBoardVM> dashboardNavigator;
     private readonly INavigatorService<AllEmployeeVM> employeeNavigator;
     private readonly INavigatorService<AllProviderVM> providerNavigator;
-    private readonly INavigatorService<CustomerVM> customerNavigator;
+    private readonly INavigatorService<AllCustomersVM> customerNavigator;
 
 
     [ObservableProperty]
@@ -81,7 +81,7 @@ public partial class MainWindowVM : BaseViewModel
         INavigatorService<DashBoardVM> dashBoardNavigator,
         INavigatorService<AllProviderVM> providerNavigator,
         INavigatorService<AllEmployeeVM> employeeNavigator,
-        INavigatorService<CustomerVM> customerNavigator
+        INavigatorService<AllCustomersVM> customerNavigator
     )
     {
         this.NavigatorStore = navigatorStore;

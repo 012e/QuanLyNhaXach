@@ -65,7 +65,10 @@
             <DataTemplate DataType="{x:Type provider:EditProviderVM}">
                 <provider:EditProviderV />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type customer:CustomerVM}">
+            <DataTemplate DataType="{x:Type provider:CreateProviderVM}">
+                <provider:CreateProviderV />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type customer:AllCustomersVM}">
                 <customer:AllCustomersV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type customer:EditCustomerVM}">

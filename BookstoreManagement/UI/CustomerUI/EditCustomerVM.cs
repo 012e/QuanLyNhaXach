@@ -21,16 +21,16 @@ namespace BookstoreManagement.UI.CustomerUI
         private readonly ApplicationDbContext db; // co so du lieu
 
         [ObservableProperty]
-        private ObservableCollection<CustomerVM> _customers;   // danh sach khach hang
+        private ObservableCollection<AllCustomersVM> _customers;   // danh sach khach hang
 
         [ObservableProperty]
         private Customer _customer; // customer can chinh sua
 
         // posepond: command GoBack
-        private readonly INavigatorService<CustomerVM> customerNavigator;
+        private readonly INavigatorService<AllCustomersVM> customerNavigator;
 
         public EditCustomerVM(ApplicationDbContext db,
-            INavigatorService<CustomerVM> customerNavigator)
+            INavigatorService<AllCustomersVM> customerNavigator)
         {
             this.db = db;
             this.customerNavigator = customerNavigator;
