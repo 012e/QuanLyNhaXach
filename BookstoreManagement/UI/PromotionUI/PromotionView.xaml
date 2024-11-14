@@ -10,6 +10,37 @@
     <Control.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+
+        <!-- Style for ToggleButton -->
+        <Style x:Key="ToggleButton" TargetType="ToggleButton">
+            <Setter Property="MaxHeight" Value="30"></Setter>
+            <Setter Property="MaxWidth" Value="60"></Setter>
+            <Setter Property="MinHeight" Value="30"></Setter>
+            <Setter Property="MinWidth" Value="60"></Setter>
+            
+      
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="bk" Background="#FFD1D1D1" CornerRadius="15">
+                            <Ellipse x:Name="ep" Fill="#FF2F8FD1" HorizontalAlignment="Left"
+                                     Margin="4" Width="22" Height="22">
+                               
+                            </Ellipse>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="ep" Property="HorizontalAlignment" Value="Right"></Setter>
+                                <Setter Property="Background" TargetName="bk" Value="#FF64F9CA"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                        
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--End Sytle for Toggle Button-->
+
     </Control.Resources>
     
     <!--View--> 
@@ -49,7 +80,7 @@
                 <!--Button Create Promotion-->
                 <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0">
                     <StackPanel >
-                        <Button Width="150">
+                        <Button Width="150" Command="{Binding NavigateToCreatePromotionCommand}" >
                             <TextBlock TextAlignment="Center">
                                 Create Promotion
                             </TextBlock>
@@ -139,15 +170,39 @@
             Grid.Row="1"
             AutoGenerateColumns="False"
             IsReadOnly="True"
-            ItemsSource="{Binding}">
+            ItemsSource="{Binding Promotions}">
 
-            <DataGrid.Columns >
-                <DataGridTextColumn Binding="{Binding}" Header="ID" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding}" Header="Name" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding}" Header="Status" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding}" Header="Remain Usage / Max Usage" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding}" Header="Start Day" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding}" Header="End Day" Width="*"></DataGridTextColumn>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Id}" Header="ID" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Status}" Header="Status" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Remain Usage / Max Usage" Width="*">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding StringFormat="{}{0} / {1}">
+                            <Binding Path="RemainingUsage"></Binding>
+                            <Binding Path="MaxUsage"></Binding>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding StartDay,StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}" Header="Start Day" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding EndDay,StringFormat=\{0:dd/MM/yyyy HH:mm:ss\}}" Header="End Day" Width="*"></DataGridTextColumn>
+                
+                <!--Add Command-->
+                <DataGridTemplateColumn CanUserResize="False" Header="On/Off">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleButton Style="{StaticResource ToggleButton}"
+                                              IsChecked="{Binding IsToggleChecked,Mode=TwoWay}">
+
+
+                                </ToggleButton>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <!--End Add Command--> 
             </DataGrid.Columns>
             
         </DataGrid>

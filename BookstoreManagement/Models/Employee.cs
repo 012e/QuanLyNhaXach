@@ -18,6 +18,6 @@ public partial class Employee
     public byte[] ProfilePicture { get; set; } = null!;
 
     public bool IsManager { get; set; }
-
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+
 }

@@ -69,7 +69,13 @@ public partial class App : Application
 
         // Construct View, ViewModel Promotion
         builder.Services.AddViewViewModel<PromotionView,PromotionVM>();
+        // Create Promotion
+        builder.Services.AddViewViewModel<CreatePromotionView, CreatePromotionVM>();
+
+
         AppHost = builder.Build();
+
+        
     }
 
 
