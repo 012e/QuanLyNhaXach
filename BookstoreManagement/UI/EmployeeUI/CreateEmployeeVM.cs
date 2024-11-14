@@ -45,7 +45,7 @@ namespace BookstoreManagement.UI.EmployeeUI
                 LastName = LastName,
                 Email = Email,
                 Salary = Salary,
-                ProfilePicture = new byte[0],
+                ProfilePicture = "",
                 IsManager = IsManager,
             };
             try
