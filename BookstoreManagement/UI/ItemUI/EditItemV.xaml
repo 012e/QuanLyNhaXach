@@ -62,9 +62,6 @@
                         Text="{Binding Item.Description}"
                         TextWrapping="Wrap" />
 
-                    <Label>Price</Label>
-                    <TextBox Text="{Binding Item.Price}" />
-
                     <Label>Quantity</Label>
                     <TextBox Text="{Binding Item.Quantity}" />
 

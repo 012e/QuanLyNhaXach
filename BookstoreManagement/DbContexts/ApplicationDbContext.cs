@@ -20,11 +20,19 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Employee> Employees { get; set; }
 
+    public virtual DbSet<Import> Imports { get; set; }
+
+    public virtual DbSet<ImportItem> ImportItems { get; set; }
+
     public virtual DbSet<Invoice> Invoices { get; set; }
 
     public virtual DbSet<InvoicesItem> InvoicesItems { get; set; }
 
     public virtual DbSet<Item> Items { get; set; }
+
+    public virtual DbSet<ItemPrice> ItemPrices { get; set; }
+
+    public virtual DbSet<PriceType> PriceTypes { get; set; }
 
     public virtual DbSet<Provider> Providers { get; set; }
 
@@ -76,6 +84,43 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Salary)
                 .HasColumnType("money")
                 .HasColumnName("salary");
+        });
+
+        modelBuilder.Entity<Import>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("imports_pkey");
+
+            entity.ToTable("imports");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
+            entity.Property(e => e.ProviderId).HasColumnName("provider_id");
+
+            entity.HasOne(d => d.Provider).WithMany(p => p.Imports)
+                .HasForeignKey(d => d.ProviderId)
+                .HasConstraintName("imports_provider_id_fkey");
+        });
+
+        modelBuilder.Entity<ImportItem>(entity =>
+        {
+            entity.HasKey(e => new { e.ImportId, e.ItemId }).HasName("import_items_pkey");
+
+            entity.ToTable("import_items");
+
+            entity.Property(e => e.ImportId).HasColumnName("import_id");
+            entity.Property(e => e.ItemId).HasColumnName("item_id");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+
+            entity.HasOne(d => d.Import).WithMany(p => p.ImportItems)
+                .HasForeignKey(d => d.ImportId)
+                .HasConstraintName("import_items_import_id_fkey");
+
+            entity.HasOne(d => d.Item).WithMany(p => p.ImportItems)
+                .HasForeignKey(d => d.ItemId)
+                .HasConstraintName("import_items_item_id_fkey");
         });
 
         modelBuilder.Entity<Invoice>(entity =>
@@ -135,9 +180,6 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("name");
-            entity.Property(e => e.Price)
-                .HasColumnType("money")
-                .HasColumnName("price");
             entity.Property(e => e.ProviderId).HasColumnName("provider_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
 
@@ -145,23 +187,6 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.ProviderId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("items_provider_id_fkey");
-
-            entity.HasMany(d => d.Providers).WithMany(p => p.ItemsNavigation)
-                .UsingEntity<Dictionary<string, object>>(
-                    "ProvidersItem",
-                    r => r.HasOne<Provider>().WithMany()
-                        .HasForeignKey("ProviderId")
-                        .HasConstraintName("providers_items_provider_id_fkey"),
-                    l => l.HasOne<Item>().WithMany()
-                        .HasForeignKey("ItemId")
-                        .HasConstraintName("providers_items_item_id_fkey"),
-                    j =>
-                    {
-                        j.HasKey("ItemId", "ProviderId").HasName("providers_items_pkey");
-                        j.ToTable("providers_items");
-                        j.IndexerProperty<int>("ItemId").HasColumnName("item_id");
-                        j.IndexerProperty<int>("ProviderId").HasColumnName("provider_id");
-                    });
 
             entity.HasMany(d => d.Tags).WithMany(p => p.Items)
                 .UsingEntity<Dictionary<string, object>>(
@@ -179,6 +204,41 @@ public partial class ApplicationDbContext : DbContext
                         j.IndexerProperty<int>("ItemId").HasColumnName("item_id");
                         j.IndexerProperty<int>("TagId").HasColumnName("tag_id");
                     });
+        });
+
+        modelBuilder.Entity<ItemPrice>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("item_prices_pkey");
+
+            entity.ToTable("item_prices");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.BeginDate).HasColumnName("begin_date");
+            entity.Property(e => e.Divider).HasColumnName("divider");
+            entity.Property(e => e.EndDate).HasColumnName("end_date");
+            entity.Property(e => e.ItemId).HasColumnName("item_id");
+            entity.Property(e => e.PriceType).HasColumnName("price_type");
+            entity.Property(e => e.Value).HasColumnName("value");
+
+            entity.HasOne(d => d.Item).WithMany(p => p.ItemPrices)
+                .HasForeignKey(d => d.ItemId)
+                .HasConstraintName("item_prices_item_id_fkey");
+
+            entity.HasOne(d => d.PriceTypeNavigation).WithMany(p => p.ItemPrices)
+                .HasForeignKey(d => d.PriceType)
+                .HasConstraintName("item_prices_price_type_fkey");
+        });
+
+        modelBuilder.Entity<PriceType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("price_types_pkey");
+
+            entity.ToTable("price_types");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(255)
+                .HasColumnName("name");
         });
 
         modelBuilder.Entity<Provider>(entity =>

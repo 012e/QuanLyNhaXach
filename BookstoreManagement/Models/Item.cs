@@ -9,21 +9,21 @@ public partial class Item
 
     public string Name { get; set; } = null!;
 
-    public byte[] Image { get; set; } = null!;
+    public string Image { get; set; } = null!;
 
     public int Quantity { get; set; }
 
     public string? Description { get; set; }
 
-    public decimal Price { get; set; }
-
     public int? ProviderId { get; set; }
+
+    public virtual ICollection<ImportItem> ImportItems { get; set; } = new List<ImportItem>();
 
     public virtual ICollection<InvoicesItem> InvoicesItems { get; set; } = new List<InvoicesItem>();
 
-    public virtual Provider? Provider { get; set; }
+    public virtual ICollection<ItemPrice> ItemPrices { get; set; } = new List<ItemPrice>();
 
-    public virtual ICollection<Provider> Providers { get; set; } = new List<Provider>();
+    public virtual Provider? Provider { get; set; }
 
     public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
 }
