@@ -39,7 +39,7 @@
                         <materialDesign:PackIcon
                             Width="23"
                             Height="23"
-                            Kind="AccountGroup" />
+                            Kind="AccountDetails" />
                         Employees
                     </TextBlock>
                     <fa:ImageAwesome
