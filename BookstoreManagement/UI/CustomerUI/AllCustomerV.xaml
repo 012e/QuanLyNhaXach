@@ -159,7 +159,7 @@
                 <DataGridTextColumn Binding="{Binding Email}" Header="Email" Width="*"></DataGridTextColumn>
                 
                 <!--Add Command-->
-                <DataGridTemplateColumn CanUserResize="False" Header="Operations">
+                <DataGridTemplateColumn CanUserResize="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
