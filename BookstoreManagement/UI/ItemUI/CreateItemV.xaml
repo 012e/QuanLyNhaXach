@@ -4,20 +4,73 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:BookstoreManagement.UI.ItemUI"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <StackPanel>
-        <Button Command="{Binding NavigateBackCommand}">Go back</Button>
-        <Label>Name</Label>
-        <TextBox Text="{Binding Name}" />
-        <Label>Description</Label>
-        <TextBox Text="{Binding Description}" />
-        <Label>Price</Label>
-        <TextBox Text="{Binding Price}" />
-        <Label>Quantity</Label>
-        <TextBox Text="{Binding Quantity}" />
-        <Button Command="{Binding SubmitCommand}">Submit</Button>
-    </StackPanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="0.7*"></ColumnDefinition>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="1" HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+            <!--Header-->
+            <StackPanel Margin="15"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                <!--Button Back-->
+                <Button Margin="-15 10 10 10"
+                    BorderThickness="0"
+                    Command="{Binding NavigateBackCommand}"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon
+                        Width="25"
+                        Height="25"
+                        Foreground="Black"
+                        Kind="ChevronLeft" />
+                </Button>
+                <!--End Button Back-->
+
+                <!--Title-->
+                <TextBlock Margin="5" FontSize="30" FontWeight="Bold">
+                    Create new Item
+                </TextBlock>
+                <!--End Title-->
+            </StackPanel>
+            <!--End Header-->
+
+            <!--Input information-->
+            <Border
+            Grid.Column="1"
+            Padding="30 10 30 10"
+            Background="#fff"
+            BorderBrush="#000"
+            BorderThickness="0.4"
+            CornerRadius="10">
+
+                <StackPanel Width="200"
+                        HorizontalAlignment="Center">
+
+                    <Label>Name</Label>
+                    <TextBox Text=""></TextBox>
+
+                    <Label>Description</Label>
+                    <TextBox Text=""></TextBox>
+
+                    <Label>Price</Label>
+                    <TextBox Text=""></TextBox>
+
+                    <Label>Quantity</Label>
+                    <TextBox Text=""></TextBox>
+
+                    <Button Command="{Binding SubmitCommand}">Submit</Button>
+                </StackPanel>
+            </Border>
+            <!--End Input information-->
+        </StackPanel>
+    </Grid>
 </UserControl>

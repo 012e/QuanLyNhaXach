@@ -4,11 +4,76 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:BookstoreManagement.UI.InvoicesUI"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <TextBlock>Hello</TextBlock>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="0.7*"></ColumnDefinition>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="1" HorizontalAlignment="Center"
+                 VerticalAlignment="Center">
+
+            <!--Header-->
+            <StackPanel Margin="15"
+                     VerticalAlignment="Center"
+                     Orientation="Horizontal">
+                <!--Button GoBack-->
+                <Button Margin="-15 10 10 10"
+                     BorderThickness="0"
+                     Command="{Binding GoBackCommand}"
+                     Style="{DynamicResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon
+                         Width="25"
+                         Height="25"
+                         Foreground="Black"
+                         Kind="ChevronLeft" />
+                </Button>
+                <!--End Button GoBack-->
+
+                <!--Title-->
+                <TextBlock Margin="5" FontSize="30" FontWeight="Bold">
+                 Create new Invoice
+                </TextBlock>
+                <!--End Title-->
+            </StackPanel>
+            <!--End Header-->
+
+            <!--Input information-->
+            <Border
+             Grid.Column="1"
+             Padding="30 10 30 10"
+             Background="#fff"
+             BorderBrush="#000"
+             BorderThickness="0.4"
+             CornerRadius="10">
+
+                <StackPanel Width="200"
+                         HorizontalAlignment="Center">
+
+                    <Label>Id</Label>
+                    <TextBox Text=""></TextBox>
+
+                    <Label>Total</Label>
+                    <TextBox Text=""></TextBox>
+
+                    <Label>EmployeeID</Label>
+                    <TextBox Text=""></TextBox>
+
+                    <Label>CustomerID</Label>
+                    <TextBox Text=""></TextBox>
+
+                    <Label>CreateAt</Label>
+                    <TextBox Text=""></TextBox>
+
+                    <Button Command="">Submit</Button>
+                </StackPanel>
+            </Border>
+            <!--End Input information-->
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -39,7 +39,7 @@
 
                 <!--Title-->
                 <TextBlock Margin="5" FontSize="30" FontWeight="Bold">
-             Edit Tag
+             Edit Invoice
                 </TextBlock>
                 <!--End Title-->
             </StackPanel>
