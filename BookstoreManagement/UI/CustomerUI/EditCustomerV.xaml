@@ -3,73 +3,73 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:BookstoreManagement.UI.CustomerUI"
+             xmlns:local="clr-namespace:BookstoreManagement.UI.CustomerUI" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Wheat">
+
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.3*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="0.3*"></ColumnDefinition>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="0.7*"></ColumnDefinition>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="1" Margin="50">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.2*"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0">
-                    <Label FontSize="17" FontWeight="Bold">First Name</Label>
-                    <TextBox FontSize="16" Padding="5 0 0 0" Text="{Binding Customer.FirstName}"></TextBox>
+        <StackPanel Grid.Column="1" HorizontalAlignment="Center"
+                 VerticalAlignment="Center">
+
+            <!--Header-->
+            <StackPanel Margin="15"
+                     VerticalAlignment="Center"
+                     Orientation="Horizontal">
+                <!--Button GoBack-->
+                <Button Margin="-15 10 10 10"
+                     BorderThickness="0"
+                     Command="{Binding GoBackCommand}"
+                     Style="{DynamicResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon
+                     Width="25"
+                     Height="25"
+                     Foreground="Black"
+                     Kind="ChevronLeft" />
+                </Button>
+                <!--End Button GoBack-->
+
+                <!--Title-->
+                <TextBlock Margin="5" FontSize="30" FontWeight="Bold">
+                 Edit Customer
+                </TextBlock>
+                <!--End Title-->
+            </StackPanel>
+            <!--End Header-->
+
+            <!--Input information-->
+            <Border
+             Grid.Column="1"
+             Padding="30 10 30 10"
+             Background="#fff"
+             BorderBrush="#000"
+             BorderThickness="0.4"
+             CornerRadius="10">
+
+                <StackPanel Width="200"
+                         HorizontalAlignment="Center">
+
+                    <Label>First Name</Label>
+                    <TextBox Text="{Binding Customer.FirstName}"></TextBox>
+
+                    <Label>Last Name</Label>
+                    <TextBox Text="{Binding Customer.LastName}"></TextBox>
+
+                    <Label>Phone Number</Label>
+                    <TextBox Text="{Binding Customer.PhoneNumber}"></TextBox>
+
+                    <Label>Email</Label>
+                    <TextBox Text="{Binding Customer.Email}"></TextBox>
+
+                    <Button Command="{Binding SubmitCommand}">Submit</Button>
                 </StackPanel>
-                <StackPanel Grid.Column="1">
-                    <Label FontSize="17" FontWeight="Bold">Last Name</Label>
-                    <TextBox FontSize="16" Padding="5 0 0 0" Text="{Binding Customer.LastName}"></TextBox>
-                </StackPanel>
-            </Grid>
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0.3*"></RowDefinition>
-                    <RowDefinition Height="0.3*"></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0">
-                    <Label FontSize="17" FontWeight="Bold">Email:</Label>
-                    <TextBox FontSize="16" Padding="5 0 0 0" Text="{Binding Customer.Email}"></TextBox>
-                </StackPanel>
-                <StackPanel Grid.Row="1">
-                    <Label FontSize="17" FontWeight="Bold">Phone Number:</Label>
-                    <TextBox FontSize="16" Padding="5 0 0 0" Text="{Binding Customer.PhoneNumber}"></TextBox>
-                </StackPanel>
-                <Grid Grid.Row="2" Margin="0 20 0 0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.3*"></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <Button Command="{Binding GoBackCommand}">Go Back</Button>
-                        </StackPanel>
-                        <StackPanel Grid.Column="2">
-                            <Button Background="Green" Command="{Binding SubmitCommand}">Submit</Button>
-                        </StackPanel>
-                    </Grid>
-                </Grid>
-                
-            </Grid>
-        </Grid>
-        
-        
+            </Border>
+            <!--End Input information-->
+        </StackPanel>
     </Grid>
-    
 </UserControl>

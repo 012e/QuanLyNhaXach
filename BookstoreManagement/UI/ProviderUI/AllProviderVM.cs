@@ -28,6 +28,7 @@ public partial class AllProviderVM : ListVM<Provider, EditProviderVM>
         CreateProviderNavigator = createProviderNavigator;
         Db = db;
     }
+
     [RelayCommand]
     protected void NavigateToCreateProvider()
     {

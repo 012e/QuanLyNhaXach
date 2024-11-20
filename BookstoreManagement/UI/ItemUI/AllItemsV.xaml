@@ -8,17 +8,22 @@
     xmlns:local="clr-namespace:BookstoreManagement.UI.ItemUI"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="1080"
+    d:DesignHeight="800"
+    d:DesignWidth="1400"
     mc:Ignorable="d">
     <Control.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
     </Control.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.2*" />
+    <Border
+        Padding="50 30 50 50"
+        Background="#fff"
+        BorderThickness="30"
+        CornerRadius="30">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.3*" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -113,7 +118,7 @@
                 <!--  END Search TextBox  -->
 
 
-                <StackPanel
+                    <StackPanel
                     Grid.Column="1"
                     FlowDirection="RightToLeft"
                     Orientation="Horizontal">
@@ -184,4 +189,5 @@
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
+    </Border>
 </UserControl>

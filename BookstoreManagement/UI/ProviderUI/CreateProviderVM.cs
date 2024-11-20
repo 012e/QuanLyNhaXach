@@ -18,7 +18,7 @@ namespace BookstoreManagement.UI.ProviderUI
         [ObservableProperty]
         private string _address;
 
-        public CreateProviderVM(ApplicationDbContext db , INavigatorService<AllProviderVM> AllProviderNavigator)
+        public CreateProviderVM(ApplicationDbContext db, INavigatorService<AllProviderVM> AllProviderNavigator)
         {
             Db = db;
             allProviderNavigator = AllProviderNavigator;
