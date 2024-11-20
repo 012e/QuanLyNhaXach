@@ -9,6 +9,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:BookstoreManagement.UI.Components"
+    d:DataContext="{d:DesignInstance local:AllItemsVM}"
     d:DesignHeight="800"
     d:DesignWidth="1400"
     mc:Ignorable="d">
@@ -63,7 +64,7 @@
                         Grid.Column="0"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
-                        <ui:Search PlaceHolder="Search for items" />
+                        <ui:Search PlaceHolder="Search for items" Text="{Binding SearchText}" />
                     </StackPanel>
 
                     <StackPanel
@@ -95,7 +96,7 @@
                 HorizontalAlignment="Stretch"
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
-                ItemsSource="{Binding Items}">
+                ItemsSource="{Binding ItemsView}">
                 <DataGrid.InputBindings>
                     <!--  Double click on any row  -->
                     <MouseBinding

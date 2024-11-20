@@ -93,7 +93,7 @@
                 Grid.Row="1"
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
-                ItemsSource="{Binding Items}">
+                ItemsSource="{Binding ItemsView}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
                     <DataGridTextColumn Binding="{Binding FirstName}" Header="Fisrt Name" />

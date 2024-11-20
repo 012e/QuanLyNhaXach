@@ -9,6 +9,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:BookstoreManagement.UI.Components"
+    d:DataContext="{d:DesignInstance local:AllTagsVM}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -111,7 +112,7 @@
                 Grid.Row="1"
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
-                ItemsSource="{Binding Items}">
+                ItemsSource="{Binding ItemsView}">
                 <DataGrid.InputBindings>
                     <!--  Double click on any row  -->
                     <MouseBinding
