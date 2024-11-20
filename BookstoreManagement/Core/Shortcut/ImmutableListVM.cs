@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data.Common;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Data;
 
 namespace BookstoreManagement.Core.Shortcut;
 
@@ -16,12 +17,14 @@ namespace BookstoreManagement.Core.Shortcut;
 /// <list type="bullet">
 ///   <item><description>bool IsLoading</description></item>
 ///   <item><description>ObservableCollection&lt;TItem&gt; Items</description></item>
+///   <item><description>ICollectionView ItemsView</description></item>
 /// </list>
 /// Implements the following commands:
 /// <list type="bullet">
 ///   <item><description>void RefreshList()</description></item>
 ///   <item><description>void DeleteItem(TItem item)</description></item>
 ///   <item><description>void NavigateToEditItem(TItem item)</description></item>
+///   <item><description>bool FilterItem</description></item>
 /// </list>
 /// </summary>
 /// <typeparam name="TItem">Type of the resource.</typeparam>
@@ -39,12 +42,26 @@ public abstract partial class ImmutableListVM<TItem> : BaseViewModel
     [ObservableProperty]
     protected ObservableCollection<TItem> _items = [];
 
+    [ObservableProperty]
+    protected ICollectionView _itemsView = null;
+
     private bool CanRefreshList => !IsLoading;
     [RelayCommand(CanExecute = nameof(CanRefreshList))]
     private void RefreshList()
     {
         Items.Clear();
         LoadDataInBackground();
+    }
+
+    private bool FilterItemInternal(object obj)
+    {
+        return FitlerItem((TItem)obj);
+    }
+
+
+    protected virtual bool FitlerItem(TItem item)
+    {
+        return true;
     }
 
     protected virtual void LoadItems()
@@ -62,6 +79,8 @@ public abstract partial class ImmutableListVM<TItem> : BaseViewModel
     private void FinishLoading()
     {
         IsLoading = false;
+        ItemsView = CollectionViewSource.GetDefaultView(Items);
+        ItemsView.Filter = FilterItemInternal;
     }
 
     protected void HandleException(Exception e)
@@ -104,8 +123,12 @@ public abstract partial class ImmutableListVM<TItem> : BaseViewModel
     public override void ResetState()
     {
         Db.ChangeTracker.Clear();
+
         // reset items
         Items = new ObservableCollection<TItem>();
+        ItemsView = CollectionViewSource.GetDefaultView(Items);
+        ItemsView.Filter = FilterItemInternal;
+
         LoadDataInBackground();
         base.ResetState();
     }
