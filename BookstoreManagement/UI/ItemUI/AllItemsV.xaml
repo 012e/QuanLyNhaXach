@@ -8,6 +8,7 @@
     xmlns:local="clr-namespace:BookstoreManagement.UI.ItemUI"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="clr-namespace:BookstoreManagement.UI.Components"
     d:DesignHeight="800"
     d:DesignWidth="1400"
     mc:Ignorable="d">
@@ -17,177 +18,124 @@
     </Control.Resources>
 
     <Border
-        Padding="50 30 50 50"
+        Padding="50,30,50,50"
         Background="#fff"
         BorderThickness="30"
         CornerRadius="30">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.3*" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0">
-            <StackPanel
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBlock
-                    Margin="7,0,0,7"
-                    FontSize="30"
-                    FontWeight="Bold">
-                    <materialDesign:PackIcon
-                        Width="23"
-                        Height="23"
-                        Kind="BookOpenVariant" />
-                    Items
-                </TextBlock>
+            <StackPanel Grid.Row="0">
+                <StackPanel
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="7,0,0,7"
+                        FontSize="30"
+                        FontWeight="Bold">
+                        <materialDesign:PackIcon
+                            Width="23"
+                            Height="23"
+                            Kind="BookOpenVariant" />
+                        Items
+                    </TextBlock>
 
-                <!--  Loading spinner  -->
-                <fa:ImageAwesome
-                    Width="15"
-                    Height="15"
-                    Margin="7,0,0,0"
-                    Icon="Refresh"
-                    Spin="True"
-                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" />
-            </StackPanel>
-            <Separator />
-            <Grid Grid.Row="0" Margin="0,10,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-
-                <!--  Search TextBox  -->
-                <Border
-                    Background="#fff"
-                    BorderBrush="#000"
-                    BorderThickness="1"
-                    CornerRadius="25"
-                    MouseDown="Border_MouseDown">
-                    <Grid Grid.Column="0" VerticalAlignment="Center">
-
-                        <TextBlock
-                            Margin="10,0,0,0"
-                            Padding="10"
-                            VerticalAlignment="Center"
-                            Panel.ZIndex="1"
-                            FontSize="20"
-                            Foreground="#b0b9c6"
-                            IsHitTestVisible="False"
-                            Visibility="{Binding ElementName=txtSearch, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            Search here....
-                        </TextBlock>
-
-                        <!--  Nhap du lieu  -->
-                        <TextBox
-                            x:Name="txtSearch"
-                            Margin="30,0,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            FontSize="20"
-                            Text="{Binding SearchID, UpdateSourceTrigger=PropertyChanged}">
-                            <TextBox.Template>
-                                <ControlTemplate>
-                                    <Border Background="Transparent">
-                                        <ScrollViewer
-                                            x:Name="PART_ContentHost"
-                                            Focusable="False"
-                                            HorizontalScrollBarVisibility="Hidden"
-                                            VerticalScrollBarVisibility="Hidden" />
-                                    </Border>
-                                </ControlTemplate>
-                            </TextBox.Template>
-                        </TextBox>
-
-                        <!--  Icon  -->
-                        <Button
-                            Width="30"
-                            Height="30"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            BorderThickness="0"
-                            Command="{Binding SearchCommand}">
-                            <materialDesign:PackIcon Foreground="Black" Kind="Magnify" />
-                        </Button>
-                    </Grid>
-                </Border>
-                <!--  END Search TextBox  -->
-
+                    <!--  Loading spinner  -->
+                    <fa:ImageAwesome
+                        Width="15"
+                        Height="15"
+                        Margin="7,0,0,0"
+                        Icon="Refresh"
+                        Spin="True"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+                <Separator />
+                <Grid Grid.Row="0" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <ui:Search PlaceHolder="Search for items" />
+                    </StackPanel>
 
                     <StackPanel
-                    Grid.Column="1"
-                    FlowDirection="RightToLeft"
-                    Orientation="Horizontal">
-                    <Button
-                        Background="YellowGreen"
-                        BorderThickness="0"
-                        Command="{Binding NavigateToCreateItemCommand}">
-                        <materialDesign:PackIcon Kind="plus" />
-                    </Button>
-                    <Button
-                        Margin="10,0,0,0"
-                        Background="Navy"
-                        BorderThickness="0"
-                        Command="{Binding RefreshListCommand}">
-                        <materialDesign:PackIcon Kind="reload" />
-                    </Button>
-                </StackPanel>
-            </Grid>
-        </StackPanel>
+                        Grid.Column="1"
+                        FlowDirection="RightToLeft"
+                        Orientation="Horizontal">
+                        <Button
+                            Background="YellowGreen"
+                            BorderThickness="0"
+                            Command="{Binding NavigateToCreateItemCommand}">
+                            <materialDesign:PackIcon Kind="plus" />
+                        </Button>
+                        <Button
+                            Margin="10,0,0,0"
+                            Background="Navy"
+                            BorderThickness="0"
+                            Command="{Binding RefreshListCommand}">
+                            <materialDesign:PackIcon Kind="reload" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
 
-        <!--  IsHitTestVisible is for avoiding any kind of interraction with the table when  -->
-        <!--  the data is not loaded yet (mostly to avoid SelectedItem being null)  -->
-        <DataGrid
-            Name="ItemsList"
-            Grid.Row="1"
-            HorizontalAlignment="Stretch"
-            AutoGenerateColumns="False"
-            IsReadOnly="True"
-            ItemsSource="{Binding Items}">
-            <DataGrid.InputBindings>
-                <!--  Double click on any row  -->
-                <MouseBinding
-                    Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                    CommandParameter="{Binding ElementName=ItemsList, Path=SelectedItem}"
-                    Gesture="LeftDoubleClick" />
-            </DataGrid.InputBindings>
+            <!--  IsHitTestVisible is for avoiding any kind of interraction with the table when  -->
+            <!--  the data is not loaded yet (mostly to avoid SelectedItem being null)  -->
+            <DataGrid
+                Name="ItemsList"
+                Grid.Row="1"
+                HorizontalAlignment="Stretch"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding Items}">
+                <DataGrid.InputBindings>
+                    <!--  Double click on any row  -->
+                    <MouseBinding
+                        Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        CommandParameter="{Binding ElementName=ItemsList, Path=SelectedItem}"
+                        Gesture="LeftDoubleClick" />
+                </DataGrid.InputBindings>
 
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
-                <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                <DataGridTextColumn
-                    Width="200"
-                    Binding="{Binding Description}"
-                    Header="Description" />
-                <DataGridTemplateColumn CanUserResize="False" Header="Commands">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Button
-                                    Margin="5"
-                                    Background="DarkBlue"
-                                    BorderThickness="0"
-                                    Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                    CommandParameter="{Binding}">
-                                    <materialDesign:PackIcon Kind="pencil" />
-                                </Button>
-                                <Button
-                                    Background="IndianRed"
-                                    BorderThickness="0"
-                                    Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                    CommandParameter="{Binding}">
-                                    <materialDesign:PackIcon Kind="TrashCanOutline" />
-                                </Button>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                    <DataGridTextColumn
+                        Width="200"
+                        Binding="{Binding Description}"
+                        Header="Description" />
+                    <DataGridTemplateColumn CanUserResize="False" Header="Commands">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
+                                        Margin="5"
+                                        Background="DarkBlue"
+                                        BorderThickness="0"
+                                        Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="pencil" />
+                                    </Button>
+                                    <Button
+                                        Background="IndianRed"
+                                        BorderThickness="0"
+                                        Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="TrashCanOutline" />
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Border>
 </UserControl>
