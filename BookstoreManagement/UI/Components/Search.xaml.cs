@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,8 +28,6 @@ namespace BookstoreManagement.UI.Components
             set { SetValue(TextProperty, value); }
         }
 
-
-
         public ICommand Command
         {
             get { return (ICommand)GetValue(MyCommandProperty); }
@@ -35,10 +35,12 @@ namespace BookstoreManagement.UI.Components
         }
 
         public static readonly DependencyProperty MyCommandProperty =
-            DependencyProperty.Register("Command", typeof(ICommand), typeof(Search), new PropertyMetadata(null));
+            DependencyProperty.Register("Command", typeof(ICommand), typeof(Search), new FrameworkPropertyMetadata(default(ICommand),
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(String), typeof(Search), new PropertyMetadata(""));
+            DependencyProperty.Register("Text", typeof(String), typeof(Search), new FrameworkPropertyMetadata(default(String),
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public String PlaceHolder
         {
@@ -48,7 +50,7 @@ namespace BookstoreManagement.UI.Components
 
         // Using a DependencyProperty as the backing store for PlaceHolder.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PlaceHolderProperty =
-            DependencyProperty.Register("PlaceHolder", typeof(String), typeof(Search), new PropertyMetadata(""));
+            DependencyProperty.Register("PlaceHolder", typeof(String), typeof(Search), new FrameworkPropertyMetadata(default(String)));
 
         public Search()
         {
