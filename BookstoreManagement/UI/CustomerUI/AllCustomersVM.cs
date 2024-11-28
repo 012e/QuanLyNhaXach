@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core;
+using BookstoreManagement.Core.Shortcut;
 using BookstoreManagement.DbContexts;
 using BookstoreManagement.Models;
 using BookstoreManagement.Services;
@@ -10,76 +11,41 @@ using System.Windows;
 
 namespace BookstoreManagement.UI.CustomerUI
 {
-    public partial class AllCustomersVM : BaseViewModel
+    public partial class AllCustomersVM : ListVM<Customer,EditCustomerVM>
     {
-        // database
-        private readonly ApplicationDbContext db;
-
-        [ObservableProperty]
-        private ObservableCollection<Customer> _customers; // list customer
-
-
-        // navigator chuyen den edit
-        private readonly IContextualNavigatorService<EditCustomerVM, int> editCustomerNavigator;
-
-        // Navigator chuyen den CreateCustomer
+        protected override ApplicationDbContext Db { get; }
+        protected override IContextualNavigatorService<EditCustomerVM, Customer> EditItemNavigator{ get; }
         protected INavigatorService<CreateCustomerVM> CreateCustomerNavigator { get; }
-
+        [ObservableProperty]
+        private string _searchText = "";
         public AllCustomersVM(ApplicationDbContext db,
-            IContextualNavigatorService<EditCustomerVM,int> editCustomerNavigator,
+            IContextualNavigatorService<EditCustomerVM,Customer> editCustomerNavigator,
             INavigatorService<CreateCustomerVM> createCustomerNavigator)
         {
-            this.db = db;
-            this.editCustomerNavigator = editCustomerNavigator;
+            this.Db = db;
+            this.EditItemNavigator = editCustomerNavigator;
             this.CreateCustomerNavigator = createCustomerNavigator;
         }
-
-
-        // load du lieu
-        public override void ResetState()
+        protected override void LoadItems()
         {
-            base.ResetState();
-            var customers = db.Customers.AsNoTracking().ToList();
-            Customers = new(customers);
+            Db.ChangeTracker.Clear();
+            var items = Db.Customers.OrderBy(customer => customer.Id).ToList();
+            Items = new ObservableCollection<Customer>(items);
         }
-
-        // nut chuyen den submit
         [RelayCommand]
         private void NavigateToCreateCustomer()
         {
             CreateCustomerNavigator.Navigate();
         }
-
-        // xoa
-        [RelayCommand]
-        private void DeleteCustomer(Customer customer)
+       
+        protected override bool FitlerItem(Customer item)
         {
-            if (customer == null) return;
-
-            MessageBoxResult result = MessageBox.Show(
-                "Ban co chac muon xoa khach hang nay khong?",
-                "Xac nhan xoa",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-            if(result == MessageBoxResult.Yes)
-            {
-                Customers.Remove(customer);
-            }            
+            string name = item.FirstName + item.LastName;
+            return name.ToLower().Contains(SearchText.ToLower());
         }
-
-        // chinh sua
-        [RelayCommand]
-        private void EditCustomer(Customer customer)
+        partial void OnSearchTextChanged(string value)
         {
-            if (customer == null) return;
-            editCustomerNavigator.Navigate(customer.Id);
-        }
-
-        // Refresh du lieu
-        [RelayCommand]
-        private void Refresh()
-        {
-            ResetState();
+           ItemsView.Refresh();
         }
     }
 }

@@ -47,29 +47,28 @@ namespace BookstoreManagement.UI.CustomerUI
                 db.Add(customer);
                 db.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception ex)
             {
-                MessageBox.Show("Them khong thanh cong !!!");
-                return;
+                MessageBox.Show($"Could'n add employee : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            MessageBox.Show("Them thanh cong");
+            MessageBox.Show("Added employee successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        // Dat gia tri mac dinh thong tin khach hang muon them
+        
         private void ResetToDefaultValues()
         {
-            FirstName = "NGUYEN VAN";
-            LastName = "A";
-            PhoneNumber = "0123456789";
-            Email = "123456@gmail.com";
+            _firstName = string.Empty;
+            _lastName = string.Empty;
+            _phoneNumber = string.Empty;
+            _email = string.Empty;
         }
 
 
         /// cap nhap trang thai
         public override void ResetState()
         {
-            ResetToDefaultValues();
             base.ResetState();
+            ResetToDefaultValues();
         }
 
         // Nut tro ve lai

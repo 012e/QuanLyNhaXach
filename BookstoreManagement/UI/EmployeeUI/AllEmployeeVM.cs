@@ -21,7 +21,10 @@ namespace BookstoreManagement.UI.EmployeeUI
     public partial class AllEmployeeVM : ListVM<Employee, EditEmployeeVM>
     {
         protected override IContextualNavigatorService<EditEmployeeVM, Employee> EditItemNavigator { get; }
-        protected INavigatorService<CreateEmployeeVM> createEmployeeNavigator;    
+        protected INavigatorService<CreateEmployeeVM> createEmployeeNavigator;
+
+        [ObservableProperty]
+        private String _searchText = "";
 
         protected override ApplicationDbContext Db { get; }
         public AllEmployeeVM(ApplicationDbContext db, 
@@ -42,7 +45,15 @@ namespace BookstoreManagement.UI.EmployeeUI
             Db.ChangeTracker.Clear();
             var items = Db.Employees.OrderBy(employee => employee.Id).ToList();
             Items = new ObservableCollection<Employee>(items);
-
+        }
+        protected override bool FitlerItem(Employee item)
+        {
+            string name = item.FirstName + item.LastName;
+            return name.ToLower().Contains(SearchText.ToLower());
+        }
+        partial void OnSearchTextChanged(string value)
+        {
+            ItemsView.Refresh();
         }
     }
 }

@@ -77,7 +77,7 @@
                         Orientation="Horizontal">
 
                         <!--  Search Bar  -->
-                        <ui:Search PlaceHolder="Search for invoices" />
+                        <ui:Search PlaceHolder="Search for invoices" Text="{Binding SearchText}" />
                         <!--  End Search Bar  -->
                     </StackPanel>
                     <!--  End Row Tool Search  -->
@@ -127,6 +127,9 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
                     <DataGridTextColumn Binding="{Binding Total}" Header="Total" />
+                    <DataGridTextColumn Binding="{Binding EmployeeId}" Header="Employee Id" />
+                    <DataGridTextColumn Binding="{Binding CustomerId}" Header="Customer Id" />
+                    <DataGridTextColumn Binding="{Binding CreatedAt}" Header="Created at" />
                     <DataGridTemplateColumn CanUserResize="False" Header="Commands">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

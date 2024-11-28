@@ -23,7 +23,7 @@ namespace BookstoreManagement.UI.TagUI
         private readonly INavigatorService<AllTagsVM> allTagsNavigator;
 
         [RelayCommand]
-        private void GoBack()
+        private void NavigateBack()
         {
             allTagsNavigator.Navigate();
         }

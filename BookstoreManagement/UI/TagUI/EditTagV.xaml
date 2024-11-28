@@ -4,70 +4,67 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:BookstoreManagement.UI.TagUI"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*"></ColumnDefinition>
-            <ColumnDefinition Width="0.7*"></ColumnDefinition>
-            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="0.3*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="0.3*" />
         </Grid.ColumnDefinitions>
-
-        <StackPanel Grid.Column="1" HorizontalAlignment="Center"
-              VerticalAlignment="Center">
-
-            <!--Header-->
-            <StackPanel Margin="15"
-                  VerticalAlignment="Center"
-                  Orientation="Horizontal">
-                <!--Button GoBack-->
-                <Button Margin="-15 10 10 10"
-                  BorderThickness="0"
-                  Command="{Binding GoBackCommand}"
-                  Style="{DynamicResource MaterialDesignFlatButton}">
+        <StackPanel
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <StackPanel
+                Margin="15"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Margin="-15,10,10,10"
+                    BorderThickness="0"
+                    Command="{Binding NavigateBackCommand}"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
                     <materialDesign:PackIcon
-                      Width="25"
-                      Height="25"
-                      Foreground="Black"
-                      Kind="ChevronLeft" />
+                        Width="25"
+                        Height="25"
+                        Foreground="Black"
+                        Kind="ChevronLeft" />
                 </Button>
-                <!--End Button GoBack-->
-
-                <!--Title-->
-                <TextBlock Margin="5" FontSize="30" FontWeight="Bold">
-                Edit Tag
+                <TextBlock
+                    Margin="5"
+                    FontSize="30"
+                    FontWeight="Bold">
+                    Edit Tag
                 </TextBlock>
-                <!--End Title-->
             </StackPanel>
-            <!--End Header-->
-
-            <!--Input information-->
             <Border
-          Grid.Column="1"
-          Padding="30 10 30 10"
-          Background="#fff"
-          BorderBrush="#000"
-          BorderThickness="0.4"
-          CornerRadius="10">
+                Grid.Column="1"
+                Width="200"
+                Padding="10,10,10,10"
+                Background="White"
+                BorderBrush="Black"
+                BorderThickness=".4"
+                CornerRadius="10">
 
-                <StackPanel Width="200"
-                      HorizontalAlignment="Center">
-
-                    <Label>Id</Label>
-                    <TextBox Text="{Binding Tag.Id}"></TextBox>
+                <StackPanel
+                    Grid.Column="1"
+                    Width="150"
+                    HorizontalAlignment="Center">
+                    <Label FontWeight="Bold">Tag ID</Label>
+                    <TextBox IsReadOnly="True" Text="{Binding Item.Id}" />
 
                     <Label>Name</Label>
-                    <TextBox Text="{Binding Tag.Name}"></TextBox>
+                    <TextBox Text="{Binding Item.Name}" />
 
                     <Label>Description</Label>
-                    <TextBox Text="{Binding Tag.Description}"></TextBox>
-
-                    <Button Command="{Binding SubmitItemCommand}">Submit</Button>
+                    <TextBox Text="{Binding Item.Description}" />
+                    <Button Margin="12" Command="{Binding SubmitItemCommand}">Submit</Button>
                 </StackPanel>
             </Border>
-            <!--End Input information-->
         </StackPanel>
     </Grid>
 </UserControl>
