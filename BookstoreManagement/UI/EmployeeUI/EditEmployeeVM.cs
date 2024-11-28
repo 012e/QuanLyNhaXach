@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿    using System.Collections.ObjectModel;
 using System.Security.RightsManagement;
 using System.Windows;
 using BookstoreManagement.Core;

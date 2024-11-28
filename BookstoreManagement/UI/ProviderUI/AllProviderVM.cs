@@ -4,6 +4,7 @@ using BookstoreManagement.Core.Shortcut;
 using BookstoreManagement.DbContexts;
 using BookstoreManagement.Models;
 using BookstoreManagement.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,8 @@ public partial class AllProviderVM : ListVM<Provider, EditProviderVM>
     protected override IContextualNavigatorService<EditProviderVM, Provider> EditItemNavigator { get; }
     protected INavigatorService<CreateProviderVM> CreateProviderNavigator;
     protected override ApplicationDbContext Db { get; }
-
+    [ObservableProperty]
+    private string _searchText = "";
     protected override void LoadItems()
     {
         Db.ChangeTracker.Clear();
@@ -28,7 +30,14 @@ public partial class AllProviderVM : ListVM<Provider, EditProviderVM>
         CreateProviderNavigator = createProviderNavigator;
         Db = db;
     }
-
+    protected override bool FitlerItem(Provider item)
+    {
+        return item.Name.ToLower().Contains(SearchText.ToLower());
+    }
+    partial void OnSearchTextChanged(string value)
+    {
+        ItemsView.Refresh();
+    }
     [RelayCommand]
     protected void NavigateToCreateProvider()
     {

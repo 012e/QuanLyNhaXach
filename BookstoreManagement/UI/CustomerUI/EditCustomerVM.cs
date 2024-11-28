@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core;
+using BookstoreManagement.Core.Shortcut;
 using BookstoreManagement.DbContexts;
 using BookstoreManagement.Models;
 using BookstoreManagement.Services;
@@ -14,50 +15,18 @@ using System.Windows;
 
 namespace BookstoreManagement.UI.CustomerUI
 {
-    public partial class EditCustomerVM : BaseViewModel, IContextualViewModel<int>
+    public partial class EditCustomerVM : EditItemVM<Customer>
     {
-        public int ViewModelContext { get; set; }
-
-        private readonly ApplicationDbContext db; // co so du lieu
-
+        protected override ApplicationDbContext Db { get; }
         [ObservableProperty]
-        private ObservableCollection<AllCustomersVM> _customers;   // danh sach khach hang
-
-        [ObservableProperty]
-        private Customer _customer; // customer can chinh sua
-
-        // posepond: command GoBack
+        private Customer _item;
         private readonly INavigatorService<AllCustomersVM> customerNavigator;
-
         public EditCustomerVM(ApplicationDbContext db,
             INavigatorService<AllCustomersVM> customerNavigator)
         {
-            this.db = db;
+            this.Db = db;
             this.customerNavigator = customerNavigator;
-            
         }
-        public override void ResetState()
-        {
-            base.ResetState();
-            LoadCustomer();
-
-
-        }
-
-        // save infor
-        [RelayCommand]
-        private void Submit()
-        {
-            if (Customer != null)
-            {
-                db.Update(Customer);
-                db.SaveChanges();
-                LoadCustomer();
-                MessageBox.Show("Submit sussesful!");
-            }
-        }
-
-        // back command
         [RelayCommand]
         private void GoBack()
         {
@@ -65,15 +34,22 @@ namespace BookstoreManagement.UI.CustomerUI
         }
 
         // load customer
-        private void LoadCustomer()
+        protected override void LoadItem()
         {
-            var id = ViewModelContext;
-            Customer = db.Customers.Find(id);
-
-            if (Customer == null) return;
-
+            Item = default;
+            var id = ViewModelContext.Id;
+            Item = Db.Customers.Find(id);
         }
-
+        protected override void SubmitItemHandler()
+        {
+            Db.Customers.Update(Item);
+            Db.SaveChanges();
+        }
+        protected override void OnSubmittingSuccess()
+        {
+            base.OnSubmittingSuccess();
+            MessageBox.Show("submit success");
+        }
     }
 
 }

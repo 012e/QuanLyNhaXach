@@ -57,7 +57,7 @@ namespace BookstoreManagement.UI.EmployeeUI
             {
                 MessageBox.Show($"Could'n add employee : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            MessageBox.Show("Added employee carefully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Added employee successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         private void ResetToDefaultValues()
         {

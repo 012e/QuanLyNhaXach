@@ -63,6 +63,5 @@
                     Kind="Magnify" />
             </Button>
         </StackPanel>
-
     </Border>
 </UserControl>

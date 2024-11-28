@@ -73,7 +73,7 @@
                         Grid.Column="0"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
-                        <ui:Search PlaceHolder="Search for customers" />
+                        <ui:Search PlaceHolder="Search for customers" Text="{Binding SearchText}" />
                     </StackPanel>
                     <!--  End Row Tool Search  -->
 
@@ -92,7 +92,7 @@
                             Margin="10,0,0,0"
                             Background="Navy"
                             BorderThickness="0"
-                            Command="{Binding RefreshCommand}">
+                            Command="{Binding RefreshListCommand}">
                             <materialDesign:PackIcon Kind="reload" />
                         </Button>
                     </StackPanel>
@@ -105,11 +105,18 @@
 
             <!--  // List Infor Customer  -->
             <DataGrid
-                Name="CustomerList"
+                Name="ItemsList"
                 Grid.Row="1"
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
-                ItemsSource="{Binding Customers}">
+                ItemsSource="{Binding ItemsView}">
+                <DataGrid.InputBindings>
+                    <!--  Double click on any row  -->
+                    <MouseBinding
+                        Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        CommandParameter="{Binding ElementName=ItemsList, Path=SelectedItem}"
+                        Gesture="LeftDoubleClick" />
+                </DataGrid.InputBindings>
 
                 <DataGrid.Columns>
                     <DataGridTextColumn
@@ -142,14 +149,14 @@
                                         Margin="5"
                                         Background="DarkBlue"
                                         BorderThickness="0"
-                                        Command="{Binding DataContext.EditCustomerCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                         CommandParameter="{Binding}">
                                         <materialDesign:PackIcon Kind="pencil" />
                                     </Button>
                                     <Button
                                         Background="IndianRed"
                                         BorderThickness="0"
-                                        Command="{Binding DataContext.DeleteCustomerCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                         CommandParameter="{Binding}">
                                         <materialDesign:PackIcon Kind="TrashCanOutline" />
                                     </Button>

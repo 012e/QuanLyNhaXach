@@ -62,7 +62,7 @@
                         Grid.Column="0"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
-                        <ui:Search PlaceHolder="Search for employees" Text="Hello" />
+                        <ui:Search PlaceHolder="Search for employees" Text="{Binding SearchText}" />
                     </StackPanel>
                     <StackPanel
                         Grid.Column="1"
@@ -89,11 +89,18 @@
             <!--  the data is not loaded yet (mostly to avoid SelectedItem being null)  -->
 
             <DataGrid
-                Name="StaffList"
+                Name="ItemsList"
                 Grid.Row="1"
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
                 ItemsSource="{Binding ItemsView}">
+                <DataGrid.InputBindings>
+                    <!--  Double click on any row  -->
+                    <MouseBinding
+                        Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        CommandParameter="{Binding ElementName=ItemsList, Path=SelectedItem}"
+                        Gesture="LeftDoubleClick" />
+                </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
                     <DataGridTextColumn Binding="{Binding FirstName}" Header="Fisrt Name" />
@@ -127,9 +134,6 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
-
         </Grid>
     </Border>
-
 </UserControl>

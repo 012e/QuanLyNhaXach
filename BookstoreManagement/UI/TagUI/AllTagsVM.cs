@@ -2,6 +2,7 @@
 using BookstoreManagement.DbContexts;
 using BookstoreManagement.Models;
 using BookstoreManagement.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,7 +16,8 @@ namespace BookstoreManagement.UI.TagUI
     public partial class AllTagsVM : ListVM<Tag, EditTagVM>
     {
         private readonly INavigatorService<CreateTagVM> createItemNavigator;
-
+        [ObservableProperty]
+        private string _searchText = "";
         protected override IContextualNavigatorService<EditTagVM, Tag> EditItemNavigator { get; }
 
         protected override ApplicationDbContext Db { get;  }
@@ -35,6 +37,14 @@ namespace BookstoreManagement.UI.TagUI
             Db = db;
             EditItemNavigator = editItemNavigator;
             this.createItemNavigator = createItemNavigator;
+        }
+        protected override bool FitlerItem(Tag item)
+        {
+            return item.Name.ToLower().Contains(SearchText.ToLower());
+        }
+        partial void OnSearchTextChanged(string value)
+        {
+            ItemsView.Refresh();
         }
     }
 }

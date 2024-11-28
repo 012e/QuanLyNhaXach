@@ -72,7 +72,7 @@
                         Grid.Row="0"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
-                        <ui:Search PlaceHolder="Search for tags" />
+                        <ui:Search PlaceHolder="Search for tags" Text="{Binding SearchText}" />
                     </StackPanel>
                     <!--  End Row Tool Search  -->
 
@@ -124,6 +124,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
                     <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                    <DataGridTextColumn Binding="{Binding Description}" Header="Description" />
                     <DataGridTemplateColumn CanUserResize="False" Header="Commands">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
