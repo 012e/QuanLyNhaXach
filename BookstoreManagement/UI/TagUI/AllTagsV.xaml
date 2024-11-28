@@ -6,7 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:local="clr-namespace:BookstoreManagement.UI.TagUI"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="clr-namespace:BookstoreManagement.UI.Components"
+    d:DataContext="{d:DesignInstance local:AllTagsVM}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -15,77 +18,138 @@
         <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
     </Control.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.1*" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
+    <Border
+        Padding="50,30,50,50"
+        Background="#fff"
+        BorderThickness="30"
+        CornerRadius="30">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.3*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <StackPanel
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBlock Margin="7,0,0,7" FontSize="30">
-                    Tags
-                </TextBlock>
 
-                <!--  Loading spinner  -->
-                <fa:ImageAwesome
-                    Width="15"
-                    Height="15"
-                    Margin="7,0,0,0"
-                    Icon="Refresh"
-                    Spin="True"
-                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <!--  HEADER  -->
+            <StackPanel Grid.Row="0">
+                <!--  Title  -->
+                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                    <TextBlock
+                        Margin="7,0,0,7"
+                        FontSize="30"
+                        FontWeight="Bold">
+                        <materialDesign:PackIcon
+                            Width="28"
+                            Height="28"
+                            Kind="TagMultiple" />
+                        Tags
+                    </TextBlock>
+
+                    <!--  Loading spinner  -->
+                    <fa:ImageAwesome
+                        Width="15"
+                        Height="15"
+                        Margin="7,0,0,0"
+                        Icon="Refresh"
+                        Spin="True"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+                <!--  End Title  -->
+
+                <!--  Line  -->
+                <Separator />
+                <!--  End Line  -->
+
+                <!--  Header Tool  -->
+                <Grid Grid.Row="0" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Row Tool Search  -->
+                    <StackPanel
+                        Grid.Row="0"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <ui:Search PlaceHolder="Search for tags" />
+                    </StackPanel>
+                    <!--  End Row Tool Search  -->
+
+
+                    <!--  Row Tool And and Refresh  -->
+                    <StackPanel
+                        Grid.Column="1"
+                        FlowDirection="RightToLeft"
+                        Orientation="Horizontal">
+                        <Button
+                            Background="YellowGreen"
+                            BorderThickness="0"
+                            Command="{Binding NavigateToCreateItemCommand}">
+                            <materialDesign:PackIcon Kind="plus" />
+                        </Button>
+                        <Button
+                            Margin="10,0,0,0"
+                            Background="Navy"
+                            BorderThickness="0"
+                            Command="{Binding RefreshListCommand}">
+                            <materialDesign:PackIcon Kind="reload" />
+                        </Button>
+                    </StackPanel>
+                    <!--  End Row Tool And and Refresh  -->
+
+                </Grid>
+                <!--  End Header Tool  -->
+
+
             </StackPanel>
-            <StackPanel
-                Grid.Column="1"
-                FlowDirection="RightToLeft"
-                Orientation="Horizontal">
-                <Button Command="{Binding NavigateToCreateItemCommand}">Create</Button>
-                <Button Command="{Binding RefreshListCommand}">Refresh</Button>
-            </StackPanel>
+            <!--  END HEADER  -->
+
+            <!--  IsHitTestVisible is for avoiding any kind of interraction with the table when  -->
+            <!--  the data is not loaded yet (mostly to avoid SelectedItem being null)  -->
+            <DataGrid
+                Name="ItemsList"
+                Grid.Row="1"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding ItemsView}">
+                <DataGrid.InputBindings>
+                    <!--  Double click on any row  -->
+                    <MouseBinding
+                        Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        CommandParameter="{Binding ElementName=ItemsList, Path=SelectedItem}"
+                        Gesture="LeftDoubleClick" />
+                </DataGrid.InputBindings>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
+                    <DataGridTemplateColumn CanUserResize="False" Header="Commands">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
+                                        Margin="5"
+                                        Background="DarkBlue"
+                                        BorderThickness="0"
+                                        Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="Pencil" />
+                                    </Button>
+
+                                    <Button
+                                        Background="IndianRed"
+                                        BorderThickness="0"
+                                        Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                        CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="TrashCanOutline" />
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
-
-        <!--  IsHitTestVisible is for avoiding any kind of interraction with the table when  -->
-        <!--  the data is not loaded yet (mostly to avoid SelectedItem being null)  -->
-        <DataGrid
-            Name="ItemsList"
-            Grid.Row="1"
-            AutoGenerateColumns="False"
-            IsReadOnly="True"
-            ItemsSource="{Binding Items}">
-            <DataGrid.InputBindings>
-                <!--  Double click on any row  -->
-                <MouseBinding
-                    Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                    CommandParameter="{Binding ElementName=ItemsList, Path=SelectedItem}"
-                    Gesture="LeftDoubleClick" />
-            </DataGrid.InputBindings>
-
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
-                <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                <DataGridTemplateColumn CanUserResize="False" Header="Commands">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
-                                    Edit
-                                </Button>
-                                <Button Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
-                                    Delete
-                                </Button>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+    </Border>
 </UserControl>

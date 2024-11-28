@@ -20,14 +20,26 @@ public partial class AllItemsVM : ListVM<Item, EditItemVM>
     protected override IContextualNavigatorService<EditItemVM, Item> EditItemNavigator { get; }
     protected INavigatorService<CreateItemVM> CreateItemNavigator { get; }
 
+    [ObservableProperty]
+    private String _searchText = "";
 
     [ObservableProperty]
     private ObservableCollection<Item> _listItems;
+
+    partial void OnSearchTextChanged(string value)
+    {
+        ItemsView.Refresh();
+    }
 
     [RelayCommand]
     protected void NavigateToCreateItem()
     {
         CreateItemNavigator.Navigate();
+    }
+
+    protected override bool FitlerItem(Item item)
+    {
+        return item.Name.ToLower().Contains(SearchText.ToLower());
     }
 
 
@@ -39,35 +51,11 @@ public partial class AllItemsVM : ListVM<Item, EditItemVM>
         this.Db = db;
         this.EditItemNavigator = editItemNavigator;
         this.CreateItemNavigator = createItemNavigator;
-
-
-        _listItems = new ObservableCollection<Item>();
-        FilteredItems = CollectionViewSource.GetDefaultView(_listItems);
-        FilteredItems.Filter = FilteredID;
     }
-
-    [ObservableProperty]
-    private string _searchID;
-
-    public ICollectionView FilteredItems { get; }
-
-
-
-    public bool FilteredID(object item)
-    {
-        if(item is Item data)
-        {
-            if (string.IsNullOrEmpty(SearchID)) return true;
-            if (int.TryParse(SearchID, out int search)) return data.Id == search;
-        }
-        return false;
-    }
-
-
 
     [RelayCommand]
-    private void Search()
+    private void Test()
     {
-        FilteredItems.Refresh();
+        MessageBox.Show(SearchText);
     }
 }

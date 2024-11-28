@@ -9,8 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UI\Resources\**" />
+    <EmbeddedResource Remove="UI\Resources\**" />
+    <None Remove="UI\Resources\**" />
+    <Page Remove="UI\Resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Images\logo.png" />
-    <None Remove="UI\Resources\icon_title.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,10 +40,6 @@
     <Resource Include="Images\logo.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="UI\Resources\" />
   </ItemGroup>
 
 </Project>

@@ -11,7 +11,7 @@ namespace BookstoreManagement.UI.CustomerUI
 
         private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            txtSearch.Focus();
+            //txtSearch.Focus();
         }
     }
 }

@@ -17,4 +17,3 @@ public partial class Customer
 
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 }
- 

@@ -6,64 +6,74 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:local="clr-namespace:BookstoreManagement.UI.InvoicesUI"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Control.Resources>
-        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
-    </Control.Resources>
-
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.1*" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="0.7*"></ColumnDefinition>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <StackPanel
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <TextBlock Margin="7,0,0,7" FontSize="30">
-                    Invoice Detail
+        <StackPanel Grid.Column="1" HorizontalAlignment="Center"
+           VerticalAlignment="Center">
+
+            <!--Header-->
+            <StackPanel Margin="15"
+               VerticalAlignment="Center"
+               Orientation="Horizontal">
+                <!--Button GoBack-->
+                <Button Margin="-15 10 10 10"
+               BorderThickness="0"
+               Command="{Binding GoBackCommand}"
+               Style="{DynamicResource MaterialDesignFlatButton}">
+                    <materialDesign:PackIcon
+                       Width="25"
+                       Height="25"
+                       Foreground="Black"
+                       Kind="ChevronLeft" />
+                </Button>
+                <!--End Button GoBack-->
+
+                <!--Title-->
+                <TextBlock Margin="5" FontSize="30" FontWeight="Bold">
+             Edit Invoice
                 </TextBlock>
-
-                <!--  Loading spinner  -->
-                <fa:ImageAwesome
-                    Width="15"
-                    Height="15"
-                    Margin="7,0,0,0"
-                    Icon="Refresh"
-                    Spin="True"
-                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <!--End Title-->
             </StackPanel>
-            <StackPanel
-                Grid.Column="1"
-                FlowDirection="RightToLeft"
-                Orientation="Horizontal">
-                <Button Command="{Binding GoBackCommand}">Go back</Button>
-                <Button Command="{Binding NavigateToAddInvoiceItemCommand}">Add item</Button>
-            </StackPanel>
-        </Grid>
+            <!--End Header-->
 
-        <!--  IsHitTestVisible is for avoiding any kind of interraction with the table when  -->
-        <!--  the data is not loaded yet (mostly to avoid SelectedItem being null)  -->
-        <DataGrid
-            Name="InvoicesList"
-            Grid.Row="1"
-            AutoGenerateColumns="False"
-            IsReadOnly="True"
-            ItemsSource="{Binding InvoiceItems}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding ItemId}" Header="Id" />
-                <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-            </DataGrid.Columns>
-        </DataGrid>
+            <!--Input information-->
+            <Border
+       Grid.Column="1"
+       Padding="30 10 30 10"
+       Background="#fff"
+       BorderBrush="#000"
+       BorderThickness="0.4"
+       CornerRadius="10">
+
+                <StackPanel Width="200"
+                   HorizontalAlignment="Center">
+
+                    <Label>Id</Label>
+                    <TextBox Text="{Binding Invoice.Id}"></TextBox>
+
+                    <Label>Total</Label>
+                    <TextBox Text="{Binding Invoice.Total}"></TextBox>
+
+                    <Label>EmployeeID</Label>
+                    <TextBox Text="{Binding Invoice.EmployeeID}"></TextBox>
+
+                    <Label>CreatedAt</Label>
+                    <TextBox Text="{Binding Invoice.CreateAt}"></TextBox>
+                    
+
+                    <Button Command="{Binding SubmitItemCommand}">Submit</Button>
+                </StackPanel>
+            </Border>
+            <!--End Input information-->
+        </StackPanel>
     </Grid>
 </UserControl>

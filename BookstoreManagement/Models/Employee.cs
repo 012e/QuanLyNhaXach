@@ -15,7 +15,7 @@ public partial class Employee
 
     public decimal Salary { get; set; }
 
-    public byte[] ProfilePicture { get; set; } = null!;
+    public string ProfilePicture { get; set; } = null!;
 
     public bool IsManager { get; set; }
 

@@ -16,12 +16,18 @@
         <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
     </Control.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.1*" />
+    <Border
+        Padding="50 30 50 50"
+        Background="#fff"
+        BorderThickness="30"
+        CornerRadius="30">
+        <Grid>
+            <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <!--======= HEADER ===========-->  
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -31,7 +37,10 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Margin="7,0,0,7" FontSize="30">
+                <TextBlock Margin="7,0,0,7" FontSize="30" FontWeight="Bold">
+                    <materialDesign:PackIcon Width="28" Height="28" Kind="InvoiceList">
+                        
+                    </materialDesign:PackIcon>
                     Invoice Detail
                 </TextBlock>
 
@@ -52,8 +61,10 @@
                 <Button Command="{Binding SubmitItemCommand}">Add this item</Button>
             </StackPanel>
         </Grid>
+         <!--======= END HEADER ===========-->
 
-        <!--  IsHitTestVisible is for avoiding any kind of interraction with the table when  -->
+
+            <!--  IsHitTestVisible is for avoiding any kind of interraction with the table when  -->
         <!--  the data is not loaded yet (mostly to avoid SelectedItem being null)  -->
         <DataGrid
             Name="InvoicesList"
@@ -68,4 +79,5 @@
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
+    </Border>
 </UserControl>

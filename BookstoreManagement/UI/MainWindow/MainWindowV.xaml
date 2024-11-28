@@ -18,7 +18,7 @@
     Title="Bookstore Management"
     Width="1411"
     Height="600"
-    Icon="C:\Users\pupgk\OneDrive\Máy tính\QuanLyNhaXach\BookstoreManagement\UI\MainWindow\icon_title.ico"
+    Icon="/Images/icon_title.ico"
     WindowState="Maximized"
     mc:Ignorable="d">
     <Grid>
@@ -159,7 +159,10 @@
             <DataTemplate DataType="{x:Type provider:EditProviderVM}">
                 <provider:EditProviderV />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type customer:CustomerVM}">
+            <DataTemplate DataType="{x:Type provider:CreateProviderVM}">
+                <provider:CreateProviderV />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type customer:AllCustomersVM}">
                 <customer:AllCustomersV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type customer:EditCustomerVM}">

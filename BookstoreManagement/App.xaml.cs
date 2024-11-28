@@ -60,13 +60,15 @@ public partial class App : Application
         builder.Services.AddViewContextualViewModel<EditEmployeeV, EditEmployeeVM, Employee>();
         builder.Services.AddViewViewModel<CreateEmployeeV, CreateEmployeeVM>();
 
-        builder.Services.AddSingleton<NavigatorStore>();
+        builder.Services.AddViewViewModel<AllCustomersV, AllCustomersVM>();
+        builder.Services.AddViewContextualViewModel<EditCustomerV, EditCustomerVM, int>();
+        builder.Services.AddViewViewModel<CreateCustomerV, CreateCustomerVM>();
 
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
 
-        builder.Services.AddViewViewModel<AllCustomersV, CustomerVM>();
-        builder.Services.AddViewContextualViewModel<EditCustomerV, EditCustomerVM, int>();
-        builder.Services.AddViewViewModel<CreateCustomerV, CreateCustomerVM>();
+        builder.Services.AddSingleton<NavigatorStore>();
+
+
 
         AppHost = builder.Build();
     }

@@ -21,10 +21,4 @@ public partial class AllItemsV : UserControl
     {
         InitializeComponent();
     }
-    private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-        txtSearch.Focus();
-    }
-
- 
 }

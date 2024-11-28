@@ -16,7 +16,7 @@ namespace BookstoreManagement.UI.CustomerUI
     public partial class CreateCustomerVM : BaseViewModel
     {
         private readonly ApplicationDbContext db;
-        private readonly INavigatorService<CustomerVM> customerNavigator;
+        private readonly INavigatorService<AllCustomersVM> customerNavigator;
 
         [ObservableProperty]
         private string _firstName;
@@ -79,7 +79,7 @@ namespace BookstoreManagement.UI.CustomerUI
             customerNavigator.Navigate();
         }
         public CreateCustomerVM(ApplicationDbContext db, 
-            INavigatorService<CustomerVM> customernNavigator)
+            INavigatorService<AllCustomersVM> customernNavigator)
         {
             ResetToDefaultValues();
             this.db = db;
