@@ -6,20 +6,114 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dashboard="clr-namespace:BookstoreManagement.UI.DashboardUI"
     xmlns:employee="clr-namespace:BookstoreManagement.UI.EmployeeUI"
+    xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
     xmlns:invoice="clr-namespace:BookstoreManagement.UI.InvoicesUI"
     xmlns:item="clr-namespace:BookstoreManagement.UI.ItemUI"
     xmlns:local="clr-namespace:BookstoreManagement"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:provider="clr-namespace:BookstoreManagement.UI.ProviderUI"
     xmlns:tag="clr-namespace:BookstoreManagement.UI.TagUI"
     xmlns:vm="clr-namespace:BookstoreManagement.UI.MainWindow"
-    Title="MainWindow"
+    Title="Bookstore Management"
     Width="1411"
     Height="600"
+    Icon="/Images/icon_title.ico"
     WindowState="Maximized"
     mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
+            <Style x:Key="sidebarRadioButton" TargetType="RadioButton">
+                <Setter Property="Background" Value="#F3F3E0" />
+                <Setter Property="Foreground" Value="#333333" />
+                <Setter Property="Margin" Value="0,0,0,10" />
+                <Setter Property="FontWeight" Value="DemiBold" />
+                <Setter Property="Height" Value="45" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="Tag" Value="#6673b7" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Border
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="Transparent"
+                                BorderThickness="4,0,0,0">
+                                <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="Tag" Value="#7071f0" />
+                        <Setter Property="Cursor" Value="Hand" />
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Offset="0" Color="#c6c66c" />
+                                    <GradientStop Offset="3" Color="White" />
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Border
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="#a5a540"
+                                        BorderThickness="4,0,0,0">
+                                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="Cursor" Value="Hand" />
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Offset="0" Color="#c6c66c" />
+                                    <GradientStop Offset="3" Color="White" />
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Border
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="#a5a540"
+                                        BorderThickness="4,0,0,0">
+                                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+
+
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="sideBarRadioButtonText" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="FontWeight" Value="Regular" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RadioButton}}}" />
+            </Style>
+            <Style x:Key="sidebarRadioButtonIcon" TargetType="materialDesign:PackIcon">
+                <Setter Property="Width" Value="23" />
+                <Setter Property="Height" Value="23" />
+                <Setter Property="Margin" Value="20,0,20,0" />
+                <Setter Property="Foreground" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RadioButton}}}" />
+            </Style>
             <DataTemplate DataType="{x:Type dashboard:DashBoardVM}">
                 <dashboard:DashBoardV />
             </DataTemplate>
@@ -84,86 +178,129 @@
         </Grid.ColumnDefinitions>
 
         <!--  Navigator  -->
-        <StackPanel
-            Grid.Column="0"
-            VerticalAlignment="Center"
-            Orientation="Vertical">
 
-            <Button
-                Height="60"
-                Command="{Binding NavigateToDashBoardCommand}"
-                Style="{DynamicResource MaterialDesignFlatButton}">
-                DashBoard
-            </Button>
+        <Border Background="#F3F3E0">
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.3*" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackPanel
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    Orientation="Vertical">
+                    <Image
+                        Width="150"
+                        Height="150"
+                        Source="pack://application:,,,/Images/logo.png" />
+                    <TextBlock
+                        FontSize="20"
+                        Foreground="#2C3E50"
+                        TextAlignment="Center">
+                        Bookstore Management
+                    </TextBlock>
+                    <Separator
+                        Width="200"
+                        Margin="0,5,0,5"
+                        Background="#2C3E50" />
+                </StackPanel>
+                <Grid Grid.Row="1">
+                    <StackPanel VerticalAlignment="Center" Orientation="Vertical">
 
-            <Button
-                Height="60"
-                Command="{Binding NavigateToItemCommand}"
-                Style="{DynamicResource MaterialDesignFlatButton}">
-                Items
-            </Button>
-            <Button
-                Height="60"
-                Command="{Binding NavigateToInvoiceCommand}"
-                Style="{DynamicResource MaterialDesignFlatButton}">
-                Invoices
-            </Button>
-            <Button
-                Height="60"
-                Command="{Binding NavigateToTagCommand}"
-                Style="{DynamicResource MaterialDesignFlatButton}">
-                Tags
-            </Button>
-            <Button
-                Height="60"
-                Command="{Binding NavigateToEmployeeCommand}"
-                Style="{DynamicResource MaterialDesignFlatButton}">
-                Employee
-            </Button>
-            <Button
-                Height="60"
-                Command="{Binding NavigateToCustomerCommand}"
-                Style="{DynamicResource MaterialDesignFlatButton}">
-                Customer
-            </Button>
-            <Button
-                Height="60"
-                Command="{Binding NavigateToProviderCommand}"
-                Style="{DynamicResource MaterialDesignFlatButton}">
-                Provider
-            </Button>
+                        <RadioButton
+                            Height="60"
+                            Command="{Binding NavigateToDashBoardCommand}"
+                            Style="{DynamicResource sidebarRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ChartLine" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Dashboard" />
+                            </StackPanel>
+                        </RadioButton>
 
-            <!--<Button
-                Height="60"
-                Command="{Binding NavigateToTagCommand}"
-                Style="{DynamicResource MaterialDesignFlatButton}">
-
-            </Button>-->
-
-        </StackPanel>
-
-        <Grid Grid.Column="1" Background="LightBlue">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="100*" />
-                <ColumnDefinition Width="3*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="3*" />
-                <RowDefinition Height="100*" />
-                <RowDefinition Height="3*" />
-            </Grid.RowDefinitions>
-            <!--  Current view model  -->
-            <Grid Grid.Row="1" Grid.Column="1">
-
-                <ContentControl
-                    HorizontalContentAlignment="Stretch"
-                    VerticalContentAlignment="Stretch"
-                    Content="{Binding NavigatorStore.CurrentViewModel}">
-                    <ContentControl.Resources />
-                </ContentControl>
-
+                        <RadioButton
+                            Height="60"
+                            Command="{Binding NavigateToItemCommand}"
+                            Style="{DynamicResource sidebarRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="BookOpen" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Books" />
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Height="60"
+                            Command="{Binding NavigateToInvoiceCommand}"
+                            Style="{DynamicResource sidebarRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ReceiptTextOutline" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Invoices" />
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Height="60"
+                            Command="{Binding NavigateToTagCommand}"
+                            Style="{DynamicResource sidebarRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="TagOutline" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Tags" />
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Height="60"
+                            Command="{Binding NavigateToEmployeeCommand}"
+                            Style="{DynamicResource sidebarRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="AccountGroup" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Employee" />
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Height="60"
+                            Command="{Binding NavigateToCustomerCommand}"
+                            Style="{DynamicResource sidebarRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Account" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Customer" />
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Height="60"
+                            Command="{Binding NavigateToProviderCommand}"
+                            Style="{DynamicResource sidebarRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="AccountTie" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Provider" />
+                            </StackPanel>
+                        </RadioButton>
+                    </StackPanel>
+                </Grid>
             </Grid>
-        </Grid>
+        </Border>
+        <Border Grid.Column="1" Background="#CBDCEB">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="100*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="100*" />
+                    <RowDefinition Height="3*" />
+                </Grid.RowDefinitions>
+                <!--  Current view model  -->
+                <Grid Grid.Row="1" Grid.Column="1">
+
+                    <ContentControl
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Content="{Binding NavigatorStore.CurrentViewModel}">
+                        <ContentControl.Resources />
+                    </ContentControl>
+
+                </Grid>
+            </Grid>
+        </Border>
+
     </Grid>
+
 </Window>

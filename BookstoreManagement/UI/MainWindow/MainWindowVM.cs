@@ -14,6 +14,7 @@ using BookstoreManagement.UI.EmployeeUI;
 using BookstoreManagement.UI.ProviderUI;
 using BookstoreManagement.UI.DashboardUI;
 using BookstoreManagement.UI.CustomerUI;
+using System.Windows.Markup;
 
 namespace BookstoreManagement.UI.MainWindow;
 
@@ -21,6 +22,8 @@ public partial class MainWindowVM : BaseViewModel
 {
     [ObservableProperty]
     private NavigatorStore _navigatorStore;
+
+    
 
     private readonly INavigatorService<AllItemsVM> itemNavigator;
     private readonly INavigatorService<AllInvoicesVM> invoiceNavigator;

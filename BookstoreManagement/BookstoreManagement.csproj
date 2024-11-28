@@ -9,6 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UI\Resources\**" />
+    <EmbeddedResource Remove="UI\Resources\**" />
+    <None Remove="UI\Resources\**" />
+    <Page Remove="UI\Resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Images\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="dotenv.net" Version="3.2.0" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
@@ -20,6 +31,15 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\icon_title.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\logo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
