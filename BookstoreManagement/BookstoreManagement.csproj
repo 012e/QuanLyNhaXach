@@ -13,6 +13,72 @@
     <EmbeddedResource Remove="UI\Resources\**" />
     <None Remove="UI\Resources\**" />
     <Page Remove="UI\Resources\**" />
+    <Page Update="Components\Search.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="CustomerUI\AllCustomersV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="CustomerUI\CreateCustomerV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="CustomerUI\EditCustomerV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="DashboardUI\DashBoardV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="EmployeeUI\AllEmployeeV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="EmployeeUI\CreateEmployeeV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="EmployeeUI\EditEmployeeV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="InvoiceUI\AddInvoiceItemV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="InvoiceUI\AllInvoicesV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="InvoiceUI\CreateInvoiceV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="InvoiceUI\EditInvoiceV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ItemUI\AllItemsV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ItemUI\CreateItemV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ItemUI\EditItemV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="MainWindow\MainWindowV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ProviderUI\AllProviderV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ProviderUI\CreateProviderV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ProviderUI\EditProviderV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="TagUI\AllTagsV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="TagUI\CreateTagV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="TagUI\EditTagV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
