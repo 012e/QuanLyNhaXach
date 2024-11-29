@@ -2,14 +2,13 @@
     x:Class="BookstoreManagement.UI.CustomerUI.AllCustomersV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converter="clr-namespace:BookstoreManagement.Converter"
+    xmlns:converter="clr-namespace:BookstoreManagement.Shared.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:local="clr-namespace:BookstoreManagement.UI.CustomerUI"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:BookstoreManagement.UI.Components"
-    d:DataContext="{d:DesignInstance local:AllCustomersVM}"
     d:DesignHeight="800"
     d:DesignWidth="1040"
     mc:Ignorable="d">
@@ -119,26 +118,11 @@
                 </DataGrid.InputBindings>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding Id}"
-                        Header="Id" />
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding FirstName}"
-                        Header="FirstName" />
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding LastName}"
-                        Header="LastName" />
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding PhoneNumber}"
-                        Header="PhoneNumber" />
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding Email}"
-                        Header="Email" />
+                    <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
+                    <DataGridTextColumn Binding="{Binding FirstName}" Header="FirstName" />
+                    <DataGridTextColumn Binding="{Binding LastName}" Header="LastName" />
+                    <DataGridTextColumn Binding="{Binding PhoneNumber}" Header="PhoneNumber" />
+                    <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
 
                     <!--  Add Command  -->
                     <DataGridTemplateColumn CanUserResize="False">

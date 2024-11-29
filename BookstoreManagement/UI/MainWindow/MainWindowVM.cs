@@ -1,20 +1,14 @@
-﻿using BookstoreManagement.UI.ItemUI;
+﻿using BookstoreManagement.Core;
+using BookstoreManagement.Shared.Services;
+using BookstoreManagement.UI.CustomerUI;
+using BookstoreManagement.UI.DashboardUI;
+using BookstoreManagement.UI.EmployeeUI;
+using BookstoreManagement.UI.InvoicesUI;
+using BookstoreManagement.UI.ItemUI;
+using BookstoreManagement.UI.ProviderUI;
+using BookstoreManagement.UI.TagUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookstoreManagement.Core;
-using BookstoreManagement.Services;
-using BookstoreManagement.UI.InvoicesUI;
-using BookstoreManagement.UI.TagUI;
-using BookstoreManagement.UI.EmployeeUI;
-using BookstoreManagement.UI.ProviderUI;
-using BookstoreManagement.UI.DashboardUI;
-using BookstoreManagement.UI.CustomerUI;
-using System.Windows.Markup;
 
 namespace BookstoreManagement.UI.MainWindow;
 
@@ -23,7 +17,7 @@ public partial class MainWindowVM : BaseViewModel
     [ObservableProperty]
     private NavigatorStore _navigatorStore;
 
-    
+
 
     private readonly INavigatorService<AllItemsVM> itemNavigator;
     private readonly INavigatorService<AllInvoicesVM> invoiceNavigator;
@@ -42,7 +36,7 @@ public partial class MainWindowVM : BaseViewModel
     {
         itemNavigator.Navigate();
     }
-    
+
     [RelayCommand]
     private void NavigateToInvoice()
     {

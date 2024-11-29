@@ -1,14 +1,9 @@
 ﻿using BookstoreManagement.Core;
-using BookstoreManagement.DbContexts;
-using BookstoreManagement.Models;
-using BookstoreManagement.Services;
+using BookstoreManagement.Shared.DbContexts;
+using BookstoreManagement.Shared.Models;
+using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace BookstoreManagement.UI.ItemUI;
@@ -19,30 +14,17 @@ public partial class CreateItemVM : BaseViewModel
     private readonly INavigatorService<AllItemsVM> allItemsNavigator;
 
     [ObservableProperty]
-    private String _name;
-
-    [ObservableProperty]
-    private String _description;
-
-    [ObservableProperty]
-    private decimal _price;
-
-    [ObservableProperty]
-    private int _quantity;
+    private Item _item = new()
+    {
+        Image = ""
+    };
 
     [RelayCommand]
     private void Submit()
     {
-        var item = new Item
-        {
-            Name = Name,
-            Description = Description,
-            Quantity = Quantity,
-            Image = ""
-        };
         try
         {
-            db.Add(item);
+            db.Items.Add(Item);
             db.SaveChanges();
         }
         catch (Exception e)
@@ -55,10 +37,12 @@ public partial class CreateItemVM : BaseViewModel
 
     private void ResetToDefaultValues()
     {
-        Name = "Item name";
-        Description = "Item description";
-        Price = 0;
-        Quantity = 0;
+        Item = new Item
+        {
+            Name = "",
+            Image = "",
+            Description = ""
+        };
     }
 
     public override void ResetState()
@@ -73,7 +57,7 @@ public partial class CreateItemVM : BaseViewModel
         allItemsNavigator.Navigate();
     }
 
-    public CreateItemVM(ApplicationDbContext db,INavigatorService<AllItemsVM> allItemsNavigator)
+    public CreateItemVM(ApplicationDbContext db, INavigatorService<AllItemsVM> allItemsNavigator)
     {
         ResetToDefaultValues();
         this.db = db;

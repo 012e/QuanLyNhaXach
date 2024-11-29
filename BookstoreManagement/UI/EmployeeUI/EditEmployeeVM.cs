@@ -1,21 +1,17 @@
-﻿    using System.Collections.ObjectModel;
-using System.Security.RightsManagement;
-using System.Windows;
-using BookstoreManagement.Core;
-using BookstoreManagement.Core.Shortcut;
-using BookstoreManagement.DbContexts;
-using BookstoreManagement.Models;
-using BookstoreManagement.Services;
+﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.DbContexts;
+using BookstoreManagement.Shared.Models;
+using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
+using System.Windows;
 
 namespace BookstoreManagement.UI.EmployeeUI
 {
     public partial class EditEmployeeVM : EditItemVM<Employee>
     {
 
-        protected override ApplicationDbContext Db { get; }
+        private readonly ApplicationDbContext db;
 
         private readonly INavigatorService<AllEmployeeVM> allEmployeeNavigator;
 
@@ -27,7 +23,7 @@ namespace BookstoreManagement.UI.EmployeeUI
         public EditEmployeeVM(ApplicationDbContext db, INavigatorService<AllEmployeeVM> allEmployeeNavigator)
         {
             // Initialization code if needed
-            this.Db = db;
+            this.db = db;
             this.allEmployeeNavigator = allEmployeeNavigator;
         }
 
@@ -42,13 +38,13 @@ namespace BookstoreManagement.UI.EmployeeUI
         {
             Item = default;
             var id = ViewModelContext.Id;
-            Item = Db.Employees.Find(id);
+            Item = db.Employees.Find(id);
         }
 
         protected override void SubmitItemHandler()
         {
-            Db.Employees.Update(Item);
-            Db.SaveChanges();
+            db.Employees.Update(Item);
+            db.SaveChanges();
         }
 
         protected override void OnSubmittingSuccess()

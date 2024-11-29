@@ -1,26 +1,30 @@
-﻿using BookstoreManagement.DbContexts;
-using BookstoreManagement.Models;
+﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.DbContexts;
+using BookstoreManagement.Shared.Models;
+using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Windows;
-using BookstoreManagement.Core;
-using BookstoreManagement.Services;
-using BookstoreManagement.Core.Shortcut;
 using Microsoft.EntityFrameworkCore;
+using System.Windows;
 
 namespace BookstoreManagement.UI.ItemUI;
 
-public partial class EditItemVM(
-    ApplicationDbContext db,
-    INavigatorService<AllItemsVM> allItemsNavigator)
-    : EditItemVM<Item>
+public partial class EditItemVM : EditItemVM<Item>
 {
-    protected override ApplicationDbContext Db => db;
+    private readonly ApplicationDbContext db;
 
-    public INavigatorService<AllItemsVM> AllItemsNavigator { get; } = allItemsNavigator;
+    public INavigatorService<AllItemsVM> AllItemsNavigator { get; }
 
     [ObservableProperty]
     private Item _item;
+
+    public EditItemVM(
+        ApplicationDbContext db,
+        INavigatorService<AllItemsVM> allItemsNavigator)
+    {
+        this.db = db;
+        AllItemsNavigator = allItemsNavigator;
+    }
 
     [RelayCommand]
     private void NavigateBack()
@@ -36,8 +40,9 @@ public partial class EditItemVM(
 
     protected override void LoadItem()
     {
+        db.ChangeTracker.Clear();
         var itemId = ViewModelContext.Id;
-        Item = Db.Items.Include(item => item.Tags).FirstOrDefault(item => item.Id == itemId);
+        Item = db.Items.Include(item => item.Tags).First();
     }
 
     protected override void OnSubmittingSuccess()
@@ -48,8 +53,7 @@ public partial class EditItemVM(
 
     protected override void SubmitItemHandler()
     {
-        Db.Items.Update(Item);
-        Db.SaveChanges();
+        db.Items.Update(Item);
+        db.SaveChanges();
     }
-    
 }

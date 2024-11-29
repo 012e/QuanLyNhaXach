@@ -1,10 +1,9 @@
 ﻿using BookstoreManagement.Core.Shortcut;
-using BookstoreManagement.DbContexts;
-using BookstoreManagement.Models;
-using BookstoreManagement.Services;
+using BookstoreManagement.Shared.DbContexts;
+using BookstoreManagement.Shared.Models;
+using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -15,7 +14,8 @@ namespace BookstoreManagement.UI.InvoicesUI;
 // TODO: add quantity (currently defaulted to 1)
 public partial class AddInvoiceItemVM : EditItemVM<Invoice>
 {
-    protected override ApplicationDbContext Db { get; }
+    private readonly ApplicationDbContext db;
+
     public IContextualNavigatorService<EditInvoiceVM, Invoice> EditInvoiceNavigator { get; }
 
     [ObservableProperty]
@@ -27,7 +27,7 @@ public partial class AddInvoiceItemVM : EditItemVM<Invoice>
 
     protected override void LoadItem()
     {
-        Items = new ObservableCollection<Item>(Db.Items.ToList());
+        Items = new ObservableCollection<Item>(db.Items.ToList());
     }
     protected override bool CanSubmitItem => base.CanSubmitItem && SelectedItem is not null;
 
@@ -45,13 +45,13 @@ public partial class AddInvoiceItemVM : EditItemVM<Invoice>
 
     protected override void SubmitItemHandler()
     {
-        Db.InvoicesItems.Add(new InvoicesItem
+        db.InvoicesItems.Add(new InvoicesItem
         {
             InvoiceId = ViewModelContext.Id,
             ItemId = SelectedItem.Id,
             Quantity = 1
         });
-        Db.SaveChanges();
+        db.SaveChanges();
     }
 
     protected override void OnSubmittingSuccess()
@@ -62,7 +62,7 @@ public partial class AddInvoiceItemVM : EditItemVM<Invoice>
 
     public AddInvoiceItemVM(ApplicationDbContext db, IContextualNavigatorService<EditInvoiceVM, Invoice> editInvoiceNavigator)
     {
-        Db = db;
+        db = db;
         EditInvoiceNavigator = editInvoiceNavigator;
     }
 }
