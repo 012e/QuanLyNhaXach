@@ -1,26 +1,24 @@
-﻿using System.Windows;
-using BookstoreManagement.Core;
-using BookstoreManagement.Core.Shortcut;
-using BookstoreManagement.DbContexts;
-using BookstoreManagement.Models;
-using BookstoreManagement.Services;
+﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.DbContexts;
+using BookstoreManagement.Shared.Models;
+using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
+using System.Windows;
 
 namespace BookstoreManagement.UI.ProviderUI;
 
 public partial class EditProviderVM : EditItemVM<Provider>
 {
-    protected override ApplicationDbContext Db { get; }
+    private readonly ApplicationDbContext db;
 
     public INavigatorService<AllProviderVM> AllProvidersNavigator { get; set; }
 
     [ObservableProperty]
     private Provider _item;
-    public EditProviderVM(ApplicationDbContext db , INavigatorService<AllProviderVM> allProvidersNavigator )
+    public EditProviderVM(ApplicationDbContext db, INavigatorService<AllProviderVM> allProvidersNavigator)
     {
-        Db = db;
+        this.db = db;
         AllProvidersNavigator = allProvidersNavigator;
     }
     [RelayCommand]
@@ -31,13 +29,13 @@ public partial class EditProviderVM : EditItemVM<Provider>
     protected override void LoadItem()
     {
         var id = ViewModelContext.Id;
-        Item = Db.Providers.Find(id);
+        Item = db.Providers.Find(id);
     }
 
     protected override void SubmitItemHandler()
     {
-        Db.Providers.Update(Item);
-        Db.SaveChanges();
+        db.Providers.Update(Item);
+        db.SaveChanges();
     }
     protected override void OnSubmittingSuccess()
     {

@@ -18,7 +18,7 @@
     Title="Bookstore Management"
     Width="1411"
     Height="600"
-    Icon="/Images/icon_title.ico"
+    Icon="/Shared/Images/icon_title.ico"
     WindowState="Maximized"
     mc:Ignorable="d">
     <Grid>
@@ -192,7 +192,7 @@
                     <Image
                         Width="150"
                         Height="150"
-                        Source="pack://application:,,,/Images/logo.png" />
+                        Source="pack://application:,,,/Shared/Images/logo.png" />
                     <TextBlock
                         FontSize="20"
                         Foreground="#2C3E50"

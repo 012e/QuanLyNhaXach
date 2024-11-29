@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Data;
-using BookstoreManagement.Core;
-using BookstoreManagement.Core.Shortcut;
-using BookstoreManagement.DbContexts;
-using BookstoreManagement.Models;
-using BookstoreManagement.Services;
+﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.DbContexts;
+using BookstoreManagement.Shared.Models;
+using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.ObjectModel;
 
 namespace BookstoreManagement.UI.EmployeeUI
 {
@@ -26,12 +16,12 @@ namespace BookstoreManagement.UI.EmployeeUI
         [ObservableProperty]
         private String _searchText = "";
 
-        protected override ApplicationDbContext Db { get; }
-        public AllEmployeeVM(ApplicationDbContext db, 
+        protected readonly ApplicationDbContext db;
+        public AllEmployeeVM(ApplicationDbContext db,
             IContextualNavigatorService<EditEmployeeVM, Employee> editItemNavigator,
             INavigatorService<CreateEmployeeVM> createEmployeeNavigator)
         {
-            Db = db;
+            this.db = db;
             EditItemNavigator = editItemNavigator;
             this.createEmployeeNavigator = createEmployeeNavigator;
         }
@@ -42,8 +32,8 @@ namespace BookstoreManagement.UI.EmployeeUI
         }
         protected override void LoadItems()
         {
-            Db.ChangeTracker.Clear();
-            var items = Db.Employees.OrderBy(employee => employee.Id).ToList();
+            db.ChangeTracker.Clear();
+            var items = db.Employees.OrderBy(employee => employee.Id).ToList();
             Items = new ObservableCollection<Employee>(items);
         }
         protected override bool FitlerItem(Employee item)
@@ -51,9 +41,15 @@ namespace BookstoreManagement.UI.EmployeeUI
             string name = item.FirstName + item.LastName;
             return name.ToLower().Contains(SearchText.ToLower());
         }
+
         partial void OnSearchTextChanged(string value)
         {
             ItemsView.Refresh();
+        }
+
+        protected override void DeleteItem(Employee item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

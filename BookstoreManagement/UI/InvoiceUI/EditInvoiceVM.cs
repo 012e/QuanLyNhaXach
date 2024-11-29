@@ -1,27 +1,20 @@
-﻿using BookstoreManagement.Core;
-using BookstoreManagement.Core.Shortcut;
-using BookstoreManagement.DbContexts;
-using BookstoreManagement.Models;
-using BookstoreManagement.Services;
+﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.DbContexts;
+using BookstoreManagement.Shared.Models;
+using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookstoreManagement.UI.InvoicesUI;
 
 public partial class EditInvoiceVM : EditItemVM<Invoice>
 {
-    protected override ApplicationDbContext Db { get; }
+    private readonly ApplicationDbContext db;
 
     [ObservableProperty]
     private ObservableCollection<Item> _invoiceItems = new();
-    
+
     public INavigatorService<AllInvoicesVM> AllInvoicesNavigator { get; }
     public IContextualNavigatorService<AddInvoiceItemVM, Invoice> AddInvoiceItemNavigator { get; }
 
@@ -51,9 +44,10 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     protected override void LoadItem()
     {
         Invoice = ViewModelContext;
-        var itemsFromInvoice = from items in Db.Items
-                    join invoiceItems in Db.InvoicesItems on items.Id equals invoiceItems.ItemId
-                    where invoiceItems.InvoiceId == Invoice.Id select items;
+        var itemsFromInvoice = from items in db.Items
+                               join invoiceItems in db.InvoicesItems on items.Id equals invoiceItems.ItemId
+                               where invoiceItems.InvoiceId == Invoice.Id
+                               select items;
         InvoiceItems = new ObservableCollection<Item>(itemsFromInvoice);
     }
 
@@ -66,7 +60,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         IContextualNavigatorService<AddInvoiceItemVM, Invoice> addInvoiceItemNavigator
         )
     {
-        Db = db;
+        this.db = db;
         AllInvoicesNavigator = allInvoicesNavigator;
         AddInvoiceItemNavigator = addInvoiceItemNavigator;
     }

@@ -16,11 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Images\logo.png" />
+    <None Remove="Shared\Images\logo.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="dotenv.net" Version="3.2.0" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
@@ -34,10 +34,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\icon_title.ico">
+    <Resource Include="Shared\Images\icon_title.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Images\logo.png">
+    <Resource Include="Shared\Images\logo.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

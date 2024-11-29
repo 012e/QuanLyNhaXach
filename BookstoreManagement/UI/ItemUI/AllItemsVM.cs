@@ -1,22 +1,17 @@
-﻿using BookstoreManagement.DbContexts;
-using BookstoreManagement.Models;
+﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.DbContexts;
+using BookstoreManagement.Shared.Models;
+using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows;
-using BookstoreManagement.Core;
-using BookstoreManagement.Services;
-using BookstoreManagement.Core.Shortcut;
-using Microsoft.EntityFrameworkCore;
-using System.Windows.Input;
-using System.Windows.Data;
 
 namespace BookstoreManagement.UI.ItemUI;
 
 public partial class AllItemsVM : ListVM<Item, EditItemVM>
 {
-    protected override ApplicationDbContext Db { get; }
+    private readonly ApplicationDbContext db;
     protected override IContextualNavigatorService<EditItemVM, Item> EditItemNavigator { get; }
     protected INavigatorService<CreateItemVM> CreateItemNavigator { get; }
 
@@ -48,7 +43,7 @@ public partial class AllItemsVM : ListVM<Item, EditItemVM>
         INavigatorService<CreateItemVM> createItemNavigator
     )
     {
-        this.Db = db;
+        this.db = db;
         this.EditItemNavigator = editItemNavigator;
         this.CreateItemNavigator = createItemNavigator;
     }
@@ -57,5 +52,38 @@ public partial class AllItemsVM : ListVM<Item, EditItemVM>
     private void Test()
     {
         MessageBox.Show(SearchText);
+    }
+
+    protected override void LoadItems()
+    {
+        db.ChangeTracker.Clear();
+        var items = db.Items.OrderBy(i => i.Id).ToList();
+        Items = new(items);
+    }
+
+    private bool ConfirmDeleteItem(Item item)
+    {
+        var result = MessageBox.Show($"Are you sure you want to delete {item.Name}?", "Delete Item", MessageBoxButton.YesNo);
+        return result == MessageBoxResult.Yes;
+    }
+
+    protected override void DeleteItem(Item item)
+    {
+        if (item == null)
+        {
+            return;
+        }
+        var itemToDelete = db.Items.Find(item.Id);
+        if (itemToDelete == null)
+        {
+            return;
+        }
+        if (ConfirmDeleteItem(itemToDelete))
+        {
+            db.Items.Remove(itemToDelete);
+            db.SaveChanges();
+            LoadItemsInBackground();
+        }
+
     }
 }

@@ -1,22 +1,16 @@
 ﻿using BookstoreManagement.Core.Shortcut;
-using BookstoreManagement.DbContexts;
-using BookstoreManagement.Models;
-using BookstoreManagement.Services;
+using BookstoreManagement.Shared.DbContexts;
+using BookstoreManagement.Shared.Models;
+using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace BookstoreManagement.UI.TagUI
 {
     public partial class EditTagVM : EditItemVM<Tag>
     {
-        protected override ApplicationDbContext Db { get; }
+        private readonly ApplicationDbContext db;
 
         [ObservableProperty]
         private Tag _tag;
@@ -30,13 +24,13 @@ namespace BookstoreManagement.UI.TagUI
 
         protected override void LoadItem()
         {
-            Tag = Db.Tags.Where(tag => tag.Id == ViewModelContext.Id).First();
+            Tag = db.Tags.Where(tag => tag.Id == ViewModelContext.Id).First();
         }
 
         protected override void SubmitItemHandler()
         {
-            Db.Tags.Update(Tag);
-            Db.SaveChanges();
+            db.Tags.Update(Tag);
+            db.SaveChanges();
         }
 
         protected override void OnSubmittingSuccess()
@@ -47,7 +41,7 @@ namespace BookstoreManagement.UI.TagUI
 
         public EditTagVM(ApplicationDbContext db, INavigatorService<AllTagsVM> allTagsNavigator)
         {
-            Db = db;
+            this.db = db;
             this.allTagsNavigator = allTagsNavigator;
         }
     }

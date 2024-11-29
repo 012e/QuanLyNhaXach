@@ -1,26 +1,18 @@
-﻿using BookstoreManagement.DbContexts;
-using BookstoreManagement.Models;
+﻿using BookstoreManagement.Core.Helper;
+using BookstoreManagement.Shared.DbContexts;
+using BookstoreManagement.Shared.Models;
+using BookstoreManagement.UI.CustomerUI;
+using BookstoreManagement.UI.DashboardUI;
+using BookstoreManagement.UI.EmployeeUI;
+using BookstoreManagement.UI.InvoicesUI;
 using BookstoreManagement.UI.ItemUI;
 using BookstoreManagement.UI.MainWindow;
+using BookstoreManagement.UI.ProviderUI;
+using BookstoreManagement.UI.TagUI;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Configuration;
-using System.Data;
 using System.Windows;
-using System.Windows.Controls;
-using BookstoreManagement.Core.Helper;
-using BookstoreManagement.Services;
-using dotenv.net.Utilities;
-using Microsoft.EntityFrameworkCore;
-using dotenv.net;
-using Microsoft.Extensions.Options;
-using BookstoreManagement.UI.InvoicesUI;
-using BookstoreManagement.UI;
-using BookstoreManagement.UI.TagUI;
-using BookstoreManagement.UI.EmployeeUI;
-using BookstoreManagement.UI.ProviderUI;
-using BookstoreManagement.UI.DashboardUI;
-using BookstoreManagement.UI.CustomerUI;
 
 namespace BookstoreManagement;
 
