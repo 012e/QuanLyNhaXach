@@ -27,7 +27,6 @@ public partial class App : Application
 {
 
     private IHost AppHost { get; }
-
     public App()
     {
         DotNetEnv.Env.TraversePath().Load();
@@ -53,6 +52,8 @@ public partial class App : Application
 
         builder.Services.AddSingleton<NavigatorStore>();
 
+       
+
         // dashboard
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
         //builder.Services.AddViewContextualViewModel<>
@@ -72,10 +73,12 @@ public partial class App : Application
         // Create Promotion
         builder.Services.AddViewViewModel<CreatePromotionView, CreatePromotionVM>();
 
+        builder.Services.AddViewViewModel<SelectItemsV, SelectItemsVM>();
+
+       
 
         AppHost = builder.Build();
 
-        
     }
 
 

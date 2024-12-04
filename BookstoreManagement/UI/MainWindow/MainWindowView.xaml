@@ -11,8 +11,7 @@
     xmlns:vm="clr-namespace:BookstoreManagement.UI.MainWindow"
     xmlns:dashboard="clr-namespace:BookstoreManagement.UI.DashboardUI"
     xmlns:customer="clr-namespace:BookstoreManagement.UI.CustomerUI"
-    xmlns:promotion="clr-namespace:BookstoreManagement.UI.PromotionUI"
-    
+    xmlns:promotion="clr-namespace:BookstoreManagement.UI.PromotionUI" 
     WindowState="Maximized"
     Title="MainWindow"
     Width="1411"
@@ -71,6 +70,9 @@
             <DataTemplate DataType="{x:Type promotion:CreatePromotionVM}">
                 <promotion:CreatePromotionView></promotion:CreatePromotionView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type promotion:SelectItemsVM}">
+                <promotion:SelectItemsV></promotion:SelectItemsV>
+            </DataTemplate>
             <!--End Promotion--> 
         </Grid.Resources>
         <Grid.ColumnDefinitions>
@@ -127,15 +129,11 @@
                 Promotion
             </Button>
             <!--End Siderbar - Promotion-->
-            
-            
-            
-          
-           
         </StackPanel>
 
+        
         <Grid Grid.Column="1" Background="LightBlue">
-            <Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="100*" />
                 <ColumnDefinition Width="3*" />
@@ -145,11 +143,10 @@
                 <RowDefinition Height="100*" />
                 <RowDefinition Height="3*" />
             </Grid.RowDefinitions>
+            
             <!--  Current view model  -->
             <Grid Grid.Row="1" Grid.Column="1">
-                <Border
-                   
-                   
+                <Border       
                     BorderThickness="30"
                     CornerRadius="30">
                     <ContentControl

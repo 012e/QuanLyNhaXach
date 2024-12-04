@@ -4,34 +4,43 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BookstoreManagement.UI.PromotionUI"
+             xmlns:converter="clr-namespace:BookstoreManagement.Converter"
+             xmlns:custom="clr-namespace:ModalControl;assembly=ModalControl"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="900">
+             d:DesignHeight="800" d:DesignWidth="1200">
+    <Control.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+    </Control.Resources>
+
+
+
     <Grid Background="#fff">
         <Grid.RowDefinitions>
-            <!--Title--> 
+            <!--Title-->
             <RowDefinition Height="0.2*"></RowDefinition>
 
             <RowDefinition Height="0.1*"></RowDefinition>
-            <!--Body--> 
+            <!--Body-->
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        
+
         <!--Padding - Padding between Header and Body-->
         <Grid Grid.Row="1" Background="#EDEDED">
-            
+
         </Grid>
-        <!--End Padding--> 
-        
-        <!--=========== HEADER ================--> 
+        <!--End Padding-->
+
+        <!--=========== HEADER ================-->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            
-            
-            <!--Title Name--> 
+
+
+            <!--Title Name-->
             <Grid Grid.Column="0" VerticalAlignment="Center" Margin="10 0 0 0">
                 <StackPanel>
                     <TextBlock  FontSize="30" FontWeight="Bold">
@@ -40,8 +49,8 @@
                 </StackPanel>
             </Grid>
             <!--End Title Name-->
-             
-            <!--Button Submit and GoBack--> 
+
+            <!--Button Submit and GoBack-->
             <Grid Grid.Column="2" VerticalAlignment="Center"
                   HorizontalAlignment="Right" Margin="0 0 10 0">
                 <StackPanel Orientation="Horizontal">
@@ -57,20 +66,20 @@
                     </StackPanel>
                 </StackPanel>
             </Grid>
-            <!--Button Submit and GoBack-->            
+            <!--Button Submit and GoBack-->
         </Grid>
         <!--END =========== HEADER ================-->
-        
+
         <!--=================== BODY ==================-->
         <Grid Grid.Row="2" Background="#EDEDED" >
             <Grid.ColumnDefinitions>
-                
+
                 <ColumnDefinition Width="0.3*"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="0.06*"></ColumnDefinition>
+                <ColumnDefinition Width="0.2*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-           
-           <!--Lable for TextBox-->  
+
+            <!--Lable for TextBox-->
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.2*"></RowDefinition>
@@ -101,8 +110,8 @@
                 </Grid>
             </Grid>
             <!--End Lable for TextBox-->
-            
-            <!--TextBox--> 
+
+            <!--TextBox-->
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.2*"></RowDefinition>
@@ -113,7 +122,7 @@
                     <RowDefinition Height="0.2*"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                
+
                 <!--Row Promotion Name-->
                 <Grid Grid.Row="0" VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
@@ -126,15 +135,15 @@
                     </Grid>
                 </Grid>
                 <!--End Row Promotion Name-->
-                
+
                 <!--Row Description-->
                 <Grid Grid.Row="1" VerticalAlignment="Center">
                     <Grid>
                         <TextBox Background="#fff" Height="35"></TextBox>
                     </Grid>
                 </Grid>
-                <!--End Row Description--> 
-                
+                <!--End Row Description-->
+
                 <!--Row Date-->
                 <Grid Grid.Row="2" VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
@@ -152,14 +161,34 @@
                         <DatePicker SelectedDate="2024-11-13" SelectedDateFormat="Short" ></DatePicker>
                     </Grid>
                 </Grid>
-                <!--End Row Date--> 
-                
+                <!--End Row Date-->
+
                 <!--Apply To Row-->
                 <Grid Grid.Row="3" VerticalAlignment="Center">
-                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0" Margin="0 10 20 10">
+                            <Button Background="#EDEDED" Foreground="#000" BorderThickness="0" Command="{Binding SelectItemsCommand}">
+                                Select Items
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="1" Margin="20 10 0 10">
+                            <Button Background="#EDEDED" Foreground="#000" BorderThickness="0">
+                                Select Invoices
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Grid>
-                <!--End Apply To Row--> 
-                
+                <!--End Apply To Row-->
+
                 <!--Usage Row-->
                 <Grid Grid.Row="4" VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
@@ -181,7 +210,7 @@
                         <TextBox Background="#fff" Height="35"></TextBox>
                     </Grid>
                 </Grid>
-                <!--End Usage Row--> 
+                <!--End Usage Row-->
                 <!--Discout and Status Row-->
                 <Grid Grid.Row="5">
                     <Grid.ColumnDefinitions>
@@ -201,14 +230,17 @@
                         </ComboBox>
                     </Grid>
                 </Grid>
-                <!--End Discout and Status Row--> 
-                
+                <!--End Discout and Status Row-->
+
+
             </Grid>
             <!-- End TextBox-->
-
-
-
         </Grid>
-        <!--END ================ BODY ==================--> 
+        <!--END ================ BODY ==================-->
+        <custom:Modal IsOpen="{Binding IsModalOpen}">
+            <StackPanel>
+                <ContentControl Content="{Binding CurrentViewModel}"></ContentControl>
+            </StackPanel>
+        </custom:Modal>
     </Grid>
 </UserControl>

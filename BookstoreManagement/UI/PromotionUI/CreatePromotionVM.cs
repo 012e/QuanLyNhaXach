@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core;
+using BookstoreManagement.Core.Interface;
 using BookstoreManagement.Models;
 using BookstoreManagement.Services;
 using BookstoreManagement.UI.ItemUI;
@@ -9,16 +10,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BookstoreManagement.UI.PromotionUI
 {
     public partial class CreatePromotionVM : BaseViewModel
     {
-        // Khai bao Navigator toi CreatePromotion
+        // Khai bao Navigator tro ve PromotionVM
         private readonly INavigatorService<PromotionVM> promotionNavigator;
+        private readonly IAbstractFactory<SelectItemsVM> selectItemFactory;
 
-        // Khai bao Navigator toi Chon san pham
-        private readonly INavigatorService<AllItemsVM> allItemsNavigator;
+        [ObservableProperty]
+        private bool _isModalOpen = false;
+
+        [ObservableProperty]
+        private BaseViewModel _currentViewModel;
+
 
         [ObservableProperty]
         private int _id;
@@ -58,6 +65,7 @@ namespace BookstoreManagement.UI.PromotionUI
         public override void ResetState()
         {
             base.ResetState();
+            IsModalOpen = false;
         }
 
         // Go back
@@ -69,17 +77,19 @@ namespace BookstoreManagement.UI.PromotionUI
 
         // Nut chuyen toi chon vat pham de ap dung khuyen mai
         [RelayCommand]
-        private void ApplyToItems()
+        private void SelectItems()
         {
-            allItemsNavigator.Navigate();
+            IsModalOpen = true;
         }
+
         public CreatePromotionVM(
-            INavigatorService<PromotionVM> promotionNavigator)
+            INavigatorService<PromotionVM> promotionNavigator,
+            IAbstractFactory<SelectItemsVM> selectItemFactory)
+            
         {
             this.promotionNavigator = promotionNavigator;
-        }
-
-
+            this.selectItemFactory = selectItemFactory;
+            this.CurrentViewModel = selectItemFactory.Create();
+        }     
     }
-   
 }

@@ -21,6 +21,8 @@ public partial class MainWindowVM : BaseViewModel
     [ObservableProperty]
     private NavigatorStore _navigatorStore;
 
+  
+
     private readonly INavigatorService<AllItemsVM> itemNavigator;
     private readonly INavigatorService<AllInvoicesVM> invoiceNavigator;
     private readonly INavigatorService<AllTagsVM> tagNaviator;
@@ -74,8 +76,7 @@ public partial class MainWindowVM : BaseViewModel
         INavigatorService<AllTagsVM> tagNaviator,
         INavigatorService<DashBoardVM> dashBoardNavigator,
         INavigatorService<CustomerVM> customerNavigator,
-        INavigatorService<PromotionVM> promotionNavigator
-    )
+        INavigatorService<PromotionVM> promotionNavigator)
     {
         this._navigatorStore = navigatorStore;
         this.itemNavigator = itemNavigator;

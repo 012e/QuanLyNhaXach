@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="BookstoreManagement.UI.PromotionUI.SelectItemsV"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BookstoreManagement.UI.PromotionUI"
+             xmlns:converter="clr-namespace:BookstoreManagement.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Control.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+    </Control.Resources>
+
+
+    <Grid >
+        <Border Background="#fff" Padding="20" CornerRadius="20"
+                Width="500" Height="400" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock>babadbabdbad</TextBlock>
+        </Border>
+    </Grid>
+</UserControl>
