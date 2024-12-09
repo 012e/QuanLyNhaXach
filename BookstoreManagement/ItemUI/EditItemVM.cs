@@ -35,14 +35,17 @@ public partial class EditItemVM : EditItemVM<Item>
     public override void ResetState()
     {
         base.ResetState();
-        Item = default;
     }
 
     protected override void LoadItem()
     {
+        Item = default;
         db.ChangeTracker.Clear();
         var itemId = ViewModelContext.Id;
-        Item = db.Items.Include(item => item.Tags).First();
+        Item = db.Items
+            .Include(item => item.Tags)
+            .Where(item => item.Id == itemId)
+            .First();
     }
 
     protected override void OnSubmittingSuccess()
