@@ -1,4 +1,7 @@
 ﻿using BookstoreManagement.Core.Helper;
+using BookstoreManagement.LoginUI;
+using BookstoreManagement.LoginUI.Services;
+using BookstoreManagement.MainUI;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.UI.CustomerUI;
@@ -56,6 +59,11 @@ public partial class App : Application
         builder.Services.AddViewContextualViewModel<EditCustomerV, EditCustomerVM, Customer>();
         builder.Services.AddViewViewModel<CreateCustomerV, CreateCustomerVM>();
 
+        builder.Services.AddViewViewModel<MainV, MainVM>();
+
+        builder.Services.AddViewViewModel<LoginV, LoginVM>();
+        builder.Services.AddSingleton<LoginService>();
+
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
 
         builder.Services.AddKeyedSingleton<NavigatorStore>("default");
@@ -73,6 +81,10 @@ public partial class App : Application
         var navigator = AppHost.Services.GetRequiredKeyedService<NavigatorStore>("default");
         var allItemsVM = AppHost.Services.GetRequiredService<AllItemsVM>();
         navigator.CurrentViewModel = allItemsVM;
+
+        var globalNavigator = AppHost.Services.GetRequiredKeyedService<NavigatorStore>("global");
+        var loginVM = AppHost.Services.GetRequiredService<LoginVM>();
+        globalNavigator.CurrentViewModel = loginVM;
 
         base.OnStartup(e);
     }

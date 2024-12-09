@@ -1,4 +1,7 @@
-﻿namespace BookstoreManagement.Shared.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace BookstoreManagement.test;
 
 public partial class Employee
 {
@@ -16,7 +19,7 @@ public partial class Employee
 
     public bool IsManager { get; set; }
 
-    public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
-
     public string Password { get; set; } = null!;
+
+    public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 }
