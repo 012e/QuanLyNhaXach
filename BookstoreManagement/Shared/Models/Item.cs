@@ -1,4 +1,6 @@
-﻿namespace BookstoreManagement.Shared.Models;
+﻿using System.Collections.ObjectModel;
+
+namespace BookstoreManagement.Shared.Models;
 
 public partial class Item
 {
@@ -22,5 +24,5 @@ public partial class Item
 
     public virtual Provider? Provider { get; set; }
 
-    public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
+    public virtual ObservableCollection<Tag> Tags { get; set; } = new ObservableCollection<Tag>();
 }

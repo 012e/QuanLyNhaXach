@@ -17,6 +17,8 @@ public partial class AllItemsVM : ListVM<Item, EditItemVM>
 
     [ObservableProperty]
     private String _searchText = "";
+    [ObservableProperty]
+    private String _searchTagsText = "";
 
     [ObservableProperty]
     private ObservableCollection<Item> _listItems;
@@ -48,11 +50,6 @@ public partial class AllItemsVM : ListVM<Item, EditItemVM>
         this.CreateItemNavigator = createItemNavigator;
     }
 
-    [RelayCommand]
-    private void Test()
-    {
-        MessageBox.Show(SearchText);
-    }
 
     protected override void LoadItems()
     {

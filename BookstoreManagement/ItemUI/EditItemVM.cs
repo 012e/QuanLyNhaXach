@@ -5,7 +5,10 @@ using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Policy;
+using System.Text.Json;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace BookstoreManagement.UI.ItemUI;
 
@@ -17,6 +20,8 @@ public partial class EditItemVM : EditItemVM<Item>
 
     [ObservableProperty]
     private Item _item;
+    [ObservableProperty]
+    private BitmapImage _imageSource;
 
     public EditItemVM(
         ApplicationDbContext db,
@@ -24,6 +29,8 @@ public partial class EditItemVM : EditItemVM<Item>
     {
         this.db = db;
         AllItemsNavigator = allItemsNavigator;
+       
+
     }
 
     [RelayCommand]
@@ -35,14 +42,24 @@ public partial class EditItemVM : EditItemVM<Item>
     public override void ResetState()
     {
         base.ResetState();
-        Item = default;
     }
 
     protected override void LoadItem()
     {
         db.ChangeTracker.Clear();
         var itemId = ViewModelContext.Id;
-        Item = db.Items.Include(item => item.Tags).First();
+        Item = db.Items
+            .Include(item => item.Tags).Where(item => item.Id == itemId).First();
+        if (Item == null)
+        {
+            MessageBox.Show("Item not found.");
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(Item.Image))
+        {
+            LoadImageFromUrl(Item.Image);
+        }
     }
 
     protected override void OnSubmittingSuccess()
@@ -55,5 +72,29 @@ public partial class EditItemVM : EditItemVM<Item>
     {
         db.Items.Update(Item);
         db.SaveChanges();
+    }
+    private void LoadImageFromUrl(string url)
+    {
+        if (string.IsNullOrEmpty(url))
+        {
+            ImageSource = null; 
+            return;
+        }
+
+        try
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(url, UriKind.Absolute);
+                bitmap.EndInit();
+                ImageSource = bitmap; 
+            });
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading image: {ex.Message}");
+        }
     }
 }
