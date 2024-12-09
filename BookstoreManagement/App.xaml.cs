@@ -58,9 +58,8 @@ public partial class App : Application
 
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
 
-        builder.Services.AddSingleton<NavigatorStore>();
-
-
+        builder.Services.AddKeyedSingleton<NavigatorStore>("default");
+        builder.Services.AddKeyedSingleton<NavigatorStore>("global");
 
         AppHost = builder.Build();
     }
@@ -71,7 +70,7 @@ public partial class App : Application
         AppHost.Start();
         AppHost.Services.GetRequiredService<MainWindowV>().Show();
 
-        var navigator = AppHost.Services.GetRequiredService<NavigatorStore>();
+        var navigator = AppHost.Services.GetRequiredKeyedService<NavigatorStore>("default");
         var allItemsVM = AppHost.Services.GetRequiredService<AllItemsVM>();
         navigator.CurrentViewModel = allItemsVM;
 

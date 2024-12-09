@@ -9,6 +9,7 @@ using BookstoreManagement.UI.ProviderUI;
 using BookstoreManagement.UI.TagUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BookstoreManagement.UI.MainWindow;
 
@@ -71,7 +72,7 @@ public partial class MainWindowVM : BaseViewModel
     }
 
     public MainWindowVM(
-        NavigatorStore navigatorStore,
+        [FromKeyedServices("default")] NavigatorStore navigatorStore,
         INavigatorService<AllItemsVM> itemNavigator,
         INavigatorService<AllInvoicesVM> invoiceNavigator,
         INavigatorService<AllTagsVM> tagNavigator,
