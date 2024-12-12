@@ -1,4 +1,6 @@
-﻿namespace BookstoreManagement.Shared.Models;
+﻿using System.Windows.Controls;
+
+namespace BookstoreManagement.Shared.Models;
 
 public partial class Import
 {

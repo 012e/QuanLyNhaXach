@@ -7,6 +7,7 @@
     xmlns:dashboard="clr-namespace:BookstoreManagement.UI.DashboardUI"
     xmlns:employee="clr-namespace:BookstoreManagement.UI.EmployeeUI"
     xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+    xmlns:import="clr-namespace:BookstoreManagement.ImportUI"
     xmlns:invoice="clr-namespace:BookstoreManagement.UI.InvoicesUI"
     xmlns:item="clr-namespace:BookstoreManagement.UI.ItemUI"
     xmlns:local="clr-namespace:BookstoreManagement"
@@ -171,6 +172,15 @@
             <DataTemplate DataType="{x:Type customer:CreateCustomerVM}">
                 <customer:CreateCustomerV />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type import:AllImportVM}">
+                <import:ImportV />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type import:EditImportVM}">
+                <import:EditImportV />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type import:CreateImportVM}">
+                <import:CreateImportV />
+            </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.17*" />
@@ -269,6 +279,15 @@
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="AccountTie" Style="{DynamicResource sidebarRadioButtonIcon}" />
                                 <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Provider" />
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Height="60"
+                            Command="{Binding NavigateToImportCommand}"
+                            Style="{DynamicResource sidebarRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ShoppingCart" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Import" />
                             </StackPanel>
                         </RadioButton>
                     </StackPanel>

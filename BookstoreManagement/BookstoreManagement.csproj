@@ -86,6 +86,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="dotenv.net" Version="3.2.0" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />

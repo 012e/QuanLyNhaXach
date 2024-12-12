@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core.Helper;
+using BookstoreManagement.ImportUI;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.UI.CustomerUI;
@@ -12,6 +13,7 @@ using BookstoreManagement.UI.TagUI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 using System.Windows;
 
 namespace BookstoreManagement;
@@ -55,6 +57,11 @@ public partial class App : Application
         builder.Services.AddViewViewModel<AllCustomersV, AllCustomersVM>();
         builder.Services.AddViewContextualViewModel<EditCustomerV, EditCustomerVM, Customer>();
         builder.Services.AddViewViewModel<CreateCustomerV, CreateCustomerVM>();
+
+        builder.Services.AddViewViewModel<ImportV, AllImportVM>();
+        builder.Services.AddViewContextualViewModel<EditImportV, EditImportVM, Import>();
+        builder.Services.AddViewViewModel<CreateImportV, CreateImportVM>();
+        
 
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
 
