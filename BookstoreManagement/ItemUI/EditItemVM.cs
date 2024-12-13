@@ -6,6 +6,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Windows;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
+using System.Collections.ObjectModel;
+using BookstoreManagement.UI.TagUI;
+using BookstoreManagement.ItemUI.Dtos;
 
 namespace BookstoreManagement.UI.ItemUI;
 
@@ -14,16 +19,28 @@ public partial class EditItemVM : EditItemVM<Item>
     private readonly ApplicationDbContext db;
 
     public INavigatorService<AllItemsVM> AllItemsNavigator { get; }
+    protected INavigatorService<CreateTagVM> CreateTagNavigator { get; }
 
     [ObservableProperty]
     private Item _item;
+    [ObservableProperty]
+    private BitmapImage _imageSource;
+    [ObservableProperty]
+    private ObservableCollection<Tag> _listTags;
+    [ObservableProperty]
+    private ObservableCollection<ItemTagDto> _tags;
+    [ObservableProperty]
+    private bool _isSet = false;
+    
 
     public EditItemVM(
         ApplicationDbContext db,
-        INavigatorService<AllItemsVM> allItemsNavigator)
+        INavigatorService<AllItemsVM> allItemsNavigator,
+        INavigatorService<CreateTagVM> createTagNavigator)
     {
         this.db = db;
         AllItemsNavigator = allItemsNavigator;
+        CreateTagNavigator = createTagNavigator;
     }
 
     [RelayCommand]
@@ -34,7 +51,9 @@ public partial class EditItemVM : EditItemVM<Item>
 
     public override void ResetState()
     {
+        IsSet = false;
         base.ResetState();
+        
     }
 
     protected override void LoadItem()
@@ -43,9 +62,36 @@ public partial class EditItemVM : EditItemVM<Item>
         db.ChangeTracker.Clear();
         var itemId = ViewModelContext.Id;
         Item = db.Items
-            .Include(item => item.Tags)
-            .Where(item => item.Id == itemId)
-            .First();
+            .Include(item => item.Tags).Where(item => item.Id == itemId).First();
+        var allTags = db.Tags.ToHashSet();
+        var itemTags = Item.Tags.ToHashSet();
+
+        Tags = new ObservableCollection<ItemTagDto>();
+         
+        foreach (var tag in allTags)
+        {
+            var exists = itemTags.Contains(tag);
+            Tags.Add(new ItemTagDto()
+            {
+                Tag = tag,
+                IsChecked = exists
+            });
+        }
+
+        if (Item != null)
+        {
+            ListTags = new ObservableCollection<Tag>(Item.Tags);
+        }
+        else
+        {
+            ListTags = new ObservableCollection<Tag>();
+            MessageBox.Show("item is null");
+            return;
+        }
+        if (!string.IsNullOrEmpty(Item.Image))
+        {
+            LoadImageFromUrl(Item.Image);
+        }
     }
 
     protected override void OnSubmittingSuccess()
@@ -58,5 +104,53 @@ public partial class EditItemVM : EditItemVM<Item>
     {
         db.Items.Update(Item);
         db.SaveChanges();
+    }
+    private void LoadImageFromUrl(string url)
+    {
+        if (string.IsNullOrEmpty(url))
+        {
+            ImageSource = null;
+            return;
+        }
+
+        try
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(url, UriKind.Absolute);
+                bitmap.EndInit();
+                ImageSource = bitmap;
+            });
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading image: {ex.Message}");
+        }
+    }
+    [RelayCommand]
+    private void OpenSetTag()
+    {
+        IsSet = true;
+    }
+    [RelayCommand]
+    private void ApplyTag()
+    {
+        Item.Tags.Clear();
+        ListTags.Clear();
+        foreach (var tag in Tags)
+        {
+            if (tag.IsChecked)
+            {
+                Item.Tags.Add(tag.Tag);
+                ListTags.Add(tag.Tag);
+            }
+        }
+    }
+    [RelayCommand]
+    private void CloseSetTag()
+    {
+        IsSet = false;
     }
 }

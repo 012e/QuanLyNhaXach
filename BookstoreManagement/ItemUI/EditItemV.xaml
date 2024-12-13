@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:BookstoreManagement.UI.ItemUI"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance local:EditItemVM}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -50,6 +51,14 @@
                 CornerRadius="10">
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <Border
+                        Width="150"
+                        Height="150"
+                        CornerRadius="10">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding ImageSource}" />
+                        </Border.Background>
+                    </Border>
                     <Label FontWeight="Bold">Item Id</Label>
                     <TextBox IsReadOnly="True" Text="{Binding Item.Id}" />
 
@@ -65,9 +74,81 @@
                     <Label>Quantity</Label>
                     <TextBox Text="{Binding Item.Quantity}" />
 
+                    <StackPanel Orientation="Horizontal">
+                        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Tags</Label>
+                        <Button
+                            Margin="10"
+                            HorizontalAlignment="left"
+                            VerticalAlignment="top"
+                            Background="Green"
+                            BorderThickness="0"
+                            Command="{Binding OpenSetTagCommand}">
+                            <materialDesign:PackIcon Kind="TagPlus" />
+                        </Button>
+                    </StackPanel>
+
+
+                    <StackPanel Orientation="Horizontal">
+                        <ListBox DisplayMemberPath="Name" ItemsSource="{Binding ListTags}" />
+                    </StackPanel>
+
+
                     <Button Margin="12" Command="{Binding SubmitItemCommand}">Submit</Button>
                 </StackPanel>
             </Border>
         </StackPanel>
+        <Grid Grid.Column="2" Visibility="{Binding IsSet, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            <Border
+                x:Name="TagSelectorPanel"
+                Padding="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="White"
+                BorderBrush="Black"
+                BorderThickness="1">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Text="Select Tags" />
+
+                    <!--  DataGrid  -->
+                    <DataGrid
+                        x:Name="TagDataGrid"
+                        Height="200"
+                        Margin="0,0,0,10"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        HeadersVisibility="Column"
+                        ItemsSource="{Binding Tags}">
+                        <!--  Cột checkbox  -->
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn Binding="{Binding IsChecked}" />
+                            <DataGridTextColumn
+                                Binding="{Binding Tag.Name}"
+                                Header="Name"
+                                IsReadOnly="True" />
+
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button
+                            Width="80"
+                            Margin="0,0,10,0"
+                            Command="{Binding ApplyTagCommand}"
+                            Content="Apply" />
+                        <Button
+                            Width="80"
+                            Command="{Binding CloseSetTagCommand}"
+                            Content="Close" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
