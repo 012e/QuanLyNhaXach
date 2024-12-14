@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="UI\Resources\**" />
-    <EmbeddedResource Remove="UI\Resources\**" />
-    <None Remove="UI\Resources\**" />
-    <Page Remove="UI\Resources\**" />
     <Page Update="Components\Search.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

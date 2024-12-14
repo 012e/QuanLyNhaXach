@@ -1,15 +1,16 @@
-﻿using BookstoreManagement.Shared.Models;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookstoreManagement.Shared.DbContexts;
+namespace BookstoreManagement.test;
 
-public partial class ApplicationDbContext : DbContext
+public partial class NeondbContext : DbContext
 {
-    public ApplicationDbContext()
+    public NeondbContext()
     {
     }
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public NeondbContext(DbContextOptions<NeondbContext> options)
         : base(options)
     {
     }
@@ -35,6 +36,10 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<Provider> Providers { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseNpgsql("User Id=neondb_owner;Password=eBTOvWX2J4IV;Server=ep-square-cake-a1n7dt55.ap-southeast-1.aws.neon.tech;Database=neondb;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -78,10 +83,10 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(255)
                 .HasColumnName("last_name");
-            entity.Property(e => e.ProfilePicture).HasColumnName("profile_picture");
             entity.Property(e => e.Password)
                 .HasMaxLength(255)
                 .HasColumnName("password");
+            entity.Property(e => e.ProfilePicture).HasColumnName("profile_picture");
             entity.Property(e => e.Salary)
                 .HasColumnType("money")
                 .HasColumnName("salary");

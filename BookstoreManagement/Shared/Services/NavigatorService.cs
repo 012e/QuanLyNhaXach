@@ -1,26 +1,28 @@
 ﻿using BookstoreManagement.Core;
 using BookstoreManagement.Core.Interface;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BookstoreManagement.Shared.Services;
-
-
 
 public partial class NavigatorService<TViewModel> : INavigatorService<TViewModel>
     where TViewModel : BaseViewModel
 {
-    public NavigatorService(NavigatorStore navigatorStore, IAbstractFactory<TViewModel> viewModelFactory)
+    private readonly IServiceProvider serviceProvider;
+
+    public NavigatorService(IAbstractFactory<TViewModel> viewModelFactory, IServiceProvider serviceProvider)
     {
-        NavigatorStore = navigatorStore;
         ViewModelFactory = viewModelFactory;
+        this.serviceProvider = serviceProvider;
     }
 
     public NavigatorStore NavigatorStore { get; }
 
     public IAbstractFactory<TViewModel> ViewModelFactory { get; }
 
-    public void Navigate()
+    public void Navigate(string? @namespace = "default")
     {
         var viewModel = ViewModelFactory.Create();
-        NavigatorStore.CurrentViewModel = viewModel;
+        var store = this.serviceProvider.GetRequiredKeyedService<NavigatorStore>(@namespace);
+        store.CurrentViewModel = viewModel;
     }
 }
