@@ -71,11 +71,17 @@ public partial class EditItemVM : EditItemVM<Item>
         foreach (var tag in allTags)
         {
             var exists = itemTags.Contains(tag);
-            Tags.Add(new ItemTagDto()
+            var itemTagDto = new ItemTagDto()
             {
                 Tag = tag,
                 IsChecked = exists
-            });
+            };
+
+            // Đăng ký sự kiện PropertyChanged cho mỗi ItemTagDto
+            itemTagDto.PropertyChanged += Tag_PropertyChanged;
+
+            Tags.Add(itemTagDto);
+
         }
 
         if (Item != null)
@@ -134,24 +140,35 @@ public partial class EditItemVM : EditItemVM<Item>
     {
         IsSet = true;
     }
-    [RelayCommand]
-    private void ApplyTag()
-    {
-        Item.Tags.Clear();
-        ListTags.Clear();
-        foreach (var tag in Tags)
-        {
-            if (tag.IsChecked)
-            {
-                Item.Tags.Add(tag.Tag);
-                ListTags.Add(tag.Tag);
-            }
-        }
-        
-    }
+    
     [RelayCommand]
     private void CloseSetTag()
     {
         IsSet = false;
+    }
+    private void Tag_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(ItemTagDto.IsChecked))
+        {
+            var itemTag = sender as ItemTagDto;
+
+            if (itemTag.IsChecked)
+            {
+               
+                if (!ListTags.Any(t => t.Name == itemTag.Tag.Name))
+                {
+                    ListTags.Add(itemTag.Tag);
+                }
+            }
+            else
+            {
+               
+                var tagToRemove = ListTags.FirstOrDefault(t => t.Name == itemTag.Tag.Name);
+                if (tagToRemove != null)
+                {
+                    ListTags.Remove(tagToRemove);
+                }
+            }
+        }
     }
 }
