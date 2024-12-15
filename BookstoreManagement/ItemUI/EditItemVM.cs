@@ -51,7 +51,7 @@ public partial class EditItemVM : EditItemVM<Item>
 
     public override void ResetState()
     {
-        IsSet = false;
+        IsSet = false;  
         base.ResetState();
         
     }
@@ -147,6 +147,7 @@ public partial class EditItemVM : EditItemVM<Item>
                 ListTags.Add(tag.Tag);
             }
         }
+        
     }
     [RelayCommand]
     private void CloseSetTag()

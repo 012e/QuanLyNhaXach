@@ -89,8 +89,15 @@
 
 
                     <StackPanel Orientation="Horizontal">
-                        <ListBox DisplayMemberPath="Name" ItemsSource="{Binding ListTags}" />
+                        <ListBox DisplayMemberPath="Name" ItemsSource="{Binding ListTags}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
                     </StackPanel>
+
 
 
                     <Button Margin="12" Command="{Binding SubmitItemCommand}">Submit</Button>
@@ -106,13 +113,19 @@
                 VerticalAlignment="Center"
                 Background="White"
                 BorderBrush="Black"
-                BorderThickness="1">
+                BorderThickness="1"
+                CornerRadius="20">
                 <StackPanel>
                     <TextBlock
-                        Margin="0,0,0,10"
+                        Margin="10"
                         FontSize="14"
                         FontWeight="Bold"
-                        Text="Select Tags" />
+                        Text="Select Tags">
+                        <materialDesign:PackIcon
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Kind="Tag" />
+                    </TextBlock>
 
                     <!--  DataGrid  -->
                     <DataGrid
