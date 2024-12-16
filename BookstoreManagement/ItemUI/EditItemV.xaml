@@ -86,16 +86,17 @@
                             <materialDesign:PackIcon Kind="TagPlus" />
                         </Button>
                     </StackPanel>
-
-
                     <StackPanel Orientation="Horizontal">
                         <ListBox
+                            Width="450"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            ItemsSource="{Binding ListTags}">
+                            ItemsSource="{Binding ListTags}"
+                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel Orientation="Horizontal" />
+                                    <StackPanel Orientation="Horizontal" />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                             <ListBox.ItemTemplate>
@@ -108,7 +109,6 @@
                                         CornerRadius="10">
 
                                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-
                                             <materialDesign:PackIcon
                                                 Width="20"
                                                 Height="20"
@@ -122,9 +122,6 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </StackPanel>
-
-
-
                     <Button Margin="12" Command="{Binding SubmitItemCommand}">Submit</Button>
                 </StackPanel>
             </Border>
@@ -141,16 +138,29 @@
                 BorderThickness="1"
                 CornerRadius="20">
                 <StackPanel>
-                    <TextBlock
-                        Margin="10"
-                        FontSize="14"
-                        FontWeight="Bold"
-                        Text="Select Tags">
-                        <materialDesign:PackIcon
-                            Margin="5,0,0,0"
-                            VerticalAlignment="Center"
-                            Kind="Tag" />
-                    </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Margin="10"
+                            FontSize="14"
+                            FontWeight="Bold"
+                            Text="Select Tags">
+                            <materialDesign:PackIcon
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Kind="Tag" />
+                        </TextBlock>
+                        <Button
+                            Height="30"
+                            Margin="10"
+                            HorizontalAlignment="left"
+                            VerticalAlignment="top"
+                            Background="IndianRed"
+                            BorderThickness="0"
+                            Command="{Binding CloseSetTagCommand}">
+                            <materialDesign:PackIcon Kind="Close" />
+                        </Button>
+                    </StackPanel>
+
 
                     <!--  DataGrid  -->
                     <DataGrid
@@ -163,24 +173,13 @@
                         ItemsSource="{Binding Tags}">
                         <!--  Cột checkbox  -->
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Binding="{Binding IsChecked}" />
+                            <DataGridCheckBoxColumn Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}" />
                             <DataGridTextColumn
                                 Binding="{Binding Tag.Name}"
                                 Header="Name"
                                 IsReadOnly="True" />
-
-
                         </DataGrid.Columns>
                     </DataGrid>
-
-
-                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-
-                        <Button
-                            Width="80"
-                            Command="{Binding CloseSetTagCommand}"
-                            Content="Close" />
-                    </StackPanel>
                 </StackPanel>
             </Border>
         </Grid>

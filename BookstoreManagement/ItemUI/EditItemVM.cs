@@ -77,7 +77,7 @@ public partial class EditItemVM : EditItemVM<Item>
                 IsChecked = exists
             };
 
-            // Đăng ký sự kiện PropertyChanged cho mỗi ItemTagDto
+            
             itemTagDto.PropertyChanged += Tag_PropertyChanged;
 
             Tags.Add(itemTagDto);
@@ -145,6 +145,7 @@ public partial class EditItemVM : EditItemVM<Item>
     private void CloseSetTag()
     {
         IsSet = false;
+        
     }
     private void Tag_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
@@ -158,6 +159,7 @@ public partial class EditItemVM : EditItemVM<Item>
                 if (!ListTags.Any(t => t.Name == itemTag.Tag.Name))
                 {
                     ListTags.Add(itemTag.Tag);
+                    Item.Tags.Add(itemTag.Tag);
                 }
             }
             else
