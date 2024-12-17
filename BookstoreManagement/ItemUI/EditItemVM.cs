@@ -169,6 +169,7 @@ public partial class EditItemVM : EditItemVM<Item>
                 if (tagToRemove != null)
                 {
                     ListTags.Remove(tagToRemove);
+                    Item.Tags.Remove(itemTag.Tag);
                 }
             }
         }

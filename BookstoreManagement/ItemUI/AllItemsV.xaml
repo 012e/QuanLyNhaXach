@@ -120,7 +120,7 @@
                                 <TextBlock
                                     MaxWidth="150"
                                     Text="{Binding Tags, Converter={StaticResource ListToStringConverter}}"
-                                    TextWrapping="Wrap" />
+                                    TextTrimming="CharacterEllipsis" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
