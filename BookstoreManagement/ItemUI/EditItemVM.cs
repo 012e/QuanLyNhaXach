@@ -19,7 +19,7 @@ public partial class EditItemVM : EditItemVM<Item>
     private readonly ApplicationDbContext db;
 
     public INavigatorService<AllItemsVM> AllItemsNavigator { get; }
-    protected INavigatorService<CreateTagVM> CreateTagNavigator { get; }
+    
 
     [ObservableProperty]
     private Item _item;
@@ -40,7 +40,6 @@ public partial class EditItemVM : EditItemVM<Item>
     {
         this.db = db;
         AllItemsNavigator = allItemsNavigator;
-        CreateTagNavigator = createTagNavigator;
     }
 
     [RelayCommand]
