@@ -10,109 +10,109 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-
-
-    <Grid Background="#ECEDEA">
-
-
+    <Grid Background="#ECF0FF">
         <Grid.RowDefinitions>
-            <!--Phan Header-->
-            <RowDefinition Height=".17*"></RowDefinition>
-
-            <!--Phan Content-->
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="0.2*" />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
-        <!--Header-->
-        <Border Grid.Row="0" Background="#F5F5F5" Padding="20"
-                BorderBrush="Black"
-                BorderThickness="1"
-                CornerRadius="10">
-            <TextBlock  VerticalAlignment="Center" 
-                        HorizontalAlignment="Left"
-                        FontSize="32"
-                        FontWeight="DemiBold">
-                Dashboard
-            </TextBlock>
-
-        </Border>
-        <!-- End Header-->
-
-
-        <!--Content-->
-        <Grid Grid.Row="1">
+        <!--  ============== Header - Row 0 ==================  -->
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
-
-                <!--AUTO chiem phan con lai-->
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition />
+                <ColumnDefinition Width="0.8*" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-
-            <!--Cot dau tien cua Content co 2 dong-->
+            <!--  Hello User  -->
             <Grid Grid.Column="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="2.1*"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-
-
-                <!--Bieu do-->
-                <Border Grid.Row="0"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    Margin="30 20 20 20"
-                    CornerRadius="10" Grid.ColumnSpan="2">
-                    <TextBlock>Day la bieu do doanh thu,
-                    Cac chu thich: theo the loai san pham
-                    </TextBlock>
-                </Border>
-
-                <!--Cac box ve sach, hang ton, so don hang hom nay-->
-                <Border Grid.Row="1"
-                        BorderBrush="Black"
-                        BorderThickness="1"
-                        Margin="30 20 20 20"
-                        CornerRadius="10" Grid.ColumnSpan="2">
-                    <TextBlock>so sach ban,
-                        so luong ton kho,
-                        so don hang hnay
-                    </TextBlock>
-                </Border>
+                <TextBlock>Helo</TextBlock>
             </Grid>
+            <!--  End Hello User  -->
 
-            <!--San pham ban chay-->
-            <Grid Grid.Column="1">
-                <Border BorderBrush="Black"
-                        BorderThickness="1"
-                        Margin="10 20 30 20"
-                        CornerRadius="10">
-
-                    <StackPanel>
-                        <TextBlock Margin="20"
-                                  FontSize="19"
-                                  FontWeight="Bold"
-                                  Foreground="#000000">
-                                  
-                            San pham ban chay
-                        </TextBlock>
-                    </StackPanel>
-                </Border>
+            <!--  Time and Icon User  -->
+            <Grid Grid.Column="2">
+                <TextBlock>Time</TextBlock>
             </Grid>
-
-
-
+            <!--  End Time and Icon User  -->
 
         </Grid>
-        <!--Content-->
+        <!--  ================== End Header - Row 0 ====================  -->
+
+        <!--  =========================== Body - Row 1 ===========================  -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="0.5*" />
+            </Grid.ColumnDefinitions>
+
+            <!--  Column 0  -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.6*" />
+                    <RowDefinition />
+                    <RowDefinition Height="0.6*" />
+                </Grid.RowDefinitions>
+
+                <!--  ===== Statistical ======  -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Inventory  -->
+
+                    <Border CornerRadius="10" />
+                    <!--  End Inventory  -->
+
+                    <!--  Expense  -->
+                    <Grid Grid.Column="1">
+                        <TextBlock>Expense</TextBlock>
+                    </Grid>
+                    <!--  End Expense  -->
+                </Grid>
+                <!--  End ====== Statistical ======  -->
+
+                <!--  ======== Revenue Chart ========  -->
+                <Grid Grid.Row="1">
+                    <TextBlock>Revenue Chart</TextBlock>
+                </Grid>
+                <!--  End ===== Revenue Chart =========  -->
+
+                <!--  ======= Trending Chart ==========  -->
+                <Grid Grid.Row="2">
+                    <TextBlock>Trending chart</TextBlock>
+                </Grid>
+                <!--  ========= End Trending Chart =========  -->
+            </Grid>
+            <!--  End Column 0  -->
+
+            <!--  Column 1  -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.8*" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <!--  =========== Profit Chart =============  -->
+                <Grid Grid.Row="0">
+                    <TextBlock>Profit chart</TextBlock>
+                </Grid>
+                <!--  ========= End Profit Chart ===========  -->
 
 
-
+                <!--  =========== Bestseller =============  -->
+                <Grid Grid.Row="1">
+                    <TextBlock>Bestseller</TextBlock>
+                </Grid>
+                <!--  ========= End Bestseller ===========  -->
+            </Grid>
+            <!--  End Column 1  -->
+        </Grid>
+        <!--  =========================== Body - Row 1 ========================  -->
     </Grid>
+
+
 
 </UserControl>
