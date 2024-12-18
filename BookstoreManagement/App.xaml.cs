@@ -62,7 +62,7 @@ public partial class App : Application
         builder.Services.AddViewContextualViewModel<EditCustomerV, EditCustomerVM, Customer>();
         builder.Services.AddViewViewModel<CreateCustomerV, CreateCustomerVM>();
 
-        builder.Services.AddViewViewModel<ImportV, AllImportVM>();
+        builder.Services.AddViewViewModel<AllImportV, AllImportVM>();
         builder.Services.AddViewContextualViewModel<EditImportV, EditImportVM, Import>();
         builder.Services.AddViewViewModel<CreateImportV, CreateImportVM>();
 

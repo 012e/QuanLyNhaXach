@@ -18,9 +18,9 @@ namespace BookstoreManagement.ImportUI
     /// <summary>
     /// Interaction logic for ImportV.xaml
     /// </summary>
-    public partial class ImportV : UserControl
+    public partial class AllImportV : UserControl
     {
-        public ImportV()
+        public AllImportV()
         {
             InitializeComponent();
         }

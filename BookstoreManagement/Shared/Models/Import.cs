@@ -8,7 +8,10 @@ public partial class Import
 
     public int ProviderId { get; set; }
 
+    public decimal TotalCost { get; set; }
+
     public DateTime CreatedAt { get; set; }
+
 
     public virtual ICollection<ImportItem> ImportItems { get; set; } = new List<ImportItem>();
 

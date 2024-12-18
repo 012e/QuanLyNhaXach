@@ -1,23 +1,11 @@
-﻿using BookstoreManagement.Core;
-using BookstoreManagement.Core.Shortcut;
+﻿using BookstoreManagement.Core.Shortcut;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
-using BookstoreManagement.UI.ItemUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MaterialDesignThemes.Wpf.Converters;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Design.Serialization;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Media3D.Converters;
 
 namespace BookstoreManagement.ImportUI
 {
@@ -27,13 +15,13 @@ namespace BookstoreManagement.ImportUI
         protected override IContextualNavigatorService<EditImportVM, Import> EditItemNavigator { get; }
         protected INavigatorService<CreateImportVM> createImportNavigator { get; }
         public AllImportVM(ApplicationDbContext db,
-            IContextualNavigatorService<EditImportVM,Import> editImportNavigator,
+            IContextualNavigatorService<EditImportVM, Import> editImportNavigator,
             INavigatorService<CreateImportVM> createImportNavigator)
         {
             this.db = db;
             this.EditItemNavigator = editImportNavigator;
             this.createImportNavigator = createImportNavigator;
-            
+
         }
         [ObservableProperty]
         private string _searchText = "";
@@ -55,7 +43,7 @@ namespace BookstoreManagement.ImportUI
         // Delete Import
         protected override void DeleteItem(Import import)
         {
-            if(import is null)
+            if (import is null)
             {
                 return;
             }

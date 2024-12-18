@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="BookstoreManagement.ImportUI.ImportV"
+    x:Class="BookstoreManagement.ImportUI.AllImportV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converter="clr-namespace:BookstoreManagement.Shared.Converters"
@@ -9,12 +9,14 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:BookstoreManagement.UI.Components"
+    d:DataContext="{d:DesignInstance local:AllImportVM}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Control.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+        <converter:CurrencyConverter x:Key="CurrencyConverter" />
     </Control.Resources>
     <Border
         Padding="50,30,50,50"
@@ -118,6 +120,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" Header="Import Id" />
                     <DataGridTextColumn Binding="{Binding ProviderId}" Header="Provider Id" />
+                    <DataGridTextColumn Binding="{Binding TotalCost, Converter={StaticResource CurrencyConverter}}" Header="Total Cost" />
                     <DataGridTextColumn Binding="{Binding CreatedAt}" Header="Created At" />
 
                     <!--  Add Command  -->

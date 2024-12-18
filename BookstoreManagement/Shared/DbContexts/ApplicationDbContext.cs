@@ -99,6 +99,9 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("created_at");
             entity.Property(e => e.ProviderId).HasColumnName("provider_id");
+            entity.Property(e => e.TotalCost)
+                .HasColumnType("money")
+                .HasColumnName("total_cost");
 
             entity.HasOne(d => d.Provider).WithMany(p => p.Imports)
                 .HasForeignKey(d => d.ProviderId)

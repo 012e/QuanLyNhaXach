@@ -170,7 +170,7 @@
                 <customer:CreateCustomerV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type import:AllImportVM}">
-                <import:ImportV />
+                <import:AllImportV />
             </DataTemplate>
             <DataTemplate DataType="{x:Type import:EditImportVM}">
                 <import:EditImportV />
