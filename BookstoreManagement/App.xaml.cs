@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Windows;
+using System.Windows.Navigation;
 
 namespace BookstoreManagement;
 
@@ -64,7 +65,7 @@ public partial class App : Application
         builder.Services.AddViewViewModel<ImportV, AllImportVM>();
         builder.Services.AddViewContextualViewModel<EditImportV, EditImportVM, Import>();
         builder.Services.AddViewViewModel<CreateImportV, CreateImportVM>();
-        
+
 
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
         builder.Services.AddViewViewModel<MainV, MainVM>();
@@ -80,6 +81,22 @@ public partial class App : Application
         AppHost = builder.Build();
     }
 
+    private bool NeedLogin()
+    {
+        var loginEnv = Environment.GetEnvironmentVariable("LOGIN_REQUIRED");
+        if (loginEnv is null)
+        {
+            return true;
+        }
+
+        if (bool.TryParse(loginEnv, out bool loginRequired))
+        {
+            return loginRequired;
+        }
+
+        return true;
+    }
+
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -91,8 +108,17 @@ public partial class App : Application
         navigator.CurrentViewModel = allItemsVM;
 
         var globalNavigator = AppHost.Services.GetRequiredKeyedService<NavigatorStore>("global");
-        var loginVM = AppHost.Services.GetRequiredService<LoginVM>();
-        globalNavigator.CurrentViewModel = loginVM;
+
+        if (NeedLogin())
+        {
+            var loginVM = AppHost.Services.GetRequiredService<LoginVM>();
+            globalNavigator.CurrentViewModel = loginVM;
+        }
+        else
+        {
+            var mainVM = AppHost.Services.GetRequiredService<MainVM>();
+            globalNavigator.CurrentViewModel = mainVM;
+        }
 
         base.OnStartup(e);
     }
