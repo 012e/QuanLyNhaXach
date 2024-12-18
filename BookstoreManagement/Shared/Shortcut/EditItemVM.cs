@@ -153,7 +153,7 @@ public abstract partial class EditItemVM<TItem> : BaseViewModel, IContextualView
 
     }
 
-    private void LoadDataInBackground()
+    protected void LoadDataInBackground()
     {
         // let 'em load my bruh
         if (IsLoading) return;

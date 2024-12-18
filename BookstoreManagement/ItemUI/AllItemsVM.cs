@@ -4,7 +4,9 @@ using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 
 namespace BookstoreManagement.UI.ItemUI;
@@ -57,9 +59,10 @@ public partial class AllItemsVM : ListVM<Item, EditItemVM>
     protected override void LoadItems()
     {
         db.ChangeTracker.Clear();
-        var items = db.Items.OrderBy(i => i.Id).ToList();
-        Items = new(items);
+        var items = db.Items.OrderBy(i => i.Id).Include(i => i.Tags).ToList();
+        Items = new ObservableCollection<Item>(items);
     }
+    
 
     private bool ConfirmDeleteItem(Item item)
     {

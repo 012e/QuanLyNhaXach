@@ -1,4 +1,5 @@
-﻿<UserControl
+﻿
+<UserControl
     x:Class="BookstoreManagement.UI.ItemUI.AllItemsV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -16,6 +17,7 @@
     <Control.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+        <converter:ListToStringConverter x:Key="ListToStringConverter" />
     </Control.Resources>
 
     <Border
@@ -112,6 +114,16 @@
                         Width="200"
                         Binding="{Binding Description}"
                         Header="Description" />
+                    <DataGridTemplateColumn Header="Tags">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    MaxWidth="150"
+                                    Text="{Binding Tags, Converter={StaticResource ListToStringConverter}}"
+                                    TextTrimming="CharacterEllipsis" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn CanUserResize="False" Header="Commands">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
