@@ -78,7 +78,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Shared\Images\bg1.png" />
+    <None Remove="Shared\Images\expense.png" />
     <None Remove="Shared\Images\logo.png" />
+    <None Remove="Shared\Images\note.png" />
+    <None Remove="Shared\Images\revenue5.png" />
+    <None Remove="Shared\Images\sunset.png" />
+    <None Remove="Shared\Images\timer.png" />
+    <None Remove="Shared\Images\user.png" />
+    <None Remove="Shared\Images\ware-house.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -87,6 +95,7 @@
     <PackageReference Include="dotenv.net" Version="3.2.0" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -97,11 +106,32 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Shared\Images\expense.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Shared\Images\icon_title.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Shared\Images\logo.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shared\Images\note.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shared\Images\revenue5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shared\Images\sunset.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shared\Images\timer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shared\Images\user.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shared\Images\ware-house.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
 
