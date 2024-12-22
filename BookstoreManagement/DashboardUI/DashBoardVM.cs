@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core;
+using BookstoreManagement.LoginUI.Dtos;
 using BookstoreManagement.LoginUI.Services;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
@@ -24,8 +25,7 @@ namespace BookstoreManagement.UI.DashboardUI
     public partial class DashBoardVM : BaseViewModel
     {
         private readonly ApplicationDbContext db;
-        private readonly LoginService loginService;
-
+        private readonly CurrentUserService currentUserService;
         [ObservableProperty]
         private string _userName;
 
@@ -57,13 +57,17 @@ namespace BookstoreManagement.UI.DashboardUI
         private List<InvoicesItem> _bestSeller;
 
 
-        public DashBoardVM(ApplicationDbContext db, LoginService loginService)
+        public DashBoardVM(ApplicationDbContext db, CurrentUserService currentUserService)
         {
             this.db = db;
-            this.loginService = loginService;
+            this.currentUserService = currentUserService;
             LoadDashBoardData();
             RevenueChart();
-            //UserName = $"Good morning, {loginService}";
+        }
+        public override void ResetState()
+        {
+            base.ResetState();
+            UserName = $"Good morning, {currentUserService.CurrentUser.LastName}";
 
         }
         private LinearGradientBrush GradientFillChart()

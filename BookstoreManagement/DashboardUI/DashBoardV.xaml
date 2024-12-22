@@ -45,9 +45,8 @@
                             Margin="0,10,0,0"
                             Padding="20"
                             FontSize="30"
-                            FontWeight="DemiBold">
-                            Good morning, Kiet
-                        </TextBlock>
+                            FontWeight="DemiBold"
+                            Text="{Binding UserName}" />
                     </StackPanel>
                 </Grid>
                 <!--  End Hello User  -->
