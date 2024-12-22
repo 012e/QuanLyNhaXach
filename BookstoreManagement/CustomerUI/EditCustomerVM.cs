@@ -67,6 +67,12 @@ namespace BookstoreManagement.UI.CustomerUI
         {
             return Regex.IsMatch(input, @"\d");
         }
+        private bool IsValidEmail(string input)
+        {
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+
+            return Regex.IsMatch(input, emailPattern);
+        }
         private bool Check_Valid_Input()
         {
             if (string.IsNullOrWhiteSpace(Customer.FirstName))
@@ -109,10 +115,9 @@ namespace BookstoreManagement.UI.CustomerUI
                 ErrorMessage = "Customer email can not be empty!";
                 return false;
             }
-            bool validEmail = Customer.Email.Contains('@');
-            if (!validEmail)
+            if (!IsValidEmail(Customer.Email))
             {
-                ErrorMessage = "Customer email is not a valid type ( must contain @ )!";
+                ErrorMessage = "Customer email is not a valid type (example@example.com)!";
                 return false;
             }
             ErrorMessage = string.Empty;

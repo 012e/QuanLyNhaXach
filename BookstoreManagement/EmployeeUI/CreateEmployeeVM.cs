@@ -5,6 +5,7 @@ using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DocumentFormat.OpenXml.Office2013.Excel;
+using System.Data.Common;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -36,21 +37,25 @@ namespace BookstoreManagement.UI.EmployeeUI
         [RelayCommand]
         private void Submit()
         {
-            if (!Check_Valid_Input())
-            {
-                MessageBox.Show(ErrorMessage , "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+            
             try
             {
+                if (!Check_Valid_Input())
+                {
+                    MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
                 Db.Add(Employee);
                 Db.SaveChanges();
+                MessageBox.Show("Added employee successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                allEmployeeNavigator.Navigate();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Could'n add employee : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Couldn't add employee : Database Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            MessageBox.Show("Added employee successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+           
         }
         private void ResetToDefaultValues()
         {
@@ -68,6 +73,12 @@ namespace BookstoreManagement.UI.EmployeeUI
         private bool IsOnlyLetterAndSpaces(string input)
         {
             return Regex.IsMatch(input, @"^[a-zA-Z\s]+$");
+        }
+        private bool IsValidEmail(string input)
+        {
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+
+            return Regex.IsMatch(input, emailPattern);
         }
         private bool Check_Valid_Input()
         {
@@ -96,10 +107,9 @@ namespace BookstoreManagement.UI.EmployeeUI
                 ErrorMessage = "Employee email can not be empty!";
                 return false;
             }
-            bool validEmail = Employee.Email.Contains('@');
-            if (!validEmail)
+            if (!IsValidEmail(Employee.Email))
             {
-                ErrorMessage = "Employee email is not a valid type ( must contain @ )!";
+                ErrorMessage = "Employee email is not a valid type (example@example.com)!";
                 return false ;
             }
             if(Employee.Salary < 0)

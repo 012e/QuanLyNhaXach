@@ -31,21 +31,24 @@ namespace BookstoreManagement.UI.TagUI
         [RelayCommand]
         private void Submit()
         {
-            if (!Check_Valid_Input())
-            {
-                MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
             try
             {
+                if (!Check_Valid_Input())
+                {
+                    MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
                 Db.Add(Tag);
                 Db.SaveChanges();
+                MessageBox.Show("Added tag successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                AllTagNavigator.Navigate();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Could'n add tag : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Could'n add tag : Database Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            MessageBox.Show("Added tag successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            
         }
         private bool Check_Valid_Input()
         {

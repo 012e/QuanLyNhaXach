@@ -33,21 +33,24 @@ namespace BookstoreManagement.UI.ProviderUI
         [RelayCommand]
         private void Submit()
         {
-            if (!Check_Valid_Input())
-            {
-                MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
             try
             {
+                if (!Check_Valid_Input())
+                {
+                    MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
                 Db.Add(Provider);
                 Db.SaveChanges();
+                MessageBox.Show("Added provider successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                allProviderNavigator.Navigate();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Could'n add provider : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            MessageBox.Show("Added provider successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            
         }
         private void ResetToDefaultValues()
         {

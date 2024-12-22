@@ -41,6 +41,12 @@ namespace BookstoreManagement.UI.EmployeeUI
         {
             return Regex.IsMatch(input, @"^[a-zA-Z\s]+$");
         }
+        private bool IsValidEmail(string input)
+        {
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+
+            return Regex.IsMatch(input, emailPattern);
+        }
         private bool Check_Valid_Input()
         {
             if (string.IsNullOrWhiteSpace(Employee.FirstName))
@@ -68,10 +74,9 @@ namespace BookstoreManagement.UI.EmployeeUI
                 ErrorMessage = "Employee email can not be empty!";
                 return false;
             }
-            bool validEmail = Employee.Email.Contains('@');
-            if (!validEmail)
+            if (!IsValidEmail(Employee.Email))
             {
-                ErrorMessage = "Employee email is not a valid type!";
+                ErrorMessage = "Employee email is not a valid type(example@example.com)!";
                 return false;
             }
             if (Employee.Salary < 0)
@@ -145,7 +150,7 @@ namespace BookstoreManagement.UI.EmployeeUI
             base.OnSubmittingSuccess();
             if(IsSubmitSuccess)
             {
-                MessageBox.Show("submit successfully");
+                MessageBox.Show("Submit successfully");
                 IsSubmitSuccess = false;
             }
             return;

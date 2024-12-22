@@ -34,22 +34,23 @@ public partial class CreateItemVM : BaseViewModel
     [RelayCommand]
     private void Submit()
     {
-        if (!Check_Valid_Input())
-        {
-            MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
-        }
         try
         {
+            if (!Check_Valid_Input())
+            {
+                MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             db.Items.Add(Item);
             db.SaveChanges();
+            MessageBox.Show("Added item successfully");
+            allItemsNavigator.Navigate();
         }
         catch (Exception e)
         {
-            MessageBox.Show($"Couldn't add item: {e}");
+            MessageBox.Show($"Couldn't add item: Database Error" , "Error" , MessageBoxButton.OK , MessageBoxImage.Error);
             return;
         }
-        MessageBox.Show("Added item successfully");
     }
     private bool Check_Valid_Input()
     {

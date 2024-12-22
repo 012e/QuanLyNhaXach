@@ -14,7 +14,7 @@ namespace BookstoreManagement.UI.TagUI
         private readonly ApplicationDbContext db;
 
         [ObservableProperty]
-        private Tag _item;
+        private Tag _tag;
         [ObservableProperty]
         private string _errorMessage = string.Empty;
         [ObservableProperty]
@@ -29,27 +29,27 @@ namespace BookstoreManagement.UI.TagUI
 
         protected override void LoadItem()
         {
-            Item = db.Tags.Where(tag => tag.Id == ViewModelContext.Id).First();
+           Tag = db.Tags.Where(tag => tag.Id == ViewModelContext.Id).First();
         }
         private bool Check_Valid_Input()
         {
-            if (string.IsNullOrWhiteSpace(Item.Name))
+            if (string.IsNullOrWhiteSpace(Tag.Name))
             {
                 ErrorMessage = "Tag name can not be empty!";
                 return false;
             }
-            bool containsNumberInName = Item.Name.Any(char.IsDigit);
+            bool containsNumberInName = Tag.Name.Any(char.IsDigit);
             if (containsNumberInName)
             {
                 ErrorMessage = "Tag name can not have number!";
                 return false;   
             }
-            if (string.IsNullOrWhiteSpace(Item.Description))
+            if (string.IsNullOrWhiteSpace(Tag.Description))
             {
                 ErrorMessage = "Tag description can not be empty!";
                 return false;
             }
-            bool containsNumberInDescription = Item.Description.Any(char.IsDigit);
+            bool containsNumberInDescription = Tag.Description.Any(char.IsDigit);
             if (containsNumberInDescription)
             {
                 ErrorMessage = "Tag description can not have number!";
@@ -65,7 +65,7 @@ namespace BookstoreManagement.UI.TagUI
                 MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            db.Tags.Update(Item);
+            db.Tags.Update(Tag);
             db.SaveChanges();
             IsSubmitSuccess = true;
         }
@@ -84,7 +84,7 @@ namespace BookstoreManagement.UI.TagUI
         {
             this.db = db;
             this.allTagsNavigator = allTagsNavigator;
-            Item = new Tag();
+            Tag = new Tag();
         }
     }
 }

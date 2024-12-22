@@ -4,6 +4,7 @@ using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DocumentFormat.OpenXml.Spreadsheet;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -21,22 +22,25 @@ namespace BookstoreManagement.UI.CustomerUI
         [RelayCommand]
         private void Submit()
         {
-            if (!Check_Valid_Input())
-            {
-                MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
             try
             {
+                if (!Check_Valid_Input())
+                {
+                    MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
                 db.Add(Customer);
                 db.SaveChanges();
+                MessageBox.Show("Added customer successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                customerNavigator.Navigate();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Could'n add employee : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Could'n add customer : Database Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            MessageBox.Show("Added employee successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+            
         private bool IsOnlyLetterAndSpaces(string input)
         {
             return Regex.IsMatch(input, @"^[a-zA-Z\s]+$");
@@ -44,6 +48,12 @@ namespace BookstoreManagement.UI.CustomerUI
         private bool IsOnlyNumber(string input)
         {
             return Regex.IsMatch(input, @"\d");
+        }
+        private bool IsValidEmail(string input)
+        {
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+
+            return Regex.IsMatch(input, emailPattern);
         }
         private bool Check_Valid_Input()
         {
@@ -87,10 +97,9 @@ namespace BookstoreManagement.UI.CustomerUI
                 ErrorMessage = "Customer email can not be empty!";
                 return false;
             }
-            bool validEmail = Customer.Email.Contains('@');
-            if (!validEmail)
+            if (!IsValidEmail(Customer.Email))
             {
-                ErrorMessage = "Customer email is not a valid type ( must contain @ )!";
+                ErrorMessage = "Customer email is not a valid type (example@example.com)!";
                 return false ;
             }
             ErrorMessage = string.Empty;    
