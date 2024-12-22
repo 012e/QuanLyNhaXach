@@ -67,8 +67,6 @@ namespace BookstoreManagement.UI.DashboardUI
         public override void ResetState()
         {
             base.ResetState();
-            UserName = $"Good morning, {currentUserService.CurrentUser.LastName}";
-
         }
         private LinearGradientBrush GradientFillChart()
         {
