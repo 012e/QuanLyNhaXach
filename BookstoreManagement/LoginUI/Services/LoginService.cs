@@ -1,16 +1,18 @@
 ﻿using BookstoreManagement.LoginUI.Dtos;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
+using System.Windows;
 
 namespace BookstoreManagement.LoginUI.Services;
 
 public class LoginService
 {
     private readonly ApplicationDbContext db;
-
-    public LoginService(ApplicationDbContext db)
+    private CurrentUserService CurrentUserService; 
+    public LoginService(ApplicationDbContext db, CurrentUserService currentUserService)
     {
         this.db = db;
+        this.CurrentUserService = currentUserService;
     }
 
     public Employee? Login(LoginDto loginDto)
@@ -27,6 +29,7 @@ public class LoginService
         {
             return null;
         }
+        CurrentUserService.CurrentUser = employee;
         return employee;
     }
 }

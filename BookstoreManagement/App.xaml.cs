@@ -72,6 +72,7 @@ public partial class App : Application
 
         builder.Services.AddViewViewModel<LoginV, LoginVM>();
         builder.Services.AddSingleton<LoginService>();
+        builder.Services.AddSingleton<CurrentUserService>();
 
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
 
@@ -117,6 +118,9 @@ public partial class App : Application
         else
         {
             var mainVM = AppHost.Services.GetRequiredService<MainVM>();
+            var currentUser = AppHost.Services.GetRequiredService<CurrentUserService>().CurrentUser;
+            var db = AppHost.Services.GetRequiredService<ApplicationDbContext>();
+            currentUser = db.Employees.Find(1);
             globalNavigator.CurrentViewModel = mainVM;
         }
 
