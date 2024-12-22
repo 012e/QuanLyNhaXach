@@ -80,6 +80,7 @@
   <ItemGroup>
     <None Remove="Shared\Images\bg1.png" />
     <None Remove="Shared\Images\expense.png" />
+    <None Remove="Shared\Images\gauge.png" />
     <None Remove="Shared\Images\logo.png" />
     <None Remove="Shared\Images\note.png" />
     <None Remove="Shared\Images\revenue5.png" />
@@ -107,6 +108,9 @@
 
   <ItemGroup>
     <Resource Include="Shared\Images\expense.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shared\Images\gauge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Shared\Images\icon_title.ico">

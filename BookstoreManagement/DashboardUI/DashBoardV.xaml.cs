@@ -8,5 +8,10 @@ namespace BookstoreManagement.UI.DashboardUI
         {
             InitializeComponent();
         }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -46,7 +46,7 @@
                             Padding="20"
                             FontSize="30"
                             FontWeight="DemiBold">
-                            Good morning,Kiet
+                            Good morning, Kiet
                         </TextBlock>
                     </StackPanel>
                 </Grid>
@@ -164,7 +164,7 @@
                                             FontSize="35"
                                             FontWeight="Bold"
                                             Foreground="#fff"
-                                            Text="$1000" />
+                                            Text="{Binding TotalRevenue, StringFormat='{}{0:C}'}" />
                                     </StackPanel>
                                 </Grid>
                                 <Grid Grid.Column="1">
@@ -219,7 +219,7 @@
                                             FontSize="35"
                                             FontWeight="Bold"
                                             Foreground="#fff"
-                                            Text="$100" />
+                                            Text="{Binding TotalExpense, StringFormat='{}{0:C}'}" />
                                     </StackPanel>
                                 </Grid>
                                 <Grid Grid.Column="1">
@@ -257,7 +257,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Grid Grid.Column="0" Margin="5,0,0,5">
+                                <Grid Grid.Column="0" Margin="10,0,0,5">
                                     <TextBlock FontSize="23" FontWeight="DemiBold">Revenue Analytics</TextBlock>
                                 </Grid>
                             </Grid>
@@ -299,22 +299,73 @@
                         BorderBrush="#fff"
                         BorderThickness="3"
                         ClipToBounds="False"
-                        CornerRadius="20" />
-                    <Grid
-                        Grid.Row="2"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="0.4*" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <!--  Title Recent Sale  -->
-                        <Grid Grid.Row="0" Margin="30,20,10,0">
-                            <TextBlock FontSize="23" FontWeight="DemiBold">Recent Sales</TextBlock>
+                        CornerRadius="20">
+                        <Grid
+                            Grid.Row="2"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.4*" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <!--  Title Recent Sale  -->
+                            <Grid Grid.Row="0" Margin="10,0,0,5">
+                                <TextBlock FontSize="23" FontWeight="DemiBold">Recent Sales</TextBlock>
+                            </Grid>
+                            <!--  End Title Recent Sale  -->
+
+                            <!--  List Sales  -->
+                            <Grid Grid.Row="1">
+                                <DataGrid
+                                    AutoGenerateColumns="False"
+                                    Background="#fff"
+                                    IsReadOnly="True"
+                                    ItemsSource="{Binding RecentInvoice}"
+                                    SelectionChanged="DataGrid_SelectionChanged">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="BorderBrush" Value="Black" />
+                                            <Setter Property="Padding" Value="10,0,0,10" />
+                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                            <Setter Property="FontSize" Value="15" />
+                                        </Style>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="FontWeight" Value="DemiBold" />
+                                            <Setter Property="Margin" Value="10,0,0,0" />
+
+                                        </Style>
+
+                                    </DataGrid.Resources>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="*"
+                                            Binding="{Binding Id}"
+                                            Header="Id" />
+                                        <!--  Binding full name  -->
+                                        <DataGridTextColumn Width="*" Header="Name customer">
+                                            <DataGridTextColumn.Binding>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="Customer.FirstName" />
+                                                    <Binding Path="Customer.LastName" />
+                                                </MultiBinding>
+                                            </DataGridTextColumn.Binding>
+                                        </DataGridTextColumn>
+                                        <!--  End Binding full name  -->
+                                        <DataGridTextColumn
+                                            Width="*"
+                                            Binding="{Binding CreatedAt}"
+                                            Header="Purchase date" />
+                                        <DataGridTextColumn
+                                            Width="*"
+                                            Binding="{Binding Total}"
+                                            Header="Price" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                            <!--  End List Sales  -->
                         </Grid>
-                        <!--  End Title Recent Sale  -->
-                    </Grid>
-                    <!--  ========= End Recent Sales =========  -->
+                        <!--  ========= End Recent Sales =========  -->
+                    </Border>
                 </Grid>
                 <!--  End Column 0  -->
 
@@ -355,23 +406,61 @@
                             <!--  Inner Profit chart  -->
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.6*" />
                                     <ColumnDefinition />
-                                    <ColumnDefinition Width="0.2*" />
                                 </Grid.ColumnDefinitions>
-                                <lvc:PieChart
-                                    Name="Chart"
-                                    Grid.Column="0"
-                                    Margin="20"
-                                    InnerRadius="100"
-                                    LegendLocation="Right"
-                                    Series="{Binding DoughnutSeriesCollection}">
-                                    <lvc:PieChart.ChartLegend>
-                                        <lvc:DefaultLegend BulletSize="20" />
-                                    </lvc:PieChart.ChartLegend>
-                                    <lvc:PieChart.DataTooltip>
-                                        <lvc:DefaultTooltip BulletSize="20" />
-                                    </lvc:PieChart.DataTooltip>
-                                </lvc:PieChart>
+
+                                <Grid Grid.Column="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="0.5*" />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Margin="10,30,0,0">
+                                        <StackPanel
+                                            Margin="0,0,0,10"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                            <Rectangle
+                                                Width="18"
+                                                Height="18"
+                                                Margin="0,0,5,0"
+                                                Fill="#4191DD" />
+                                            <TextBlock FontSize="17">Profit</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel
+                                            Margin="0,0,0,10"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                            <Rectangle
+                                                Width="18"
+                                                Height="18"
+                                                Margin="0,0,5,0"
+                                                Fill="#E7EFF8" />
+                                            <TextBlock FontSize="17">Expense</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                            <Image
+                                                Width="22"
+                                                Height="22"
+                                                Source="pack://application:,,,/Shared/Images/gauge.png" />
+                                            <TextBlock Padding="3,0,3,0" FontSize="17">Percent profit</TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+                                        <TextBlock Margin="10,0,10,10" FontSize="17">
+                                            Unit:<LineBreak />
+                                            Percentage(%)</TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <lvc:Gauge
+                                        Grid.Row="0"
+                                        Margin="5"
+                                        Uses360Mode="True"
+                                        Value="69.96"
+                                        From="0"
+                                        To="100" />
+                                </Grid>
                             </Grid>
                             <!--  End Inner Profit chart  -->
                         </Grid>
@@ -404,6 +493,51 @@
                                 </TextBlock>
                             </Grid>
                             <!--  End Bestseller Title  -->
+
+                            <!--  List BestSeller  -->
+                            <Grid Grid.Row="1">
+                                <DataGrid
+                                    AutoGenerateColumns="False"
+                                    Background="#fff"
+                                    IsReadOnly="True"
+                                    ItemsSource="{Binding BestSeller}"
+                                    SelectionChanged="DataGrid_SelectionChanged">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="BorderBrush" Value="Black" />
+                                            <Setter Property="Padding" Value="10,0,0,10" />
+                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                            <Setter Property="FontSize" Value="15" />
+                                        </Style>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="FontWeight" Value="DemiBold" />
+                                            <Setter Property="Margin" Value="10,0,0,0" />
+                                        </Style>
+                                    </DataGrid.Resources>
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="*"
+                                            Binding="{Binding Item.Name}"
+                                            Header="Name">
+                                            <DataGridTextColumn.CellStyle>
+                                                <Style TargetType="DataGridCell">
+                                                    <Setter Property="ToolTip" Value="{Binding Item.Name}" />
+                                                </Style>
+                                            </DataGridTextColumn.CellStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn
+                                            Width="0.5*"
+                                            Binding="{Binding Quantity}"
+                                            Header="Sold" />
+                                        <DataGridTextColumn
+                                            Width="0.5*"
+                                            Binding="{Binding Item.Quantity}"
+                                            Header="Remain" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                            <!--  End List BestSeller  -->
                         </Grid>
                     </Border>
                     <!--  ========= End Bestseller ===========  -->
