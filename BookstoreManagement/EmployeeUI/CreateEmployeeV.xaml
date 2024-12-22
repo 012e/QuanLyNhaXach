@@ -57,19 +57,22 @@
 
 
                     <Label>Frist Name</Label>
-                    <TextBox Text="{Binding FirstName}" />
+                    <TextBox Text="{Binding Employee.FirstName}" />
 
                     <Label>Last Name</Label>
-                    <TextBox Text="{Binding LastName}" />
+                    <TextBox Text="{Binding Employee.LastName}" />
 
                     <Label>Email</Label>
-                    <TextBox Text="{Binding Email}" />
+                    <TextBox Text="{Binding Employee.Email}" />
+
+                    <Label>Password</Label>
+                    <TextBox Text="{Binding Employee.Password}" />
 
                     <Label>Salary</Label>
-                    <TextBox Text="{Binding Salary}" />
+                    <TextBox Text="{Binding Employee.Salary}" />
 
                     <Label>Is Manager</Label>
-                    <CheckBox IsChecked="{Binding IsManager}" />
+                    <CheckBox IsChecked="{Binding Employee.IsManager}" />
 
                     <Button Margin="12" Command="{Binding SubmitCommand}">Submit</Button>
                 </StackPanel>

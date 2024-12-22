@@ -64,10 +64,10 @@
                 <StackPanel Width="200" HorizontalAlignment="Center">
 
                     <Label>Name</Label>
-                    <TextBox Text="{Binding Name}" />
+                    <TextBox Text="{Binding Tag.Name}" />
 
                     <Label>Description</Label>
-                    <TextBox Text="{Binding Description}" />
+                    <TextBox Text="{Binding Tag.Description}" />
 
 
 

@@ -63,18 +63,18 @@
                 <StackPanel Width="200" HorizontalAlignment="Center">
 
                     <Label>First Name</Label>
-                    <TextBox Text="{Binding FirstName}" />
+                    <TextBox Text="{Binding Customer.FirstName}" />
 
                     <Label>Last Name</Label>
-                    <TextBox Text="{Binding LastName}" />
+                    <TextBox Text="{Binding Customer.LastName}" />
 
                     <Label>Phone Number</Label>
-                    <TextBox Text="{Binding PhoneNumber}" />
+                    <TextBox Text="{Binding Customer.PhoneNumber}" />
 
                     <Label>Email</Label>
-                    <TextBox Text="{Binding Email}" />
+                    <TextBox Text="{Binding Customer.Email}" />
 
-                    <Button Command="{Binding SubmitCommand}">Submit</Button>
+                    <Button Margin="12" Command="{Binding SubmitCommand}">Submit</Button>
                 </StackPanel>
             </Border>
             <!--  End Input information  -->

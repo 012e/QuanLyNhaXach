@@ -55,13 +55,13 @@
                     Width="150"
                     HorizontalAlignment="Center">
                     <Label FontWeight="Bold">Tag ID</Label>
-                    <TextBox IsReadOnly="True" Text="{Binding Tag.Id}" />
+                    <TextBox IsReadOnly="True" Text="{Binding Item.Id}" />
 
                     <Label>Name</Label>
-                    <TextBox Text="{Binding Tag.Name}" />
+                    <TextBox Text="{Binding Item.Name}" />
 
                     <Label>Description</Label>
-                    <TextBox Text="{Binding Tag.Description}" />
+                    <TextBox Text="{Binding Item.Description}" />
                     <Button Margin="12" Command="{Binding SubmitItemCommand}">Submit</Button>
                 </StackPanel>
             </Border>

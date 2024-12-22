@@ -86,9 +86,9 @@
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
                         <Button
-                            Height="20"
+                            Height="30"
                             Margin="0,0,0,0"
-                            Background="Gray"
+                            Background="Green"
                             BorderBrush="Transparent"
                             Command="{Binding SelectItemCommand}"
                             FontSize="10">
@@ -182,8 +182,8 @@
                         HorizontalAlignment="Right">
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <Button
-                                Width="24"
-                                Height="24"
+                                Width="30"
+                                Height="30"
                                 Padding="0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -194,8 +194,8 @@
                                 <materialDesign:PackIcon Kind="Beenhere" />
                             </Button>
                             <Button
-                                Width="24"
-                                Height="24"
+                                Width="30"
+                                Height="30"
                                 Margin="10,0,0,0"
                                 Padding="0"
                                 HorizontalAlignment="Center"
@@ -206,8 +206,8 @@
                                 <materialDesign:PackIcon Kind="plus" />
                             </Button>
                             <Button
-                                Width="64"
-                                Height="24"
+                                Width="70"
+                                Height="30"
                                 Margin="10,0,0,0"
                                 Padding="0"
                                 Background="Navy"
@@ -251,7 +251,7 @@
                                 </Label>
                                 <Grid>
                                     <TextBox
-                                        Height="27"
+                                        Height="30"
                                         BorderThickness="1"
                                         IsReadOnly="{Binding NotAllowEdit}"
                                         Text="{Binding ItemId}" />
@@ -288,8 +288,8 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
                                         <Button
-                                            Width="25"
-                                            Height="25"
+                                            Width="30"
+                                            Height="30"
                                             Padding="0,0,0,5"
                                             HorizontalContentAlignment="Center"
                                             VerticalContentAlignment="Center"
@@ -319,8 +319,8 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
                                         <Button
-                                            Width="25"
-                                            Height="25"
+                                            Width="30"
+                                            Height="30"
                                             Padding="0,0,0,5"
                                             HorizontalContentAlignment="Center"
                                             VerticalContentAlignment="Center"

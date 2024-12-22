@@ -4,6 +4,7 @@ using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace BookstoreManagement.UI.CustomerUI
@@ -14,32 +15,20 @@ namespace BookstoreManagement.UI.CustomerUI
         private readonly INavigatorService<AllCustomersVM> customerNavigator;
 
         [ObservableProperty]
-        private string _firstName;
-
+        private Customer _customer;
         [ObservableProperty]
-        private string _lastName;
-
-        [ObservableProperty]
-        private string _phoneNumber;
-
-        [ObservableProperty]
-        private string _email;
-
+        private string _errorMessage = string.Empty;
         [RelayCommand]
-
-        // Them khach hang
         private void Submit()
         {
-            var customer = new Customer
+            if (!Check_Valid_Input())
             {
-                FirstName = FirstName,
-                LastName = LastName,
-                PhoneNumber = PhoneNumber,
-                Email = Email
-            };
+                MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             try
             {
-                db.Add(customer);
+                db.Add(Customer);
                 db.SaveChanges();
             }
             catch (Exception ex)
@@ -48,25 +37,83 @@ namespace BookstoreManagement.UI.CustomerUI
             }
             MessageBox.Show("Added employee successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+        private bool IsOnlyLetterAndSpaces(string input)
+        {
+            return Regex.IsMatch(input, @"^[a-zA-Z\s]+$");
+        }
+        private bool IsOnlyNumber(string input)
+        {
+            return Regex.IsMatch(input, @"\d");
+        }
+        private bool Check_Valid_Input()
+        {
+            if (string.IsNullOrWhiteSpace(Customer.FirstName))
+            {
+                ErrorMessage = "Customer first name can not be empty!";
+                return false;
+            }
+            if (!IsOnlyLetterAndSpaces(Customer.FirstName))
+            {
+                ErrorMessage = "Customer first name must contain only letters and spaces!";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(Customer.LastName))
+            {
+                ErrorMessage = "Customer last name can not be empty!";
+                return false;
+            }
+            if (!IsOnlyLetterAndSpaces(Customer.LastName))
+            {
+                ErrorMessage = "Customer last name must contain only letters and spaces!";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(Customer.PhoneNumber))
+            {
+                ErrorMessage = "Customer phone number can not be empty!";
+                return false;
+            }
+            if (!IsOnlyNumber(Customer.PhoneNumber))
+            {
+                ErrorMessage = "Customer phone number must contain only number!";
+                return false;
+            }
+            if(Customer.PhoneNumber.Length != 10)
+            {
+                ErrorMessage = "Customer phone number must have only 10 number!";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(Customer.Email))
+            {
+                ErrorMessage = "Customer email can not be empty!";
+                return false;
+            }
+            bool validEmail = Customer.Email.Contains('@');
+            if (!validEmail)
+            {
+                ErrorMessage = "Customer email is not a valid type ( must contain @ )!";
+                return false ;
+            }
+            ErrorMessage = string.Empty;    
+            return true;
 
+        }
 
         private void ResetToDefaultValues()
         {
-            _firstName = string.Empty;
-            _lastName = string.Empty;
-            _phoneNumber = string.Empty;
-            _email = string.Empty;
+            Customer = new Customer()
+            {
+                FirstName = "",
+                LastName = "",
+                PhoneNumber = "",
+                Email =""
+            };
         }
-
-
-        /// cap nhap trang thai
         public override void ResetState()
         {
             base.ResetState();
             ResetToDefaultValues();
         }
 
-        // Nut tro ve lai
         [RelayCommand]
         private void GoBack()
         {
@@ -74,8 +121,7 @@ namespace BookstoreManagement.UI.CustomerUI
         }
         public CreateCustomerVM(ApplicationDbContext db,
             INavigatorService<AllCustomersVM> customernNavigator)
-        {
-            ResetToDefaultValues();
+        { 
             this.db = db;
             this.customerNavigator = customernNavigator;
         }

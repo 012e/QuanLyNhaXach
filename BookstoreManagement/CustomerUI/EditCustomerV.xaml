@@ -62,20 +62,25 @@
                 CornerRadius="10">
 
                 <StackPanel Width="200" HorizontalAlignment="Center">
+                    <Label>Customer ID</Label>
+                    <TextBox
+                        FontWeight="Bold"
+                        IsReadOnly="True"
+                        Text="{Binding Customer.Id}" />
 
                     <Label>First Name</Label>
-                    <TextBox Text="{Binding Item.FirstName}" />
+                    <TextBox Text="{Binding Customer.FirstName}" />
 
                     <Label>Last Name</Label>
-                    <TextBox Text="{Binding Item.LastName}" />
+                    <TextBox Text="{Binding Customer.LastName}" />
 
                     <Label>Phone Number</Label>
-                    <TextBox Text="{Binding Item.PhoneNumber}" />
+                    <TextBox Text="{Binding Customer.PhoneNumber}" />
 
                     <Label>Email</Label>
-                    <TextBox Text="{Binding Item.Email}" />
+                    <TextBox Text="{Binding Customer.Email}" />
 
-                    <Button Command="{Binding SubmitItemCommand}">Submit</Button>
+                    <Button Margin="12" Command="{Binding SubmitItemCommand}">Submit</Button>
                 </StackPanel>
             </Border>
             <!--  End Input information  -->

@@ -4,6 +4,7 @@ using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DocumentFormat.OpenXml.Office.CustomUI;
 using System.Windows;
 
 namespace BookstoreManagement.UI.TagUI
@@ -14,11 +15,9 @@ namespace BookstoreManagement.UI.TagUI
         private readonly INavigatorService<AllTagsVM> AllTagNavigator;
 
         [ObservableProperty]
-        private String _name;
-
+        private Tag _tag;
         [ObservableProperty]
-        private String _description;
-
+        private string _errorMessage = string.Empty;
         public CreateTagVM(ApplicationDbContext db, INavigatorService<AllTagsVM> allTagNavigator)
         {
             Db = db;
@@ -32,14 +31,14 @@ namespace BookstoreManagement.UI.TagUI
         [RelayCommand]
         private void Submit()
         {
-            var item = new Tag
+            if (!Check_Valid_Input())
             {
-                Name = Name,
-                Description = Description,
-            };
+                MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             try
             {
-                Db.Add(item);
+                Db.Add(Tag);
                 Db.SaveChanges();
             }
             catch (Exception ex)
@@ -48,10 +47,39 @@ namespace BookstoreManagement.UI.TagUI
             }
             MessageBox.Show("Added tag successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+        private bool Check_Valid_Input()
+        {
+            bool containsNumberInName = Tag.Name.Any(char.IsDigit);
+            if (string.IsNullOrWhiteSpace(Tag.Name))
+            {
+                ErrorMessage = "Tag name can not be empty!";
+                return false;
+            }
+            if (containsNumberInName)
+            {
+                ErrorMessage = "Tag name can not have number!";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(Tag.Description))
+            {
+                ErrorMessage = "Tag description can not be empty!";
+            }
+            bool containsNumberInDescription = Tag.Description.Any(char.IsDigit);
+            if (containsNumberInDescription)
+            {
+                ErrorMessage = "Tag description can not have numnber!";
+                return false;
+            }
+            ErrorMessage = string.Empty;
+            return true;
+        }
         private void ResetToDefaultValues()
         {
-            _name = string.Empty;
-            _description = string.Empty;
+            Tag = new Tag
+            {
+                Name = "",
+                Description = ""
+            };
         }
         public override void ResetState()
         {

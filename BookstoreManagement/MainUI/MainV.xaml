@@ -215,7 +215,7 @@
                     <StackPanel VerticalAlignment="Center" Orientation="Vertical">
 
                         <RadioButton
-                            Height="60"
+                            Height="50"
                             Command="{Binding NavigateToDashBoardCommand}"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">
@@ -225,7 +225,7 @@
                         </RadioButton>
 
                         <RadioButton
-                            Height="60"
+                            Height="50"
                             Command="{Binding NavigateToItemCommand}"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">
@@ -234,7 +234,7 @@
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
-                            Height="60"
+                            Height="50"
                             Command="{Binding NavigateToInvoiceCommand}"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">
@@ -243,7 +243,7 @@
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
-                            Height="60"
+                            Height="50"
                             Command="{Binding NavigateToTagCommand}"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">
@@ -252,7 +252,7 @@
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
-                            Height="60"
+                            Height="50"
                             Command="{Binding NavigateToEmployeeCommand}"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">
@@ -261,7 +261,7 @@
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
-                            Height="60"
+                            Height="50"
                             Command="{Binding NavigateToCustomerCommand}"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">
@@ -270,7 +270,7 @@
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
-                            Height="60"
+                            Height="50"
                             Command="{Binding NavigateToProviderCommand}"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">
@@ -279,7 +279,7 @@
                             </StackPanel>
                         </RadioButton>
                         <RadioButton
-                            Height="60"
+                            Height="50"
                             Command="{Binding NavigateToImportCommand}"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">

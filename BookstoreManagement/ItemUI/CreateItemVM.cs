@@ -27,10 +27,18 @@ public partial class CreateItemVM : BaseViewModel
     private ObservableCollection<ItemTagDto> _tags;
     [ObservableProperty]
     private bool _isSet = false;
+    [ObservableProperty]
+    private string _errorMessage = string.Empty;
+
 
     [RelayCommand]
     private void Submit()
     {
+        if (!Check_Valid_Input())
+        {
+            MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
         try
         {
             db.Items.Add(Item);
@@ -42,6 +50,26 @@ public partial class CreateItemVM : BaseViewModel
             return;
         }
         MessageBox.Show("Added item successfully");
+    }
+    private bool Check_Valid_Input()
+    {
+        if (string.IsNullOrWhiteSpace(Item.Name))
+        {
+            ErrorMessage = "Item name can not be empty!";
+            return false;
+        }
+        if (string.IsNullOrWhiteSpace(Item.Description))
+        {
+            ErrorMessage = "Item description can not be empty!";
+            return false;
+        }
+        if(Item.Quantity < 0)
+        {
+            ErrorMessage = "Quantity must be a non-negative integer!";
+            return false;
+        }
+        ErrorMessage = string.Empty;
+        return true;
     }
 
     private void ResetToDefaultValues()

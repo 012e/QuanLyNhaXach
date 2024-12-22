@@ -63,13 +63,13 @@
                 <StackPanel Width="450" HorizontalAlignment="Center">
 
                     <Label>Name</Label>
-                    <TextBox Text="{Binding Item.Name}" />
+                    <TextBox Name="tb_Name" Text="{Binding Item.Name}" />
 
                     <Label>Description</Label>
-                    <TextBox Text="{Binding Item.Description}" />
+                    <TextBox Name="tb_Description" Text="{Binding Item.Description}" />
 
                     <Label>Quantity</Label>
-                    <TextBox Text="{Binding Item.Quantity}" />
+                    <TextBox Name="tb_Quantity" Text="{Binding Item.Quantity}" />
 
                     <StackPanel Orientation="Horizontal">
                         <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Tags</Label>
