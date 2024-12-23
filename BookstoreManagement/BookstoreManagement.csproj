@@ -78,6 +78,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Shared\Images\background_login.png" />
     <None Remove="Shared\Images\bg1.png" />
     <None Remove="Shared\Images\edit.png" />
     <None Remove="Shared\Images\expense.png" />
@@ -108,6 +109,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Shared\Images\background_login.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Shared\Images\edit.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

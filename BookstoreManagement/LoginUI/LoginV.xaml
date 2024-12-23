@@ -2,42 +2,141 @@
     x:Class="BookstoreManagement.LoginUI.LoginV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:BookstoreManagement.Shared.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:BookstoreManagement.LoginUI"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance local:LoginVM}"
     mc:Ignorable="d">
+    <Control.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Control.Resources>
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.Resources>
+            <Style x:Key="MaterialDesignIconButton" TargetType="Button">
+                <Setter Property="Width" Value="30" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>
+        </Grid.Resources>
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/BookstoreManagement;component/Shared/Images/background_login.png" Stretch="UniformToFill" />
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="2*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width=".5*" />
+            <ColumnDefinition Width="1.5*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-
-        <Grid
-            Grid.Row="1"
-            Grid.Column="1"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch">
-
+        <Grid Grid.Row="1" Grid.Column="1">
             <Border
-                Padding="20"
-                Background="LightBlue"
-                CornerRadius="30">
-                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                    <Label>Email</Label>
-                    <TextBox Name="email" Text="{Binding Email}" />
-                    <Separator Height="20" Background="Transparent" />
-                    <Label>Password</Label>
-                    <TextBox Text="{Binding Password}" />
-                    <Separator Height="20" Background="Transparent" />
-                    <Button Command="{Binding LoginCommand}">Login</Button>
-                </StackPanel>
+                Background="LightGray"
+                CornerRadius="10"
+                Opacity="0.8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+                        <Image
+                            Width="200"
+                            Height="200"
+                            Opacity="0.9"
+                            Source="pack://application:,,,/Shared/Images/logo.png" />
+                        <TextBlock
+                            FontSize="20"
+                            Foreground="#2C3E50"
+                            TextAlignment="Center">
+                            Bookstore Management
+                        </TextBlock>
+                    </StackPanel>
+                    <Rectangle
+                        Grid.Column="1"
+                        Width="2"
+                        Margin="0,20,20,20"
+                        Fill="Gray"
+                        Opacity="0.6" />
+                    <StackPanel
+                        Grid.Column="2"
+                        Margin="30"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            Margin="0,10,0,30"
+                            HorizontalAlignment="Center"
+                            FontSize="24"
+                            FontWeight="Bold"
+                            Foreground="#2C3E50"
+                            Text="LOGIN NOW" />
+
+                        <!--  Email Field  -->
+                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Width="20"
+                                Height="20"
+                                VerticalAlignment="Center"
+                                Foreground="gray"
+                                Kind="Email" />
+                            <TextBox
+                                Width="230"
+                                Margin="10,0,10,0"
+                                materialDesign:HintAssist.Hint="Enter your E-mail"
+                                FontSize="14"
+                                Text="{Binding Email}" />
+
+                        </StackPanel>
+
+                        <!--  Password Field  -->
+                        <StackPanel Margin="0,20,0,10" Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Width="20"
+                                Height="20"
+                                VerticalAlignment="Center"
+                                Foreground="Gray"
+                                Kind="Lock" />
+                            <PasswordBox
+                                Name="passwordBox"
+                                Width="200"
+                                Margin="10,0,5,0"
+                                materialDesign:HintAssist.Hint="Enter your password"
+                                FontSize="14"
+                                PasswordChanged="PasswordBox_PasswordChanged"
+                                Visibility="{Binding IsPasswordNotVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            <TextBox
+                                Width="200"
+                                Margin="10,0,5,0"
+                                materialDesign:HintAssist.Hint="Enter your password"
+                                FontSize="14"
+                                Text="{Binding Password, Mode=TwoWay}"
+                                Visibility="{Binding IsPasswordVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            <Button Command="{Binding HideAndShowCommand}" Style="{StaticResource MaterialDesignIconButton}">
+                                <materialDesign:PackIcon
+                                    Width="20"
+                                    Height="20"
+                                    Kind="{Binding PasswordVisibilityIcon}" />
+                            </Button>
+                        </StackPanel>
+
+                        <!--  Login Button  -->
+                        <Button
+                            Margin="20"
+                            Command="{Binding LoginCommand}"
+                            Content="Login"
+                            FontSize="16" />
+                    </StackPanel>
+                </Grid>
             </Border>
         </Grid>
     </Grid>

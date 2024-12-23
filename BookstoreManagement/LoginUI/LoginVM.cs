@@ -5,8 +5,10 @@ using BookstoreManagement.MainUI;
 using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace BookstoreManagement.LoginUI;
 
@@ -16,9 +18,14 @@ public partial class LoginVM : BaseViewModel
     private readonly LoginService loginService;
     [ObservableProperty]
     private string _email;
-
     [ObservableProperty]
     private string _password;
+    [ObservableProperty]
+    private bool _isPasswordVisible = false;
+    [ObservableProperty]
+    private bool _isPasswordNotVisible = true;
+    [ObservableProperty]
+    private PackIconKind _passwordVisibilityIcon = PackIconKind.EyeOff;
 
 
     [RelayCommand]
@@ -49,5 +56,12 @@ public partial class LoginVM : BaseViewModel
     {
         this.mainUINavigator = mainUINavigator;
         this.loginService = loginService;
+    }
+    [RelayCommand]
+    private void HideAndShow()
+    {
+        IsPasswordVisible = !IsPasswordVisible;
+        IsPasswordNotVisible = !IsPasswordNotVisible;
+        PasswordVisibilityIcon = IsPasswordVisible ? PackIconKind.Eye : PackIconKind.EyeOff;
     }
 }
