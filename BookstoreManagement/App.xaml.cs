@@ -120,9 +120,9 @@ public partial class App : Application
         else
         {
             var mainVM = AppHost.Services.GetRequiredService<MainVM>();
-            var currentUser = AppHost.Services.GetRequiredService<CurrentUserService>().CurrentUser;
+            var currentUser = AppHost.Services.GetRequiredService<CurrentUserService>();
             var db = AppHost.Services.GetRequiredService<ApplicationDbContext>();
-            currentUser = db.Employees.Find(1);
+            currentUser.CurrentUser = db.Employees.Find(1);
             globalNavigator.CurrentViewModel = mainVM;
         }
 
