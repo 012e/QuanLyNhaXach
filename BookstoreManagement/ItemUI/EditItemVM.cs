@@ -19,7 +19,6 @@ public partial class EditItemVM : EditItemVM<Item>
     private readonly ApplicationDbContext db;
 
     public INavigatorService<AllItemsVM> AllItemsNavigator { get; }
-    
 
     [ObservableProperty]
     private Item _item;
@@ -31,7 +30,10 @@ public partial class EditItemVM : EditItemVM<Item>
     private ObservableCollection<ItemTagDto> _tags;
     [ObservableProperty]
     private bool _isSet = false;
-    
+    [ObservableProperty]
+    private string _errorMessage = string.Empty;
+    [ObservableProperty]
+    private bool _isSubmitSuccess = false;
 
     public EditItemVM(
         ApplicationDbContext db,
@@ -40,6 +42,7 @@ public partial class EditItemVM : EditItemVM<Item>
     {
         this.db = db;
         AllItemsNavigator = allItemsNavigator;
+        Item = new Item();
     }
 
     [RelayCommand]
@@ -50,9 +53,29 @@ public partial class EditItemVM : EditItemVM<Item>
 
     public override void ResetState()
     {
-        IsSet = false;  
+        IsSet = false;
         base.ResetState();
         
+    }
+    private bool Check_Valid_Input()
+    {
+        if (string.IsNullOrWhiteSpace(Item.Name))
+        {
+            ErrorMessage = "Item Name is empty!";
+            return false;
+        }
+        if(string.IsNullOrWhiteSpace(Item.Description))
+        {
+            ErrorMessage = "Item description is empty!";
+            return false;
+        }
+        if(Item.Quantity < 0)
+        {
+            ErrorMessage = "Item quantity must be a non-negative integer!";
+            return false;
+        }
+        ErrorMessage = string.Empty;
+        return true;
     }
 
     protected override void LoadItem()
@@ -102,13 +125,24 @@ public partial class EditItemVM : EditItemVM<Item>
     protected override void OnSubmittingSuccess()
     {
         base.OnSubmittingSuccess();
-        MessageBox.Show("Submitted successfully");
+        if (IsSubmitSuccess)
+        {
+            MessageBox.Show("Submitted successfully");
+            IsSubmitSuccess = false;
+        }
+        return;
     }
 
     protected override void SubmitItemHandler()
     {
+        if (!Check_Valid_Input())
+        {
+            MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
         db.Items.Update(Item);
         db.SaveChanges();
+        IsSubmitSuccess = true;
     }
     private void LoadImageFromUrl(string url)
     {

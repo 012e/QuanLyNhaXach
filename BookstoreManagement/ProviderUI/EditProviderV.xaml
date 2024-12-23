@@ -56,18 +56,18 @@
                     Width="200"
                     HorizontalAlignment="Center">
                     <Label FontWeight="Bold">Provider Id</Label>
-                    <TextBox IsReadOnly="True" Text="{Binding Item.Id}" />
+                    <TextBox IsReadOnly="True" Text="{Binding Provider.Id}" />
 
                     <Label>Name</Label>
                     <TextBox
                         AcceptsReturn="True"
-                        Text="{Binding Item.Name}"
+                        Text="{Binding Provider.Name}"
                         TextWrapping="Wrap" />
 
                     <Label>Address</Label>
                     <TextBox
                         AcceptsReturn="True"
-                        Text="{Binding Item.Address}"
+                        Text="{Binding Provider.Address}"
                         TextWrapping="Wrap" />
 
 

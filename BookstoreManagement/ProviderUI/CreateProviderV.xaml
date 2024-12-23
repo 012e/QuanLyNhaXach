@@ -57,10 +57,10 @@
 
 
                     <Label>Name</Label>
-                    <TextBox Text="{Binding Name}" />
+                    <TextBox Text="{Binding Provider.Name}" />
 
                     <Label>Address</Label>
-                    <TextBox Text="{Binding Address}" />
+                    <TextBox Text="{Binding Provider.Address}" />
 
                     <Button Margin="12" Command="{Binding SubmitCommand}">Submit</Button>
                 </StackPanel>
