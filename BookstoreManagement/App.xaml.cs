@@ -20,6 +20,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Navigation;
 using BookstoreManagement.PricingUI.Services;
+using BookstoreManagement.SettingUI;
 
 namespace BookstoreManagement;
 
@@ -78,8 +79,13 @@ public partial class App : Application
 
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
 
+        builder.Services.AddViewViewModel<SettingV, SettingVM>();
+        builder.Services.AddViewViewModel<AV, AVM>();
+        builder.Services.AddViewViewModel<BV, BVM>();
+
         builder.Services.AddKeyedSingleton<NavigatorStore>("default");
         builder.Services.AddKeyedSingleton<NavigatorStore>("global");
+        builder.Services.AddKeyedSingleton<NavigatorStore>("shit");
 
         AppHost = builder.Build();
     }
