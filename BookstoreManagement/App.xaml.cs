@@ -123,7 +123,10 @@ public partial class App : Application
             currentUser.CurrentUser = db.Employees.Find(1);
 
             globalNavigator.CurrentViewModel = mainVM;
+
         }
+
+
 
         base.OnStartup(e);
     }
