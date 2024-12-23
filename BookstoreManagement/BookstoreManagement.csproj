@@ -85,9 +85,7 @@
     <None Remove="Shared\Images\note.png" />
     <None Remove="Shared\Images\revenue5.png" />
     <None Remove="Shared\Images\sunset.png" />
-    <None Remove="Shared\Images\timer.png" />
     <None Remove="Shared\Images\user.png" />
-    <None Remove="Shared\Images\ware-house.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -128,13 +126,7 @@
     <Resource Include="Shared\Images\sunset.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Shared\Images\timer.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Shared\Images\user.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Shared\Images\ware-house.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

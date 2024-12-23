@@ -4,6 +4,7 @@ using BookstoreManagement.LoginUI.Services;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Office2016.Drawing.Command;
 using LiveCharts;
@@ -11,6 +12,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using System.Collections.ObjectModel;
 using System.Reflection.Emit;
 using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
@@ -32,8 +34,6 @@ namespace BookstoreManagement.UI.DashboardUI
         [ObservableProperty]
         private SeriesCollection _lineSeriesCollection;
 
-        [ObservableProperty]
-        private string[] _labels;
 
         [ObservableProperty]
         private Func<double, string> _yFormatter;
@@ -56,17 +56,19 @@ namespace BookstoreManagement.UI.DashboardUI
         [ObservableProperty]
         private List<InvoicesItem> _bestSeller;
 
-
         public DashBoardVM(ApplicationDbContext db, CurrentUserService currentUserService)
         {
             this.db = db;
             this.currentUserService = currentUserService;
-            LoadDashBoardData();
-            RevenueChart();
+            StartDateRevenue = DateTime.Now.AddDays(-7);
+            EndDateRevenue = DateTime.Now;
         }
         public override void ResetState()
         {
             base.ResetState();
+            UserName = $"Good morning, {currentUserService.CurrentUser.FirstName}";
+            LoadDashBoardData();
+            RevenueChart(StartDateRevenue, EndDateRevenue);
         }
         private LinearGradientBrush GradientFillChart()
         {
@@ -77,26 +79,41 @@ namespace BookstoreManagement.UI.DashboardUI
             gradientBrush.GradientStops.Add(new GradientStop((Color)ColorConverter.ConvertFromString("#174CFA"), 1));
             return gradientBrush;
         }
-        private void RevenueChart()
+
+
+        [ObservableProperty]
+        private ObservableCollection<string> _labels;
+
+        [ObservableProperty]
+        private DateTime _startDateRevenue;
+
+        [ObservableProperty]
+        private DateTime _endDateRevenue;
+        // Revenue Chart
+        private void RevenueChart(DateTime startDate, DateTime endDate)
         {
-            var weeklyRevenue = db.Invoices.GroupBy(i => i.CreatedAt.DayOfWeek)
-                .Select(g => new { Day = g.Key, Total = g.Sum(i => i.Total) })
+            var dailyRevenue = db.Invoices.Where(i => i.CreatedAt.Date >= startDate.Date && i.CreatedAt.Date <= endDate.Date)
+                .GroupBy(i => new { i.CreatedAt.Year, i.CreatedAt.Month, i.CreatedAt.Day })
+                .Select(g => new
+                {
+                    Day = new DateTime(g.Key.Year, g.Key.Month, g.Key.Day),
+                    Total = g.Sum(i => i.Total)
+                })
                 .OrderBy(g => g.Day)
                 .ToList();
 
-            var lineSeriesValue = weeklyRevenue.Select(r => (double)r.Total / 1000).ToList();
             LineSeriesCollection = new SeriesCollection
             {
                 new LineSeries
                 {
                     Title = "",
-                    Values = new ChartValues<double>{ 3133,2312,5663,9976,1383,7878,5482},
+                    Values = new ChartValues<double>(dailyRevenue.Select(g => (double)g.Total)),
                     Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 255)),
                     Fill = GradientFillChart()
                 }
             };
-            Labels = new[] { "Mon", "Tue", "Wed", "Thus", "Fri", "Sat", "Sun" };
-            YFormatter = value => (value / 1000).ToString("0.0" + "k");
+            Labels = new ObservableCollection<string>(dailyRevenue.Select(g => g.Day.ToString("dd/MM/yyyy")));
+            YFormatter = value => "$" + (value).ToString();
         }
 
 
@@ -128,8 +145,8 @@ namespace BookstoreManagement.UI.DashboardUI
         {
             //TotalRevenue = GetToTalRevenue();
             //TotalExpense = GetToTalExpense();
-            TotalRevenue = 1000;
-            TotalExpense = 500;
+            TotalRevenue = GetToTalRevenue();
+            TotalExpense = GetToTalExpense();
             PercentProfit = GetPercentProfit(TotalRevenue, TotalExpense);
             RecentInvoice = GetRecentInvoice(10);
             BestSeller = GetItemBestSeller(10);
@@ -182,5 +199,16 @@ namespace BookstoreManagement.UI.DashboardUI
             return result;
         }
 
+        [RelayCommand]
+        private void ChangeDateRevenue()
+        {
+            if (StartDateRevenue > EndDateRevenue)
+            {
+                MessageBox.Show("Start date cannot over End date !", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            ResetState();
+        }
     }
 }
