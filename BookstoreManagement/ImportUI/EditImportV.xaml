@@ -74,10 +74,10 @@
                     <Label>Provider Id</Label>
                     <TextBox IsReadOnly="True" Text="{Binding Item.ProviderId}" />
 
-                    <!--<Label>Provider Name</Label>
-                    <TextBox IsReadOnly="True" Text="{Binding Item.Provider.Name}" />-->
+                    <Label>Total cost</Label>
+                    <TextBox Text="{Binding Item.TotalCost}" />
 
-                    <Label>Created At</Label>
+                    <Label>Created at</Label>
                     <DatePicker SelectedDate="{Binding Item.CreatedAt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <StackPanel

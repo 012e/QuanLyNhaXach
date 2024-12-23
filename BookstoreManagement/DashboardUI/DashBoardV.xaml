@@ -2,117 +2,594 @@
     x:Class="BookstoreManagement.UI.DashboardUI.DashBoardV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:BookstoreManagement.Shared.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:BookstoreManagement.UI.DashboardUI"
+    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+    xmlns:lvc2="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:ui="clr-namespace:BookstoreManagement.UI.Components"
     d:DataContext="{d:DesignInstance local:DashBoardVM}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="1000"
+    d:DesignWidth="1400"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
 
+    <Border
+        BorderBrush="#ECF0FF"
+        BorderThickness="3"
+        CornerRadius="10">
+        <Grid Background="#ECF0FF">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.15*" />
+                <RowDefinition Height="0.01*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-
-    <Grid Background="#ECEDEA">
-
-
-        <Grid.RowDefinitions>
-            <!--Phan Header-->
-            <RowDefinition Height=".17*"></RowDefinition>
-
-            <!--Phan Content-->
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-
-        <!--Header-->
-        <Border Grid.Row="0" Background="#F5F5F5" Padding="20"
-                BorderBrush="Black"
-                BorderThickness="1"
-                CornerRadius="10">
-            <TextBlock  VerticalAlignment="Center" 
-                        HorizontalAlignment="Left"
-                        FontSize="32"
-                        FontWeight="DemiBold">
-                Dashboard
-            </TextBlock>
-
-        </Border>
-        <!-- End Header-->
-
-
-        <!--Content-->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
-
-                <!--AUTO chiem phan con lai-->
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-
-            <!--Cot dau tien cua Content co 2 dong-->
-            <Grid Grid.Column="0">
+            <!--  ============== Header - Row 0 ==================  -->
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="0.8*" />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="2.1*"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
 
-
-                <!--Bieu do-->
-                <Border Grid.Row="0"
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    Margin="30 20 20 20"
-                    CornerRadius="10" Grid.ColumnSpan="2">
-                    <TextBlock>Day la bieu do doanh thu,
-                    Cac chu thich: theo the loai san pham
-                    </TextBlock>
-                </Border>
-
-                <!--Cac box ve sach, hang ton, so don hang hom nay-->
-                <Border Grid.Row="1"
-                        BorderBrush="Black"
-                        BorderThickness="1"
-                        Margin="30 20 20 20"
-                        CornerRadius="10" Grid.ColumnSpan="2">
-                    <TextBlock>so sach ban,
-                        so luong ton kho,
-                        so don hang hnay
-                    </TextBlock>
-                </Border>
-            </Grid>
-
-            <!--San pham ban chay-->
-            <Grid Grid.Column="1">
-                <Border BorderBrush="Black"
-                        BorderThickness="1"
-                        Margin="10 20 30 20"
-                        CornerRadius="10">
-
-                    <StackPanel>
-                        <TextBlock Margin="20"
-                                  FontSize="19"
-                                  FontWeight="Bold"
-                                  Foreground="#000000">
-                                  
-                            San pham ban chay
-                        </TextBlock>
+                <!--  Hello User  -->
+                <Grid Grid.Column="0">
+                    <StackPanel
+                        Margin="20,0,0,10"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Image
+                            Width="50"
+                            Height="50"
+                            Source="pack://application:,,,/Shared/Images/sunset.png" />
+                        <TextBlock
+                            Margin="0,10,0,0"
+                            Padding="20"
+                            FontSize="30"
+                            FontWeight="DemiBold"
+                            Text="{Binding UserName}" />
+                        <fa:ImageAwesome
+                            Width="23"
+                            Height="23"
+                            Margin="0,10,0,0"
+                            Icon="Refresh"
+                            Spin="True"
+                            Visibility="{Binding Loading, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </StackPanel>
-                </Border>
+                </Grid>
+                <!--  End Hello User  -->
+
+                <!--  Time and Icon User  -->
+                <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="0.4*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel
+                        Grid.Column="0"
+                        Width="270"
+                        Margin="20"
+                        HorizontalAlignment="Left">
+                        <ui:Search PlaceHolder="Search..." Text="{Binding SearchText}" />
+                    </StackPanel>
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel
+                            Grid.Column="0"
+                            Margin="0,25,0,0"
+                            HorizontalAlignment="Left">
+                            <Image
+                                Width="50"
+                                Height="50"
+                                Source="pack://application:,,,/Shared/Images/note.png" />
+                        </StackPanel>
+                        <StackPanel
+                            Grid.Column="1"
+                            Margin="0,30,0,0"
+                            HorizontalAlignment="Left">
+                            <Image
+                                Width="40"
+                                Height="40"
+                                Source="pack://application:,,,/Shared/Images/user.png" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <!--  End Time and Icon User  -->
             </Grid>
+            <!--  ================== End Header - Row 0 ====================  -->
+
+            <!--  Line  -->
+            <Grid Grid.Row="1">
+                <Separator Height="10" Margin="20,0,20,0" />
+            </Grid>
+            <!--  End Line  -->
+
+            <!--  =========================== Body - Row 2 ===========================  -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+
+                <!--  Column 0  -->
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition />
+                        <RowDefinition Height="0.6*" />
+                    </Grid.RowDefinitions>
+
+                    <!--  ===== Statistical ======  -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  Sales Revenue  -->
+                        <Border
+                            Grid.Column="0"
+                            Margin="20,10,10,10"
+                            BorderThickness="5"
+                            CornerRadius="10">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Direction="315"
+                                    Opacity="0.5"
+                                    ShadowDepth="5"
+                                    Color="Black" />
+                            </Border.Effect>
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="1" Color="LightBlue" />
+                                    <GradientStop Offset="0" Color="#174CFA" />
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                            <Grid>
+                                <Grid.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Offset="1" Color="LightBlue" />
+                                        <GradientStop Offset="0" Color="#174CFA" />
+                                    </LinearGradientBrush>
+                                </Grid.Background>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="0.8*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <StackPanel Margin="20,20,0,0">
+                                        <TextBlock
+                                            FontSize="27"
+                                            FontWeight="DemiBold"
+                                            Foreground="White"
+                                            Text="Total Revenue" />
+                                        <TextBlock
+                                            FontSize="35"
+                                            FontWeight="Bold"
+                                            Foreground="#fff"
+                                            Text="{Binding TotalRevenue, StringFormat='{}{0:C}'}" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <Image
+                                        Width="90"
+                                        Height="90"
+                                        Source="pack://application:,,,/Shared/Images/revenue5.png" />
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <!--  End Sales Revenue  -->
+
+                        <!--  Expense  -->
+                        <Border
+                            Grid.Column="1"
+                            Margin="10,10,20,10"
+                            BorderThickness="5"
+                            CornerRadius="10">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Direction="315"
+                                    Opacity="0.5"
+                                    ShadowDepth="5"
+                                    Color="Black" />
+                            </Border.Effect>
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="1" Color="LightBlue" />
+                                    <GradientStop Offset="0" Color="#174CFA" />
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                            <Grid>
+                                <Grid.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Offset="1" Color="LightBlue" />
+                                        <GradientStop Offset="0" Color="#174CFA" />
+                                    </LinearGradientBrush>
+                                </Grid.Background>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="0.8*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <StackPanel Margin="20,20,0,0">
+                                        <TextBlock
+                                            FontSize="27"
+                                            FontWeight="DemiBold"
+                                            Foreground="White"
+                                            Text="Total Expense" />
+                                        <TextBlock
+                                            FontSize="35"
+                                            FontWeight="Bold"
+                                            Foreground="#fff"
+                                            Text="{Binding TotalExpense, StringFormat='{}{0:C}'}" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <Image
+                                        Width="110"
+                                        Height="110"
+                                        Source="pack://application:,,,/Shared/Images/expense.png" />
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <!--  End Expense  -->
+                    </Grid>
+                    <!--  End ====== Statistical ======  -->
+
+                    <!--  ======== Revenue Chart ========  -->
+                    <Border
+                        Grid.Row="1"
+                        Margin="20,10,20,10"
+                        Padding="4"
+                        Background="#fff"
+                        BorderBrush="#fff"
+                        BorderThickness="3"
+                        ClipToBounds="False"
+                        CornerRadius="20">
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.18*" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <!--  Chart Title  -->
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0" Margin="10,0,0,5">
+                                    <TextBlock FontSize="23" FontWeight="DemiBold">Revenue Analytics</TextBlock>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <StackPanel
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        Orientation="Horizontal">
+
+                                        <!--  StartDate  -->
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="0,4,5,0" FontSize="17">
+                                                Start:
+                                            </TextBlock>
+                                            <DatePicker
+                                                BorderBrush="Transparent"
+                                                BorderThickness="0"
+                                                FontSize="17"
+                                                SelectedDate="{Binding StartDateRevenue, Mode=TwoWay, StringFormat='dd/MM/yyyy'}" />
+                                        </StackPanel>
+                                        <!--  End StartDate  -->
+
+                                        <!--  EndDate  -->
+                                        <StackPanel Margin="60,0,20,0" Orientation="Horizontal">
+                                            <TextBlock Margin="0,4,5,0" FontSize="17">End:</TextBlock>
+                                            <DatePicker
+                                                BorderBrush="Transparent"
+                                                BorderThickness="0"
+                                                DisplayDateEnd="{x:Static sys:DateTime.Today}"
+                                                FontSize="17"
+                                                SelectedDate="{Binding EndDateRevenue, Mode=TwoWay, StringFormat='dd/MM/yyyy'}" />
+                                        </StackPanel>
+                                        <!--  End EndDate  -->
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            <!--  End Chart Title  -->
+
+                            <!--  Chart  -->
+                            <Grid
+                                Grid.Row="1"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                                <lvc:CartesianChart
+                                    MinWidth="500"
+                                    MinHeight="100"
+                                    LegendLocation="None"
+                                    Series="{Binding LineSeriesCollection}">
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis LabelFormatter="{Binding YFormatter}">
+                                            <lvc:Axis.Separator>
+                                                <lvc:Separator Stroke="LightBlue" StrokeThickness="1" />
+                                            </lvc:Axis.Separator>
+                                        </lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis Labels="{Binding Labels}" />
+                                    </lvc:CartesianChart.AxisX>
+                                </lvc:CartesianChart>
+                            </Grid>
+                            <!--  End Chart  -->
+                        </Grid>
+                    </Border>
+                    <!--  End ===== Revenue Chart =========  -->
+
+                    <!--  ======= Recent Sales ==========  -->
+                    <Border
+                        Grid.Row="2"
+                        Margin="20,10,20,10"
+                        Padding="4"
+                        Background="#fff"
+                        BorderBrush="#fff"
+                        BorderThickness="3"
+                        ClipToBounds="False"
+                        CornerRadius="20">
+                        <Grid
+                            Grid.Row="2"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.4*" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <!--  Title Recent Sale  -->
+                            <Grid Grid.Row="0" Margin="10,0,0,5">
+                                <TextBlock FontSize="23" FontWeight="DemiBold">Recent Sales</TextBlock>
+                            </Grid>
+                            <!--  End Title Recent Sale  -->
+
+                            <!--  List Sales  -->
+                            <Grid Grid.Row="1">
+                                <DataGrid
+                                    AutoGenerateColumns="False"
+                                    Background="#fff"
+                                    IsReadOnly="True"
+                                    ItemsSource="{Binding RecentInvoice}">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="BorderBrush" Value="Black" />
+                                            <Setter Property="Padding" Value="10,0,0,10" />
+                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                            <Setter Property="FontSize" Value="15" />
+                                        </Style>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="FontWeight" Value="DemiBold" />
+                                            <Setter Property="Margin" Value="10,0,0,0" />
+
+                                        </Style>
+
+                                    </DataGrid.Resources>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="*"
+                                            Binding="{Binding Id}"
+                                            Header="Id" />
+                                        <!--  Binding full name  -->
+                                        <DataGridTextColumn Width="*" Header="Customer Name">
+                                            <DataGridTextColumn.Binding>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="Customer.FirstName" />
+                                                    <Binding Path="Customer.LastName" />
+                                                </MultiBinding>
+                                            </DataGridTextColumn.Binding>
+                                        </DataGridTextColumn>
+                                        <!--  End Binding full name  -->
+                                        <DataGridTextColumn
+                                            Width="*"
+                                            Binding="{Binding CreatedAt, StringFormat='dd/MM/yyyy'}"
+                                            Header="Purchase Date" />
+                                        <DataGridTextColumn
+                                            Width="*"
+                                            Binding="{Binding Total}"
+                                            Header="Price" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                            <!--  End List Sales  -->
+                        </Grid>
+                        <!--  ========= End Recent Sales =========  -->
+                    </Border>
+                </Grid>
+                <!--  End Column 0  -->
+
+                <!--  Column 1  -->
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.8*" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <!--  =========== Profit Chart =============  -->
+                    <Border
+                        Grid.Row="0"
+                        Margin="0,10,20,10"
+                        Background="#fff"
+                        BorderBrush="#fff"
+                        BorderThickness="3"
+                        CornerRadius="20">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.2*" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
 
 
+                            <!--  Profit Title  -->
+                            <Grid Grid.Row="0">
+                                <TextBlock
+                                    Padding="10,10,0,0"
+                                    FontSize="23"
+                                    FontWeight="DemiBold">
+                                    Profit Analytics
+                                </TextBlock>
+                            </Grid>
+                            <!--  End  Profit Title  -->
+
+                            <!--  Inner Profit chart  -->
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.6*" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="0.5*" />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Margin="10,30,0,0">
+                                        <StackPanel
+                                            Margin="0,0,0,10"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                            <Rectangle
+                                                Width="18"
+                                                Height="18"
+                                                Margin="0,0,5,0"
+                                                Fill="#4191DD" />
+                                            <TextBlock FontSize="17">Profit</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel
+                                            Margin="0,0,0,10"
+                                            VerticalAlignment="Center"
+                                            Orientation="Horizontal">
+                                            <Rectangle
+                                                Width="18"
+                                                Height="18"
+                                                Margin="0,0,5,0"
+                                                Fill="#E7EFF8" />
+                                            <TextBlock FontSize="17">Expense</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                            <Image
+                                                Width="22"
+                                                Height="22"
+                                                Source="pack://application:,,,/Shared/Images/gauge.png" />
+                                            <TextBlock Padding="3,0,3,0" FontSize="17">Percent profit</TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+                                        <TextBlock Margin="10,0,10,10" FontSize="17">
+                                            Unit:<LineBreak />
+                                            Percentage(%)</TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <lvc2:PieChart
+                                        Grid.Row="0"
+                                        Margin="5"
+                                        MaxValue="100"
+                                        MinValue="0"
+                                        Series="{Binding PercentProfit}" />
+                                </Grid>
+                            </Grid>
+                            <!--  End Inner Profit chart  -->
+                        </Grid>
+                    </Border>
+
+                    <!--  ========= End Profit Chart ===========  -->
 
 
+                    <!--  =========== Bestseller =============  -->
+                    <Border
+                        Grid.Row="1"
+                        Margin="0,10,20,10"
+                        Background="#fff"
+                        BorderBrush="#fff"
+                        BorderThickness="3"
+                        CornerRadius="20">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.2*" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <!--  Bestseller Title  -->
+                            <Grid Grid.Row="0">
+                                <TextBlock
+                                    Padding="10,10,0,0"
+                                    FontSize="23"
+                                    FontWeight="DemiBold">
+                                    Bestseller
+                                </TextBlock>
+                            </Grid>
+                            <!--  End Bestseller Title  -->
+
+                            <!--  List BestSeller  -->
+                            <Grid Grid.Row="1">
+                                <DataGrid
+                                    AutoGenerateColumns="False"
+                                    Background="#fff"
+                                    IsReadOnly="True"
+                                    ItemsSource="{Binding BestSeller}">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="BorderBrush" Value="Black" />
+                                            <Setter Property="Padding" Value="10,0,0,10" />
+                                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                            <Setter Property="FontSize" Value="15" />
+                                        </Style>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="FontWeight" Value="DemiBold" />
+                                            <Setter Property="Margin" Value="10,0,0,0" />
+                                        </Style>
+                                    </DataGrid.Resources>
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="*"
+                                            Binding="{Binding Item.Name}"
+                                            Header="Name">
+                                            <DataGridTextColumn.CellStyle>
+                                                <Style TargetType="DataGridCell">
+                                                    <Setter Property="ToolTip" Value="{Binding Item.Name}" />
+                                                </Style>
+                                            </DataGridTextColumn.CellStyle>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn
+                                            Width="0.5*"
+                                            Binding="{Binding Quantity}"
+                                            Header="Sold" />
+                                        <DataGridTextColumn
+                                            Width="0.5*"
+                                            Binding="{Binding Item.Quantity}"
+                                            Header="Remain" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                            <!--  End List BestSeller  -->
+                        </Grid>
+                    </Border>
+                    <!--  ========= End Bestseller ===========  -->
+                </Grid>
+                <!--  End Column 1  -->
+            </Grid>
+            <!--  =========================== Body - Row 1 ========================  -->
         </Grid>
-        <!--Content-->
+    </Border>
 
 
-
-    </Grid>
 
 </UserControl>

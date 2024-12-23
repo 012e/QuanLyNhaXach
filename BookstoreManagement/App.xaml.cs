@@ -106,9 +106,6 @@ public partial class App : Application
         AppHost.Start();
         AppHost.Services.GetRequiredService<MainWindowV>().Show();
 
-        var navigator = AppHost.Services.GetRequiredKeyedService<NavigatorStore>("default");
-        var allItemsVM = AppHost.Services.GetRequiredService<AllItemsVM>();
-        navigator.CurrentViewModel = allItemsVM;
 
         var globalNavigator = AppHost.Services.GetRequiredKeyedService<NavigatorStore>("global");
 
@@ -123,8 +120,15 @@ public partial class App : Application
             var currentUser = AppHost.Services.GetRequiredService<CurrentUserService>();
             var db = AppHost.Services.GetRequiredService<ApplicationDbContext>();
             currentUser.CurrentUser = db.Employees.Find(1);
+
             globalNavigator.CurrentViewModel = mainVM;
         }
+
+        var navigator = AppHost.Services.GetRequiredKeyedService<NavigatorStore>("default");
+        var allItemsVM = AppHost.Services.GetRequiredService<DashBoardVM>();
+        navigator.CurrentViewModel = allItemsVM;
+
+
 
         base.OnStartup(e);
     }

@@ -39,6 +39,9 @@ namespace BookstoreManagement.ImportUI
         private int _providerId;
 
         [ObservableProperty]
+        private decimal _totalCost;
+
+        [ObservableProperty]
         private DateTime _createdAt;
 
         // Declare in ImportItemTab
@@ -84,7 +87,8 @@ namespace BookstoreManagement.ImportUI
             {
                 ProviderId = ProviderId,
                 CreatedAt = CreatedAt,
-                ImportItems = ListItem
+                ImportItems = ListItem,
+                TotalCost = TotalCost
             };
             try
             {
@@ -111,6 +115,7 @@ namespace BookstoreManagement.ImportUI
         {
             _providerId = 0;
             _createdAt = DateTime.Now;
+            _totalCost = 0;
             IsImportItemVisible = false;
         }
 
