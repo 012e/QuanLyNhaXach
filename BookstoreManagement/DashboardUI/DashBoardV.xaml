@@ -275,15 +275,7 @@
                                                 BorderBrush="Transparent"
                                                 BorderThickness="0"
                                                 FontSize="17"
-                                                SelectedDate="{Binding StartDateRevenue, Mode=TwoWay, StringFormat='dd/MM/yyyy'}">
-                                                <!--  Binding  -->
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="SelectedDateChanged">
-                                                        <i:InvokeCommandAction Command="{Binding ChangeDateRevenueCommand}" />
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                                <!--  End Binding  -->
-                                            </DatePicker>
+                                                SelectedDate="{Binding StartDateRevenue, Mode=TwoWay, StringFormat='dd/MM/yyyy'}" />
                                         </StackPanel>
                                         <!--  End StartDate  -->
 
@@ -295,16 +287,7 @@
                                                 BorderThickness="0"
                                                 DisplayDateEnd="{x:Static sys:DateTime.Today}"
                                                 FontSize="17"
-                                                SelectedDate="{Binding EndDateRevenue, Mode=TwoWay, StringFormat='dd/MM/yyyy'}">
-
-                                                <!--  Binding  -->
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="SelectedDateChanged">
-                                                        <i:InvokeCommandAction Command="{Binding ChangeDateRevenueCommand}" />
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                                <!--  End Binding  -->
-                                            </DatePicker>
+                                                SelectedDate="{Binding EndDateRevenue, Mode=TwoWay, StringFormat='dd/MM/yyyy'}" />
                                         </StackPanel>
                                         <!--  End EndDate  -->
                                     </StackPanel>
@@ -369,8 +352,7 @@
                                     AutoGenerateColumns="False"
                                     Background="#fff"
                                     IsReadOnly="True"
-                                    ItemsSource="{Binding RecentInvoice}"
-                                    SelectionChanged="DataGrid_SelectionChanged">
+                                    ItemsSource="{Binding RecentInvoice}">
                                     <DataGrid.Resources>
                                         <Style TargetType="DataGridColumnHeader">
                                             <Setter Property="BorderBrush" Value="Black" />
@@ -391,7 +373,7 @@
                                             Binding="{Binding Id}"
                                             Header="Id" />
                                         <!--  Binding full name  -->
-                                        <DataGridTextColumn Width="*" Header="Name customer">
+                                        <DataGridTextColumn Width="*" Header="Customer Name">
                                             <DataGridTextColumn.Binding>
                                                 <MultiBinding StringFormat="{}{0} {1}">
                                                     <Binding Path="Customer.FirstName" />
@@ -403,7 +385,7 @@
                                         <DataGridTextColumn
                                             Width="*"
                                             Binding="{Binding CreatedAt, StringFormat='dd/MM/yyyy'}"
-                                            Header="Purchase date" />
+                                            Header="Purchase Date" />
                                         <DataGridTextColumn
                                             Width="*"
                                             Binding="{Binding Total}"
@@ -549,8 +531,7 @@
                                     AutoGenerateColumns="False"
                                     Background="#fff"
                                     IsReadOnly="True"
-                                    ItemsSource="{Binding BestSeller}"
-                                    SelectionChanged="DataGrid_SelectionChanged">
+                                    ItemsSource="{Binding BestSeller}">
                                     <DataGrid.Resources>
                                         <Style TargetType="DataGridColumnHeader">
                                             <Setter Property="BorderBrush" Value="Black" />

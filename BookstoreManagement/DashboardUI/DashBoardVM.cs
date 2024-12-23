@@ -1,26 +1,13 @@
 ﻿using BookstoreManagement.Core;
-using BookstoreManagement.LoginUI.Dtos;
 using BookstoreManagement.LoginUI.Services;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DocumentFormat.OpenXml.Bibliography;
-using DocumentFormat.OpenXml.Office2016.Drawing.Command;
 using LiveCharts;
-using LiveCharts.Defaults;
 using LiveCharts.Wpf;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using System.Collections.ObjectModel;
-using System.Reflection.Emit;
-using System.Reflection.Metadata;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 namespace BookstoreManagement.UI.DashboardUI
 {
@@ -63,18 +50,21 @@ namespace BookstoreManagement.UI.DashboardUI
             StartDateRevenue = DateTime.Now.AddDays(-7);
             EndDateRevenue = DateTime.Now;
         }
+
         public override void ResetState()
         {
             base.ResetState();
             UserName = $"Good morning, {currentUserService.CurrentUser.FirstName}";
             LoadDashBoardData();
-            RevenueChart(StartDateRevenue, EndDateRevenue);
         }
+
         private LinearGradientBrush GradientFillChart()
         {
-            var gradientBrush = new LinearGradientBrush();
-            gradientBrush.StartPoint = new Point(0, 1);
-            gradientBrush.EndPoint = new Point(0, 0);
+            var gradientBrush = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 1),
+                EndPoint = new Point(0, 0)
+            };
             gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 0));
             gradientBrush.GradientStops.Add(new GradientStop((Color)ColorConverter.ConvertFromString("#174CFA"), 1));
             return gradientBrush;
@@ -85,12 +75,36 @@ namespace BookstoreManagement.UI.DashboardUI
         private ObservableCollection<string> _labels;
 
         [ObservableProperty]
-        private DateTime _startDateRevenue;
+        private DateTime _startDateRevenue = DateTime.Now.AddDays(-7);
 
         [ObservableProperty]
-        private DateTime _endDateRevenue;
-        // Revenue Chart
-        private void RevenueChart(DateTime startDate, DateTime endDate)
+        private DateTime _endDateRevenue = DateTime.Now;
+
+        partial void OnStartDateRevenueChanged(DateTime oldValue, DateTime newValue)
+        {
+            if (StartDateRevenue > EndDateRevenue)
+            {
+                MessageBox.Show("Start date must be before End date!", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                StartDateRevenue = oldValue; 
+                return;
+            }
+            LoadDashBoardData();
+        }
+
+        partial void OnEndDateRevenueChanged(DateTime oldValue, DateTime newValue)
+        {
+            if (StartDateRevenue > EndDateRevenue)
+            {
+                MessageBox.Show("Start date cannot over End date !", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                EndDateRevenue = oldValue; 
+                return;
+            }
+            LoadDashBoardData();
+        }
+
+        private void LoadRevenueChart(DateTime startDate, DateTime endDate)
         {
             var dailyRevenue = db.Invoices.Where(i => i.CreatedAt.Date >= startDate.Date && i.CreatedAt.Date <= endDate.Date)
                 .GroupBy(i => new { i.CreatedAt.Year, i.CreatedAt.Month, i.CreatedAt.Day })
@@ -116,15 +130,14 @@ namespace BookstoreManagement.UI.DashboardUI
             YFormatter = value => "$" + (value).ToString();
         }
 
-
         // Total Revenue
-        private decimal GetToTalRevenue()
+        private decimal GetTotalRevenue()
         {
             return db.Invoices.Sum(i => i.Total);
         }
 
         // Total Expense
-        private decimal GetToTalExpense()
+        private decimal GetTotalExpense()
         {
             return db.Imports.Sum(ip => ip.TotalCost);
         }
@@ -143,13 +156,12 @@ namespace BookstoreManagement.UI.DashboardUI
         // Load Data DashBoard
         private void LoadDashBoardData()
         {
-            //TotalRevenue = GetToTalRevenue();
-            //TotalExpense = GetToTalExpense();
-            TotalRevenue = GetToTalRevenue();
-            TotalExpense = GetToTalExpense();
+            TotalRevenue = GetTotalRevenue();
+            TotalExpense = GetTotalExpense();
             PercentProfit = GetPercentProfit(TotalRevenue, TotalExpense);
             RecentInvoice = GetRecentInvoice(10);
             BestSeller = GetItemBestSeller(10);
+            LoadRevenueChart(StartDateRevenue, EndDateRevenue);
         }
 
         // Recent Sale
@@ -197,18 +209,6 @@ namespace BookstoreManagement.UI.DashboardUI
             }).ToList();
 
             return result;
-        }
-
-        [RelayCommand]
-        private void ChangeDateRevenue()
-        {
-            if (StartDateRevenue > EndDateRevenue)
-            {
-                MessageBox.Show("Start date cannot over End date !", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            ResetState();
         }
     }
 }
