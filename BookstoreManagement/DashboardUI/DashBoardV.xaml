@@ -2,10 +2,13 @@
     x:Class="BookstoreManagement.UI.DashboardUI.DashBoardV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:BookstoreManagement.Shared.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:BookstoreManagement.UI.DashboardUI"
     xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+    xmlns:lvc2="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="clr-namespace:BookstoreManagement.UI.Components"
@@ -13,6 +16,9 @@
     d:DesignHeight="1000"
     d:DesignWidth="1400"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
 
     <Border
         BorderBrush="#ECF0FF"
@@ -49,6 +55,13 @@
                             FontSize="30"
                             FontWeight="DemiBold"
                             Text="{Binding UserName}" />
+                        <fa:ImageAwesome
+                            Width="23"
+                            Height="23"
+                            Margin="0,10,0,0"
+                            Icon="Refresh"
+                            Spin="True"
+                            Visibility="{Binding Loading, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </StackPanel>
                 </Grid>
                 <!--  End Hello User  -->
@@ -484,13 +497,12 @@
                                     </StackPanel>
                                 </Grid>
                                 <Grid Grid.Column="1">
-                                    <lvc:Gauge
+                                    <lvc2:PieChart
                                         Grid.Row="0"
                                         Margin="5"
-                                        Uses360Mode="True"
-                                        Value="{Binding PercentProfit}"
-                                        From="0"
-                                        To="100" />
+                                        MaxValue="100"
+                                        MinValue="0"
+                                        Series="{Binding PercentProfit}" />
                                 </Grid>
                             </Grid>
                             <!--  End Inner Profit chart  -->

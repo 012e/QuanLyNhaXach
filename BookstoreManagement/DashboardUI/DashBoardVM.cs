@@ -3,18 +3,25 @@ using BookstoreManagement.LoginUI.Services;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LiveCharts;
 using LiveCharts.Wpf;
+using LiveChartsCore.SkiaSharpView.Extensions;
+using LiveChartsCore;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
 
 namespace BookstoreManagement.UI.DashboardUI
 {
-    public partial class DashBoardVM : BaseViewModel
+    public partial class DashBoardVM(ApplicationDbContext db, CurrentUserService currentUserService) : BaseViewModel
     {
-        private readonly ApplicationDbContext db;
-        private readonly CurrentUserService currentUserService;
+        private readonly ApplicationDbContext db = db;
+        private readonly CurrentUserService currentUserService = currentUserService;
+
         [ObservableProperty]
         private string _userName;
 
@@ -32,7 +39,15 @@ namespace BookstoreManagement.UI.DashboardUI
         private decimal _totalExpense;
 
         [ObservableProperty]
-        private double _percentProfit; // Profit per Revenue
+        private IEnumerable<ISeries> _percentProfit = GaugeGenerator.BuildSolidGauge(
+            new GaugeItem(
+                30,
+                series =>
+                {
+                    series.MaxRadialColumnWidth = 50;
+                    series.DataLabelsSize = 33;
+                })
+            );
 
         [ObservableProperty]
         private string _fullNameCustomer;
@@ -43,33 +58,8 @@ namespace BookstoreManagement.UI.DashboardUI
         [ObservableProperty]
         private List<InvoicesItem> _bestSeller;
 
-        public DashBoardVM(ApplicationDbContext db, CurrentUserService currentUserService)
-        {
-            this.db = db;
-            this.currentUserService = currentUserService;
-            StartDateRevenue = DateTime.Now.AddDays(-7);
-            EndDateRevenue = DateTime.Now;
-        }
-
-        public override void ResetState()
-        {
-            base.ResetState();
-            UserName = $"Good morning, {currentUserService.CurrentUser.FirstName}";
-            LoadDashBoardData();
-        }
-
-        private LinearGradientBrush GradientFillChart()
-        {
-            var gradientBrush = new LinearGradientBrush
-            {
-                StartPoint = new Point(0, 1),
-                EndPoint = new Point(0, 0)
-            };
-            gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 0));
-            gradientBrush.GradientStops.Add(new GradientStop((Color)ColorConverter.ConvertFromString("#174CFA"), 1));
-            return gradientBrush;
-        }
-
+        [ObservableProperty]
+        private bool _loading = false;
 
         [ObservableProperty]
         private ObservableCollection<string> _labels;
@@ -86,7 +76,7 @@ namespace BookstoreManagement.UI.DashboardUI
             {
                 MessageBox.Show("Start date must be before End date!", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
-                StartDateRevenue = oldValue; 
+                StartDateRevenue = oldValue;
                 return;
             }
             LoadDashBoardData();
@@ -98,15 +88,60 @@ namespace BookstoreManagement.UI.DashboardUI
             {
                 MessageBox.Show("Start date cannot over End date !", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
-                EndDateRevenue = oldValue; 
+                EndDateRevenue = oldValue;
                 return;
             }
             LoadDashBoardData();
         }
 
-        private void LoadRevenueChart(DateTime startDate, DateTime endDate)
+        private void SetPercentProfit(double percent)
         {
-            var dailyRevenue = db.Invoices.Where(i => i.CreatedAt.Date >= startDate.Date && i.CreatedAt.Date <= endDate.Date)
+            PercentProfit = GaugeGenerator.BuildSolidGauge(
+            new GaugeItem(
+                percent,
+                series =>
+                {
+                    series.MaxRadialColumnWidth = 50;
+                    series.DataLabelsSize = 25;
+                    series.Fill = new SolidColorPaint(new SKColor(65, 145, 221));
+                    series.DataLabelsPaint = new SolidColorPaint(SKColors.Black);
+                })
+            );
+        }
+        private void ResetToDefaults()
+        {
+            StartDateRevenue = DateTime.Now.AddDays(-7);
+            EndDateRevenue = DateTime.Now;
+            TotalExpense = 0;
+            TotalRevenue = 0;
+            SetPercentProfit(0);
+            LineSeriesCollection = [];
+        }
+
+        public override void ResetState()
+        {
+            base.ResetState();
+            ResetToDefaults();
+            UserName = $"Good morning, {currentUserService.CurrentUser.FirstName}";
+            LoadDashBoardDataCommand.Execute(null);
+        }
+
+        private LinearGradientBrush GradientFillChart()
+        {
+            var gradientBrush = new LinearGradientBrush
+            {
+                StartPoint = new Point(0, 1),
+                EndPoint = new Point(0, 0)
+            };
+            gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 0));
+            gradientBrush.GradientStops.Add(new GradientStop((Color)ColorConverter.ConvertFromString("#174CFA"), 1));
+            return gradientBrush;
+        }
+
+        private async Task LoadRevenueChart(DateTime startDate, DateTime endDate)
+        {
+            var dailyRevenue = await db.Invoices
+                .Where(i => i.CreatedAt.Date >= startDate.Date && i.CreatedAt.Date <= endDate.Date)
                 .GroupBy(i => new { i.CreatedAt.Year, i.CreatedAt.Month, i.CreatedAt.Day })
                 .Select(g => new
                 {
@@ -114,10 +149,10 @@ namespace BookstoreManagement.UI.DashboardUI
                     Total = g.Sum(i => i.Total)
                 })
                 .OrderBy(g => g.Day)
-                .ToList();
+                .ToListAsync();
 
-            LineSeriesCollection = new SeriesCollection
-            {
+            LineSeriesCollection =
+            [
                 new LineSeries
                 {
                     Title = "",
@@ -125,21 +160,21 @@ namespace BookstoreManagement.UI.DashboardUI
                     Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 255)),
                     Fill = GradientFillChart()
                 }
-            };
+            ];
             Labels = new ObservableCollection<string>(dailyRevenue.Select(g => g.Day.ToString("dd/MM/yyyy")));
             YFormatter = value => "$" + (value).ToString();
         }
 
         // Total Revenue
-        private decimal GetTotalRevenue()
+        private async Task<decimal> GetTotalRevenue()
         {
-            return db.Invoices.Sum(i => i.Total);
+            return await db.Invoices.SumAsync(i => i.Total);
         }
 
         // Total Expense
-        private decimal GetTotalExpense()
+        private async Task<decimal> GetTotalExpense()
         {
-            return db.Imports.Sum(ip => ip.TotalCost);
+            return await db.Imports.SumAsync(ip => ip.TotalCost);
         }
 
         // Percent Profit
@@ -153,21 +188,27 @@ namespace BookstoreManagement.UI.DashboardUI
         }
 
 
-        // Load Data DashBoard
-        private void LoadDashBoardData()
+        [RelayCommand]
+        private async Task LoadDashBoardData()
         {
-            TotalRevenue = GetTotalRevenue();
-            TotalExpense = GetTotalExpense();
-            PercentProfit = GetPercentProfit(TotalRevenue, TotalExpense);
-            RecentInvoice = GetRecentInvoice(10);
-            BestSeller = GetItemBestSeller(10);
-            LoadRevenueChart(StartDateRevenue, EndDateRevenue);
+            if (Loading)
+            {
+                return;
+            }
+            Loading = true;
+            TotalRevenue = await GetTotalRevenue();
+            TotalExpense = await GetTotalExpense();
+            SetPercentProfit(GetPercentProfit(TotalRevenue, TotalExpense));
+            RecentInvoice = await GetRecentInvoice(10);
+            BestSeller = await GetItemBestSeller(10);
+            await LoadRevenueChart(StartDateRevenue, EndDateRevenue);
+            Loading = false;
         }
 
         // Recent Sale
-        private List<Invoice> GetRecentInvoice(int count)
+        private async Task<List<Invoice>> GetRecentInvoice(int count)
         {
-            var recentInvoices = db.Invoices
+            var recentInvoices = await db.Invoices
                 .OrderByDescending(i => i.CreatedAt)
                 .Select(i => new Invoice
                 {
@@ -177,15 +218,15 @@ namespace BookstoreManagement.UI.DashboardUI
                     CreatedAt = i.CreatedAt,
                 })
                 .Take(count)
-                .ToList();
+                .ToListAsync();
             return recentInvoices;
         }
 
         // List Item Bestseller
-        private List<InvoicesItem> GetItemBestSeller(int count)
+        private async Task<List<InvoicesItem>> GetItemBestSeller(int count)
         {
             // Truy van tong so luong item co trong invoice, sap xep giam dan
-            var bestSeller = db.InvoicesItems
+            var bestSeller = await db.InvoicesItems
                 .GroupBy(ii => ii.ItemId)
                 .Select(g => new
                 {
@@ -194,7 +235,7 @@ namespace BookstoreManagement.UI.DashboardUI
                 })
                 .OrderByDescending(g => g.TotalQuantity)
                 .Take(count)
-                .ToList();
+                .ToListAsync();
 
             // Danh sach cac san pham ban chay nhat
             var itemIds = bestSeller.Select(x => x.ItemId).ToList();
