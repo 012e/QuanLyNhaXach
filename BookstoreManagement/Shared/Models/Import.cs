@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-namespace BookstoreManagement.Shared.Models;
+﻿namespace BookstoreManagement.Shared.Models;
 
 public partial class Import
 {
@@ -11,7 +9,6 @@ public partial class Import
     public decimal TotalCost { get; set; }
 
     public DateTime CreatedAt { get; set; }
-
 
     public virtual ICollection<ImportItem> ImportItems { get; set; } = new List<ImportItem>();
 

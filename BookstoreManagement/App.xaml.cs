@@ -19,6 +19,7 @@ using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Windows;
 using System.Windows.Navigation;
+using BookstoreManagement.PricingUI.Services;
 
 namespace BookstoreManagement;
 
@@ -67,6 +68,7 @@ public partial class App : Application
         builder.Services.AddViewViewModel<CreateImportV, CreateImportVM>();
 
 
+        builder.Services.AddSingleton<PricingService>();
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
         builder.Services.AddViewViewModel<MainV, MainVM>();
 
