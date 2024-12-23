@@ -14,6 +14,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:provider="clr-namespace:BookstoreManagement.UI.ProviderUI"
+    xmlns:setting="clr-namespace:BookstoreManagement.SettingUI"
     xmlns:tag="clr-namespace:BookstoreManagement.UI.TagUI"
     xmlns:vm="clr-namespace:BookstoreManagement.UI.MainWindow"
     d:DesignHeight="450"
@@ -178,6 +179,9 @@
             <DataTemplate DataType="{x:Type import:CreateImportVM}">
                 <import:CreateImportV />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type setting:AllSettingVM}">
+                <setting:AllSettingV />
+            </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.17*" />
@@ -271,20 +275,20 @@
                         </RadioButton>
                         <RadioButton
                             Height="50"
-                            Command="{Binding NavigateToProviderCommand}"
-                            Style="{DynamicResource sidebarRadioButton}">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="AccountTie" Style="{DynamicResource sidebarRadioButtonIcon}" />
-                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Provider" />
-                            </StackPanel>
-                        </RadioButton>
-                        <RadioButton
-                            Height="50"
                             Command="{Binding NavigateToImportCommand}"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="ShoppingCart" Style="{DynamicResource sidebarRadioButtonIcon}" />
                                 <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Import" />
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Height="50"
+                            Command="{Binding NavigateToSettingCommand}"
+                            Style="{DynamicResource sidebarRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="AccountTie" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Settings" />
                             </StackPanel>
                         </RadioButton>
                     </StackPanel>
