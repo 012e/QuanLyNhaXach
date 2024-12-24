@@ -25,8 +25,12 @@ public class ContextualNavigatorService<TViewModel, Context> : IContextualNaviga
             throw new ArgumentException("context can't be null");
         }
         var store = serviceProvider.GetRequiredKeyedService<NavigatorStore>(@namespace);
+
+        viewModel.CleanUp();
         viewModel.ViewModelContext = context;
         store.CurrentViewModel = viewModel;
         viewModel.SetupContext();
+
+        viewModel.ResetState();
     }
 }

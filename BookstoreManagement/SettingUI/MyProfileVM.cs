@@ -3,6 +3,7 @@ using BookstoreManagement.LoginUI.Services;
 using BookstoreManagement.Shared.DbContexts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -64,9 +65,11 @@ namespace BookstoreManagement.SettingUI
         private void LoadCurrentUser()
         {
             var userId = currentUserService.CurrentUser.Id;
-            var userInfo = db.Employees.FirstOrDefault(e => e.Id == userId);
+            var userInfo = db.Employees
+                .AsNoTracking()
+                .FirstOrDefault(e => e.Id == userId);
 
-            if(userInfo != null)
+            if (userInfo != null)
             {
                 UserFirstName = userInfo.FirstName;
 
@@ -103,6 +106,7 @@ namespace BookstoreManagement.SettingUI
         {
             IsEnableEdit = true;
         }
+
         [RelayCommand]
         private void SaveEdit()
         {
@@ -147,7 +151,7 @@ namespace BookstoreManagement.SettingUI
                 MessageBox.Show($"Error loading image: {ex.Message}");
             }
         }
-        
+
 
     }
 }
