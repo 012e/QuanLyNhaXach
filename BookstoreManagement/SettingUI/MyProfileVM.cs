@@ -43,6 +43,17 @@ namespace BookstoreManagement.SettingUI
         [ObservableProperty]
         private string _userRollText;
 
+        [ObservableProperty]
+        private bool _userGender;
+
+        [ObservableProperty]
+        private DateOnly _userBirthDay;
+
+        [ObservableProperty]
+        private string _userAddress;
+
+        [ObservableProperty]
+        private string _userPhone;
         public override void ResetState()
         {
             base.ResetState();
@@ -62,6 +73,10 @@ namespace BookstoreManagement.SettingUI
                 UserEmail = currentUserService.CurrentUser.Email;
                 UserRoll = currentUserService.CurrentUser.IsManager;
                 UserRollText = UserRoll ? "Manager" : "Employee";
+                UserBirthDay = currentUserService.CurrentUser.Birthday;
+                //UserGender = currentUserService.CurrentUser.gender
+                UserAddress = currentUserService.CurrentUser.Address;
+                UserPhone = currentUserService.CurrentUser.PhoneNumber;
                 LoadImageFromUrl(currentUserService.CurrentUser.ProfilePicture);
             }
             else
@@ -91,8 +106,10 @@ namespace BookstoreManagement.SettingUI
 
             userInfo.FirstName = UserFirstName;
             userInfo.LastName = UserLastName;
-            userInfo.FirstName = UserFirstName;
-            userInfo.FirstName = UserFirstName;
+            userInfo.PhoneNumber = UserPhone;
+            userInfo.Email = UserEmail;
+            userInfo.Birthday = UserBirthDay;
+            //userInfo.Gender = UserGender;
         }
 
         [ObservableProperty]
