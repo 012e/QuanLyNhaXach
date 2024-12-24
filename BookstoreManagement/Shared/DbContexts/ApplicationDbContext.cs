@@ -66,6 +66,8 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("employees");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Address).HasColumnName("address");
+            entity.Property(e => e.Birthday).HasColumnName("birthday");
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
                 .HasColumnName("email");
@@ -78,10 +80,13 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(255)
                 .HasColumnName("last_name");
-            entity.Property(e => e.ProfilePicture).HasColumnName("profile_picture");
             entity.Property(e => e.Password)
                 .HasMaxLength(255)
                 .HasColumnName("password");
+            entity.Property(e => e.PhoneNumber)
+                .HasMaxLength(20)
+                .HasColumnName("phone_number");
+            entity.Property(e => e.ProfilePicture).HasColumnName("profile_picture");
             entity.Property(e => e.Salary)
                 .HasColumnType("money")
                 .HasColumnName("salary");

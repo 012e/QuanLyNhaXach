@@ -14,9 +14,15 @@ public partial class Employee
 
     public string ProfilePicture { get; set; } = null!;
 
+    public string Address { get; set; } = null!;
+
+    public string PhoneNumber { get; set; } = null!;
+
+    public DateOnly Birthday { get; set; }
+
     public bool IsManager { get; set; }
 
-    public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
-
     public string Password { get; set; } = null!;
+
+    public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 }
