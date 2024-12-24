@@ -79,9 +79,11 @@ public partial class App : Application
 
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
         builder.Services.AddViewViewModel<AllSettingV,AllSettingVM>();
+        builder.Services.AddViewViewModel<MyProfileV, MyProfileVM>();
 
         builder.Services.AddKeyedSingleton<NavigatorStore>("default");
         builder.Services.AddKeyedSingleton<NavigatorStore>("global");
+        builder.Services.AddKeyedSingleton<NavigatorStore>("setting");
 
         AppHost = builder.Build();
     }
