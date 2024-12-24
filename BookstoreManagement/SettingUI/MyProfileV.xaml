@@ -174,7 +174,7 @@
                                 <TextBlock
                                     Padding="0"
                                     FontSize="15"
-                                    Text="Dia chi" />
+                                    Text="{Binding UserAddress}" />
                             </StackPanel>
                             <!--  End Info  -->
 
@@ -278,7 +278,7 @@
                                     FontSize="15"
                                     FontWeight="DemiBold"
                                     IsEnabled="{Binding IsEnableEdit}"
-                                    Text="Chua co csdl" />
+                                    Text="{Binding UserBirthDay, StringFormat='dd/MM/yyyy'}" />
                             </StackPanel>
                         </StackPanel>
                     </Grid>
@@ -304,16 +304,17 @@
                                     FontSize="15"
                                     FontWeight="DemiBold"
                                     IsEnabled="{Binding IsEnableEdit}"
-                                    Text="Chua co csdl" />
+                                    Text="{Binding UserPhone}" />
                             </StackPanel>
                             <StackPanel>
                                 <TextBlock FontSize="15" Text="Gender" />
-                                <TextBox
-                                    BorderBrush="Transparent"
-                                    FontSize="15"
-                                    FontWeight="DemiBold"
-                                    IsEnabled="{Binding IsEnableEdit}"
-                                    Text="{Binding UserRollText}" />
+                                <RadioButton
+                                    Content="Male"
+                                    
+                                    IsChecked="{Binding UserGender, Mode=TwoWay}" />
+                                <RadioButton
+                                    Content="Female"
+                                    IsChecked="{Binding UserGender, Mode=TwoWay}" />
                             </StackPanel>
                         </StackPanel>
                     </Grid>

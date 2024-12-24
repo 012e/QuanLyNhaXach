@@ -208,7 +208,7 @@
                             </RadioButton>
                             <RadioButton
                                 Height="50"
-                                Command="{Binding NavigateToDashBoardCommand}"
+                                Command="{Binding}"
                                 Style="{DynamicResource sidebarRadioButton}">
                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                                     <TextBlock
@@ -219,7 +219,7 @@
                             </RadioButton>
                             <RadioButton
                                 Height="50"
-                                Command="{Binding NavigateToDashBoardCommand}"
+                                Command="{Binding}"
                                 Style="{DynamicResource sidebarRadioButton}">
                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                                     <TextBlock
