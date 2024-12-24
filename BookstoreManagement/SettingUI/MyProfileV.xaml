@@ -37,7 +37,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="0.8*" />
                         <ColumnDefinition Width="0.2*" />
                     </Grid.ColumnDefinitions>
 
@@ -45,7 +45,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition Width="0.6*" />
                         </Grid.ColumnDefinitions>
 
                         <!--  Inner Introduction  -->
@@ -55,14 +55,42 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <!--  Image  -->
-
+                            <Border
+                                Width="100"
+                                Height="100"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                BorderBrush="Gray"
+                                BorderThickness="2"
+                                CornerRadius="75">
+                                <Image
+                                    x:Name="ProfileImage"
+                                    ClipToBounds="True"
+                                    Stretch="UniformToFill" />
+                            </Border>
                             <!--  End Image  -->
 
                             <!--  Info  -->
-                            <StackPanel Grid.Column="1">
-                                <TextBlock>Vo Tuan Kiet</TextBlock>
-                                <TextBlock>Manager</TextBlock>
-                                <TextBlock>Dia chi</TextBlock>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBox
+                                    Padding="0"
+                                    BorderBrush="Transparent"
+                                    FontSize="15"
+                                    FontWeight="DemiBold">
+                                    Vo Tuan Kiet
+                                </TextBox>
+                                <TextBox
+                                    Padding="0"
+                                    BorderBrush="Transparent"
+                                    FontSize="15">
+                                    Manager
+                                </TextBox>
+                                <TextBox
+                                    Padding="0"
+                                    BorderBrush="Transparent"
+                                    FontSize="15">
+                                    Dia chi
+                                </TextBox>
                             </StackPanel>
                             <!--  End Info  -->
 
@@ -131,7 +159,7 @@
                                     Text="Kiet" />
                             </StackPanel>
                             <StackPanel Margin="0,0,0,20">
-                                <TextBlock FontSize="13" Text="Email" />
+                                <TextBlock FontSize="15" Text="Email" />
                                 <TextBlock
                                     FontSize="15"
                                     FontWeight="DemiBold"
