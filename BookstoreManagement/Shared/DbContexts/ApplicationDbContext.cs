@@ -77,6 +77,9 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.IsManager)
                 .HasDefaultValue(false)
                 .HasColumnName("is_manager");
+            entity.Property(e => e.Gender)
+                .HasColumnType("boolean")
+                .HasColumnName("gender");
             entity.Property(e => e.LastName)
                 .HasMaxLength(255)
                 .HasColumnName("last_name");

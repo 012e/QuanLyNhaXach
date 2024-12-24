@@ -22,6 +22,8 @@ public partial class Employee
 
     public bool IsManager { get; set; }
 
+    public bool Gender { get; set; }
+
     public string Password { get; set; } = null!;
 
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
