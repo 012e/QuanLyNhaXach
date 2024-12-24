@@ -16,18 +16,13 @@ using System.Windows.Shapes;
 namespace BookstoreManagement.SettingUI
 {
     /// <summary>
-    /// Interaction logic for AllSettingV.xaml
+    /// Interaction logic for MyProfileV.xaml
     /// </summary>
-    public partial class AllSettingV : UserControl
+    public partial class MyProfileV : UserControl
     {
-        public AllSettingV()
+        public MyProfileV()
         {
             InitializeComponent();
-        }
-
-        private void Grid_GiveFeedback(object sender, GiveFeedbackEventArgs e)
-        {
-
         }
     }
 }

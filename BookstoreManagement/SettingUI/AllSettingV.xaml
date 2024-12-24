@@ -2,13 +2,248 @@
     x:Class="BookstoreManagement.SettingUI.AllSettingV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:BookstoreManagement.Shared.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:local="clr-namespace:BookstoreManagement.SettingUI"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="1200"
-    d:DesignWidth="1400"
+    xmlns:myProfile="clr-namespace:BookstoreManagement.SettingUI"
+    d:DesignHeight="800"
+    d:DesignWidth="1000"
     mc:Ignorable="d">
-    <Grid>
-        <TextBlock>Hello</TextBlock>
-    </Grid>
+    <Control.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+        <converter:CurrencyConverter x:Key="CurrencyConverter" />
+    </Control.Resources>
+    <Border
+        Padding="0,30,0,40"
+        Background="#fff"
+        BorderThickness="30">
+        <Grid>
+            <Grid.Resources>
+                <Style x:Key="sidebarRadioButton" TargetType="RadioButton">
+                    <Setter Property="Background" Value="#fff" />
+                    <Setter Property="Foreground" Value="#333333" />
+                    <Setter Property="Margin" Value="0,0,0,10" />
+                    <Setter Property="FontWeight" Value="DemiBold" />
+                    <Setter Property="Height" Value="45" />
+                    <Setter Property="Cursor" Value="Hand" />
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    <Setter Property="Tag" Value="#6673b7" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="RadioButton">
+                                <Border
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="White"
+                                    BorderThickness="4,0,0,0"
+                                    CornerRadius="10 0 0 10">
+                                    <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Tag" Value="#7071f0" />
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                        <GradientStop Offset="0" Color="#CBDCEB" />
+                                        <GradientStop Offset="3" Color="Transparent" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="RadioButton">
+                                        <Border
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="#CBDCEB"
+                                            BorderThickness="4,0,0,0"
+                                            CornerRadius="10 0 0 10">
+                                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                        <GradientStop Offset="0" Color="#CBDCEB" />
+                                        <GradientStop Offset="3" Color="Transparent" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="RadioButton">
+                                        <Border
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="#CBDCEB"
+                                            BorderThickness="4,0,0,0">
+                                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+
+
+                    </Style.Triggers>
+                </Style>
+
+                <Style x:Key="sideBarRadioButtonText" TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="17" />
+                    <Setter Property="FontWeight" Value="Regular" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RadioButton}}}" />
+                </Style>
+                <Style x:Key="sidebarRadioButtonIcon" TargetType="materialDesign:PackIcon">
+                    <Setter Property="Width" Value="23" />
+                    <Setter Property="Height" Value="23" />
+                    <Setter Property="Margin" Value="20,0,20,0" />
+                    <Setter Property="Foreground" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RadioButton}}}" />
+                </Style>
+
+                <DataTemplate DataType="{x:Type myProfile:MyProfileVM}">
+                    <myProfile:MyProfileV />
+                </DataTemplate>
+
+            </Grid.Resources>
+
+
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.15*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <!--  HEADER  -->
+            <StackPanel Grid.Row="0" Margin="50,0,50,0">
+                <!--  Title  -->
+                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
+
+                        <!--  Title Icon  -->
+                        <TextBlock
+                            Margin="7,7,0,7"
+                            FontSize="30"
+                            FontWeight="Bold">
+                            <materialDesign:PackIcon
+                                Width="28"
+                                Height="28"
+                                Kind="Settings" />
+                        </TextBlock>
+                        <!--  End Title Icon  -->
+
+                        <!--  Title Name  -->
+                        <TextBlock
+                            Margin="7,0,0,7"
+                            FontSize="30"
+                            FontWeight="Bold">
+                            Setting
+                        </TextBlock>
+                    </StackPanel>
+                    <!--  End Title Name  -->
+
+                    <!--  Icon spiner  -->
+                    <fa:ImageAwesome
+                        Width="15"
+                        Height="15"
+                        Margin="7,0,0,0"
+                        Icon="Refresh"
+                        Spin="True"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    <!--  End Icon spiner  -->
+                </StackPanel>
+                <!--  End Title  -->
+
+                <!--  Line  -->
+                <Separator />
+                <!--  End Line  -->
+            </StackPanel>
+            <!--  END HEADER  -->
+
+            <!--  Setting Body  -->
+            <Border
+                Grid.Row="1"
+                BorderBrush="#fff"
+                BorderThickness="0"
+                CornerRadius="10">
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.17*" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Setting Sidebar - Column 0  -->
+                    <Border
+                        Grid.Column="0"
+                        BorderBrush="LightGray"
+                        BorderThickness="0,0,1,0">
+                        <StackPanel>
+                            <RadioButton
+                                Height="50"
+                                Command="{Binding NavigateToMyProfileCommand}"
+                                Style="{DynamicResource sidebarRadioButton}">
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <TextBlock
+                                        Padding="30,0,0,0"
+                                        Style="{DynamicResource sideBarRadioButtonText}"
+                                        Text="My profile" />
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton
+                                Height="50"
+                                Command="{Binding NavigateToDashBoardCommand}"
+                                Style="{DynamicResource sidebarRadioButton}">
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <TextBlock
+                                        Padding="30,0,0,0"
+                                        Style="{DynamicResource sideBarRadioButtonText}"
+                                        Text="Account" />
+                                </StackPanel>
+                            </RadioButton>
+                            <RadioButton
+                                Height="50"
+                                Command="{Binding NavigateToDashBoardCommand}"
+                                Style="{DynamicResource sidebarRadioButton}">
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <TextBlock
+                                        Padding="30,0,0,0"
+                                        Style="{DynamicResource sideBarRadioButtonText}"
+                                        Text="Note" />
+                                </StackPanel>
+                            </RadioButton>
+                        </StackPanel>
+                    </Border>
+                    <!--  Setting Sidebar Column 0  -->
+
+                    <!--  View Setting Option  -->
+                    <Grid Grid.Column="1" Margin="30,0,30,0">
+                        <ContentControl Content="{Binding NavigatorStore.CurrentViewModel}" />
+                    </Grid>
+                    <!--  End View Setting Option  -->
+                </Grid>
+            </Border>
+            <!--  End Setting Body  -->
+
+
+        </Grid>
+    </Border>
+
 </UserControl>
+

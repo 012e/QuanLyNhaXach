@@ -1,0 +1,181 @@
+﻿<UserControl
+    x:Class="BookstoreManagement.SettingUI.MyProfileV"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:BookstoreManagement.SettingUI"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid Background="#fff">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!--  My profile Header  -->
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <!--  My profile Title  -->
+            <Grid Grid.Row="0">
+                <TextBlock FontSize="25" FontWeight="DemiBold">My profile</TextBlock>
+            </Grid>
+            <!--  End My profile Title  -->
+
+            <!--  My profile Intro  -->
+            <Border
+                Grid.Row="1"
+                Background="White"
+                BorderBrush="Gray"
+                BorderThickness="0.3"
+                CornerRadius="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="0.2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Introduction  -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  Inner Introduction  -->
+                        <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <!--  Image  -->
+
+                            <!--  End Image  -->
+
+                            <!--  Info  -->
+                            <StackPanel Grid.Column="1">
+                                <TextBlock>Vo Tuan Kiet</TextBlock>
+                                <TextBlock>Manager</TextBlock>
+                                <TextBlock>Dia chi</TextBlock>
+                            </StackPanel>
+                            <!--  End Info  -->
+
+                        </Grid>
+                        <!--  End Inner Introduction  -->
+                    </Grid>
+                    <!--  End Introduction  -->
+
+                    <!--  Button Edit  -->
+                    <Grid Grid.Column="2" HorizontalAlignment="Right">
+                        <Button>Edit</Button>
+                    </Grid>
+                    <!--  End Button Edit  -->
+                </Grid>
+            </Border>
+            <!--  End My profile Intro  -->
+        </Grid>
+        <!--  End My profile Header  -->
+
+        <!--  My profile Body  - Personal Information  -->
+        <Border
+            Grid.Row="1"
+            Margin="0,20,0,0"
+            Background="White"
+            BorderBrush="Gray"
+            BorderThickness="0.3"
+            CornerRadius="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.3*" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <!--  Personal Info Header  -->
+                <Grid Grid.Row="0" Margin="20,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="0.2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Personal Info Title  -->
+                    <Grid Grid.Column="0">
+                        <TextBlock FontSize="15" FontWeight="DemiBold">Personal Information</TextBlock>
+                    </Grid>
+                    <Grid Grid.Column="1" HorizontalAlignment="Right">
+                        <Button Content="Edit" />
+                    </Grid>
+                    <!--  End Personal Info Title  -->
+                </Grid>
+                <!--  End Personal Info Header  -->
+
+                <!--  Personal Info Body  -->
+                <Grid Grid.Row="1" Margin="20,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="1.5*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <StackPanel>
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock FontSize="15" Text="First Name" />
+                                <TextBlock
+                                    FontSize="15"
+                                    FontWeight="DemiBold"
+                                    Text="Kiet" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock FontSize="13" Text="Email" />
+                                <TextBlock
+                                    FontSize="15"
+                                    FontWeight="DemiBold"
+                                    Text="@@@@eqeq" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock FontSize="15" Text="Birth day" />
+                                <TextBlock
+                                    FontSize="15"
+                                    FontWeight="DemiBold"
+                                    Text="23/12/2023" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <StackPanel>
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock FontSize="15" Text="Last Name" />
+                                <TextBlock
+                                    FontSize="15"
+                                    FontWeight="DemiBold"
+                                    Text="Kiet" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock FontSize="15" Text="Phone" />
+                                <TextBlock
+                                    FontSize="15"
+                                    FontWeight="DemiBold"
+                                    Text="@@@@eqeq" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock FontSize="15" Text="Role" />
+                                <TextBlock
+                                    FontSize="15"
+                                    FontWeight="DemiBold"
+                                    Text="Employee" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+
+                <!--  End Personal Info Body  -->
+            </Grid>
+        </Border>
+        <!--  End My profile Body - Personal Information  -->
+    </Grid>
+</UserControl>
