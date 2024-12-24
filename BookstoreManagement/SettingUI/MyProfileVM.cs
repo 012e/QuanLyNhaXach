@@ -59,32 +59,38 @@ namespace BookstoreManagement.SettingUI
             base.ResetState();
             LoadCurrentUser();
         }
-        
+
 
         private void LoadCurrentUser()
         {
             var userId = currentUserService.CurrentUser.Id;
-            var userInfo = db.Employees.FirstOrDefault(e => e.Id ==  userId);
+            var userInfo = db.Employees.FirstOrDefault(e => e.Id == userId);
 
             if(userInfo != null)
             {
-                UserFirstName = currentUserService.CurrentUser.FirstName;
-                UserLastName = currentUserService.CurrentUser.LastName;
-                UserEmail = currentUserService.CurrentUser.Email;
-                UserRoll = currentUserService.CurrentUser.IsManager;
-                UserRollText = UserRoll ? "Manager" : "Employee";
-                UserBirthDay = currentUserService.CurrentUser.Birthday;
-                //UserGender = currentUserService.CurrentUser.gender
-                UserAddress = currentUserService.CurrentUser.Address;
-                UserPhone = currentUserService.CurrentUser.PhoneNumber;
-                LoadImageFromUrl(currentUserService.CurrentUser.ProfilePicture);
+                UserFirstName = userInfo.FirstName;
+
+                UserLastName = userInfo.LastName;
+
+                UserEmail = userInfo.Email;
+
+                UserRollText = userInfo.IsManager ? "Manager" : "Employee";
+
+                UserBirthDay = userInfo.Birthday;
+
+                UserGender = userInfo.Gender;
+
+                UserAddress = userInfo.Address;
+
+                UserPhone = userInfo.PhoneNumber;
+
+                LoadImageFromUrl(userInfo.ProfilePicture);
             }
             else
             {
                 UserFirstName = string.Empty;
                 UserLastName = string.Empty;
                 UserEmail = string.Empty;
-                UserRoll = false;
                 UserRollText = "Unknown";
             }
         }
@@ -109,7 +115,9 @@ namespace BookstoreManagement.SettingUI
             userInfo.PhoneNumber = UserPhone;
             userInfo.Email = UserEmail;
             userInfo.Birthday = UserBirthDay;
-            //userInfo.Gender = UserGender;
+            userInfo.Gender = UserGender;
+            db.SaveChanges();
+            ResetState();
         }
 
         [ObservableProperty]
