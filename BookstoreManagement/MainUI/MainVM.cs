@@ -1,5 +1,6 @@
 ﻿using BookstoreManagement.Core;
 using BookstoreManagement.ImportUI;
+using BookstoreManagement.LoginUI;
 using BookstoreManagement.SettingUI;
 using BookstoreManagement.Shared.Services;
 using BookstoreManagement.UI.CustomerUI;
@@ -29,6 +30,7 @@ public partial class MainVM : BaseViewModel
     private readonly INavigatorService<AllCustomersVM> customerNavigator;
     private readonly INavigatorService<AllImportVM> importNavigator;
     private readonly INavigatorService<AllSettingVM> settingNavigator;
+    private readonly INavigatorService<MyProfileVM> profileNavigator;
     [ObservableProperty]
     private String _title = "Bookstore Management";
 
@@ -81,6 +83,7 @@ public partial class MainVM : BaseViewModel
     [RelayCommand]
     private void NavigateToSetting()
     {
+        profileNavigator.Navigate("setting");
         settingNavigator.Navigate();
     }
 
@@ -94,7 +97,8 @@ public partial class MainVM : BaseViewModel
         INavigatorService<AllEmployeeVM> employeeNavigator,
         INavigatorService<AllCustomersVM> customerNavigator,
         INavigatorService<AllImportVM>  importNavigator,
-        INavigatorService<AllSettingVM> settingNavigator
+        INavigatorService<AllSettingVM> settingNavigator,
+        INavigatorService<MyProfileVM> profileNavigator
     )
     {
         this.NavigatorStore = navigatorStore;
@@ -107,5 +111,6 @@ public partial class MainVM : BaseViewModel
         this.customerNavigator = customerNavigator;
         this.importNavigator = importNavigator;
         this.settingNavigator = settingNavigator;
+        this.profileNavigator = profileNavigator;
     }
 }

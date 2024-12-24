@@ -21,6 +21,7 @@ using System.Windows;
 using System.Windows.Navigation;
 using BookstoreManagement.PricingUI.Services;
 using BookstoreManagement.SettingUI;
+using BookstoreManagement.Shared.Services;
 
 namespace BookstoreManagement;
 
@@ -78,7 +79,7 @@ public partial class App : Application
         builder.Services.AddSingleton<CurrentUserService>();
 
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
-        builder.Services.AddViewViewModel<AllSettingV,AllSettingVM>();
+        builder.Services.AddViewViewModel<AllSettingV, AllSettingVM>();
         builder.Services.AddViewViewModel<MyProfileV, MyProfileVM>();
 
         builder.Services.AddKeyedSingleton<NavigatorStore>("default");
@@ -111,28 +112,23 @@ public partial class App : Application
         AppHost.Services.GetRequiredService<MainWindowV>().Show();
 
 
-        var globalNavigator = AppHost.Services.GetRequiredKeyedService<NavigatorStore>("global");
-
         if (NeedLogin())
         {
-            var loginVM = AppHost.Services.GetRequiredService<LoginVM>();
-            globalNavigator.CurrentViewModel = loginVM;
+            var login = AppHost.Services.GetRequiredService<INavigatorService<LoginVM>>();
+            login.Navigate();
         }
         else
         {
-            var mainVM = AppHost.Services.GetRequiredService<MainVM>();
+            var mainVM = AppHost.Services.GetRequiredService<INavigatorService<MainVM>>();
             var currentUser = AppHost.Services.GetRequiredService<CurrentUserService>();
             var db = AppHost.Services.GetRequiredService<ApplicationDbContext>();
             currentUser.CurrentUser = db.Employees.Find(1);
+            mainVM.Navigate("global");
 
-            globalNavigator.CurrentViewModel = mainVM;
         }
 
-        var navigator = AppHost.Services.GetRequiredKeyedService<NavigatorStore>("default");
-        var allItemsVM = AppHost.Services.GetRequiredService<DashBoardVM>();
-        navigator.CurrentViewModel = allItemsVM;
-
-
+        var dashboard = AppHost.Services.GetRequiredService<INavigatorService<DashBoardVM>>();
+        dashboard.Navigate();
 
         base.OnStartup(e);
     }

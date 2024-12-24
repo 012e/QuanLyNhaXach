@@ -1,6 +1,7 @@
 ﻿using BookstoreManagement.Core;
 using BookstoreManagement.Core.Interface;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Query.Internal;
 
 namespace BookstoreManagement.Shared.Services;
 
@@ -23,6 +24,8 @@ public partial class NavigatorService<TViewModel> : INavigatorService<TViewModel
     {
         var viewModel = ViewModelFactory.Create();
         var store = this.serviceProvider.GetRequiredKeyedService<NavigatorStore>(@namespace);
+        store.CurrentViewModel?.CleanUp();
         store.CurrentViewModel = viewModel;
+        store.CurrentViewModel.ResetState();
     }
 }
