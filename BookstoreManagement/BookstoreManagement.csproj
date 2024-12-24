@@ -79,10 +79,12 @@
 
   <ItemGroup>
     <None Remove="Shared\Images\bg1.png" />
+    <None Remove="Shared\Images\edit.png" />
     <None Remove="Shared\Images\expense.png" />
     <None Remove="Shared\Images\gauge.png" />
     <None Remove="Shared\Images\logo.png" />
     <None Remove="Shared\Images\note.png" />
+    <None Remove="Shared\Images\profile.png" />
     <None Remove="Shared\Images\revenue5.png" />
     <None Remove="Shared\Images\sunset.png" />
     <None Remove="Shared\Images\user.png" />
@@ -106,6 +108,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Shared\Images\edit.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Shared\Images\expense.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -119,6 +124,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Shared\Images\note.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shared\Images\profile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Shared\Images\revenue5.png">
