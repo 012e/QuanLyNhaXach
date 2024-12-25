@@ -122,7 +122,7 @@ namespace BookstoreManagement.UI.DashboardUI
         {
             base.ResetState();
             ResetToDefaults();
-            UserName = $"Good morning, {currentUserService.CurrentUser.FirstName}";
+            UserName = @$"Good morning, {currentUserService.CurrentUser?.FirstName ?? ""}";
             LoadDashBoardDataCommand.Execute(null);
         }
 
