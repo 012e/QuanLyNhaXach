@@ -219,6 +219,7 @@
                     <StackPanel VerticalAlignment="Center" Orientation="Vertical">
 
                         <RadioButton
+                            IsChecked="True"
                             Height="50"
                             Command="{Binding NavigateToDashBoardCommand}"
                             Style="{DynamicResource sidebarRadioButton}">

@@ -81,6 +81,7 @@ public partial class App : Application
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
         builder.Services.AddViewViewModel<AllSettingV, AllSettingVM>();
         builder.Services.AddViewViewModel<MyProfileV, MyProfileVM>();
+        builder.Services.AddViewViewModel<AccountV, AccountVM>();
 
         builder.Services.AddKeyedSingleton<NavigatorStore>("default");
         builder.Services.AddKeyedSingleton<NavigatorStore>("global");

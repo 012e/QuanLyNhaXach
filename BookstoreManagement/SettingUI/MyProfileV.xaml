@@ -32,7 +32,7 @@
 
             <!--  My profile Title  -->
             <Grid Grid.Row="0">
-                <TextBlock FontSize="25" FontWeight="DemiBold">My profile</TextBlock>
+                <TextBlock FontSize="27" FontWeight="DemiBold">My profile</TextBlock>
             </Grid>
             <!--  End My profile Title  -->
 
@@ -74,6 +74,10 @@
                                 BorderThickness="1"
                                 CornerRadius="100"
                                 Cursor="Hand">
+
+                                <Border.InputBindings>
+                                    <MouseBinding Command="{Binding ImportImageCommand}" Gesture="LeftClick" />
+                                </Border.InputBindings>
 
                                 <!--  Picture  -->
                                 <Border.Background>
@@ -169,12 +173,12 @@
                                     Text="{Binding UserFirstName}" />
                                 <TextBlock
                                     Padding="0"
-                                    FontSize="15"
+                                    FontSize="17"
                                     Text="{Binding UserRollText}" />
                                 <TextBlock
                                     Padding="0"
-                                    FontSize="15"
-                                    Text="{Binding UserAddress}" />
+                                    FontSize="17"
+                                    Text="{Binding UserGenderText}" />
                             </StackPanel>
                             <!--  End Info  -->
 
@@ -186,13 +190,13 @@
                     <!--  Button Edit  -->
                     <Grid
                         Grid.Column="2"
-                        Margin="0,10,10,0"
+                        Margin="0,10,30,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top">
                         <Button
                             Background="DarkBlue"
                             BorderThickness="0"
-                            Command="{Binding EditCommand}">
+                            Command="{Binding EditCommand}" Height="32" VerticalAlignment="Top">
                             <materialDesign:PackIcon Kind="pencil" />
                         </Button>
                     </Grid>
@@ -214,11 +218,12 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.3*" />
+                    <RowDefinition Height="0.05" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <!--  Personal Info Header  -->
-                <Grid Grid.Row="0" Margin="20,10,0,0">
+                <Grid Grid.Row="0" Margin="30,10,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="0.2*" />
@@ -226,11 +231,11 @@
 
                     <!--  Personal Info Title  -->
                     <Grid Grid.Column="0">
-                        <TextBlock FontSize="15" FontWeight="DemiBold">Personal Information</TextBlock>
+                        <TextBlock FontSize="22" FontWeight="DemiBold">Personal Information</TextBlock>
                     </Grid>
                     <Grid
                         Grid.Column="1"
-                        Margin="0,0,10,0"
+                        Margin="0,0,30,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top">
                         <Button
@@ -245,7 +250,7 @@
                 <!--  End Personal Info Header  -->
 
                 <!--  Personal Info Body  -->
-                <Grid Grid.Row="1" Margin="20,0,0,0">
+                <Grid Grid.Row="2" Margin="30,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
@@ -254,28 +259,28 @@
                     <Grid Grid.Column="0">
                         <StackPanel>
                             <StackPanel Margin="0,0,0,20">
-                                <TextBlock FontSize="15" Text="First Name" />
+                                <TextBlock FontSize="19" Text="First Name" />
                                 <TextBox
                                     BorderBrush="Transparent"
-                                    FontSize="15"
+                                    FontSize="17"
                                     FontWeight="DemiBold"
                                     IsEnabled="{Binding IsEnableEdit}"
                                     Text="{Binding UserFirstName}" />
                             </StackPanel>
                             <StackPanel Margin="0,0,0,20">
-                                <TextBlock FontSize="15" Text="Email" />
+                                <TextBlock FontSize="19" Text="Email" />
                                 <TextBox
                                     BorderBrush="Transparent"
-                                    FontSize="15"
+                                    FontSize="17"
                                     FontWeight="DemiBold"
                                     IsEnabled="{Binding IsEnableEdit}"
                                     Text="{Binding UserEmail}" />
                             </StackPanel>
                             <StackPanel>
-                                <TextBlock FontSize="15" Text="Birth day" />
+                                <TextBlock FontSize="19" Text="Birth day" />
                                 <TextBox
                                     BorderBrush="Transparent"
-                                    FontSize="15"
+                                    FontSize="17"
                                     FontWeight="DemiBold"
                                     IsEnabled="{Binding IsEnableEdit}"
                                     Text="{Binding UserBirthDay, StringFormat='dd/MM/yyyy'}" />
@@ -289,53 +294,60 @@
                         </Grid.RowDefinitions>
                         <StackPanel Grid.RowSpan="2">
                             <StackPanel Margin="0,0,0,20">
-                                <TextBlock FontSize="15" Text="Last Name" />
+                                <TextBlock FontSize="19" Text="Last Name" />
                                 <TextBox
                                     BorderBrush="Transparent"
-                                    FontSize="15"
+                                    FontSize="17"
                                     FontWeight="DemiBold"
                                     IsEnabled="{Binding IsEnableEdit}"
                                     Text="{Binding UserLastName}" />
                             </StackPanel>
                             <StackPanel Margin="0,0,0,20">
-                                <TextBlock FontSize="15" Text="Phone" />
+                                <TextBlock FontSize="19" Text="Phone" />
                                 <TextBox
                                     BorderBrush="Transparent"
-                                    FontSize="15"
+                                    FontSize="17"
                                     FontWeight="DemiBold"
                                     IsEnabled="{Binding IsEnableEdit}"
                                     Text="{Binding UserPhone}" />
                             </StackPanel>
                             <StackPanel>
-                                <TextBlock FontSize="15" Text="Gender" />
-                                <RadioButton
-                                    Content="Male"
-                                    
-                                    IsChecked="{Binding UserGender, Mode=TwoWay}" />
-                                <RadioButton
-                                    Content="Female"
-                                    IsChecked="{Binding UserGender, Mode=TwoWay}" />
+                                <TextBlock FontSize="19" Text="Address" />
+                                <TextBox
+                                    AcceptsReturn="True"
+                                    BorderBrush="Transparent"
+                                    FontSize="17"
+                                    FontWeight="DemiBold"
+                                    IsEnabled="{Binding IsEnableEdit}"
+                                    Text="{Binding UserAddress}"
+                                    TextWrapping="Wrap" />
                             </StackPanel>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Column="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition Width="0.2*" />
+                            <ColumnDefinition Width="0.9*" />
                         </Grid.ColumnDefinitions>
 
                         <Grid
                             Grid.Column="1"
-                            Margin="0,0,10,10"
+                            Margin="0,0,30,10"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Visibility="{Binding IsEnableEdit, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Button
+                                Width="150"
+                                Height="35"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
                                 Background="#39B54A"
                                 BorderThickness="0"
-                                Command="{Binding SaveEditCommand}">
-                                <materialDesign:PackIcon Kind="Check" />
-                            </Button>
+                                Command="{Binding SaveEditCommand}"
+                                Content="Save changes"
+                                FontSize="16" Margin="-29,11,0,0" />
+
+
                         </Grid>
 
                     </Grid>

@@ -2,6 +2,7 @@
     x:Class="BookstoreManagement.SettingUI.AllSettingV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:account="clr-namespace:BookstoreManagement.SettingUI"
     xmlns:converter="clr-namespace:BookstoreManagement.Shared.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
@@ -122,6 +123,11 @@
                     <myProfile:MyProfileV />
                 </DataTemplate>
 
+                <DataTemplate DataType="{x:Type account:AccountVM}">
+                    <account:AccountV />
+                </DataTemplate>
+
+
             </Grid.Resources>
 
 
@@ -159,15 +165,6 @@
                     </StackPanel>
                     <!--  End Title Name  -->
 
-                    <!--  Icon spiner  -->
-                    <fa:ImageAwesome
-                        Width="15"
-                        Height="15"
-                        Margin="7,0,0,0"
-                        Icon="Refresh"
-                        Spin="True"
-                        Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}" />
-                    <!--  End Icon spiner  -->
                 </StackPanel>
                 <!--  End Title  -->
 
@@ -198,6 +195,7 @@
                             <RadioButton
                                 Height="50"
                                 Command="{Binding NavigateToMyProfileCommand}"
+                                IsChecked="True"
                                 Style="{DynamicResource sidebarRadioButton}">
                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                                     <TextBlock
@@ -208,7 +206,7 @@
                             </RadioButton>
                             <RadioButton
                                 Height="50"
-                                Command="{Binding}"
+                                Command="{Binding NavigateToAccountCommand}"
                                 Style="{DynamicResource sidebarRadioButton}">
                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                                     <TextBlock
