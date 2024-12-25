@@ -4,6 +4,7 @@ using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -65,4 +66,6 @@ public partial class AddInvoiceItemVM : EditItemVM<Invoice>
         db = db;
         EditInvoiceNavigator = editInvoiceNavigator;
     }
+
+    
 }

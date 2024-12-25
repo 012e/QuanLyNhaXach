@@ -50,7 +50,7 @@ namespace BookstoreManagement.ImportUI
         [ObservableProperty]
         private bool isIconSaveEdit;
 
-        // This use for update state of TextBoX ItemId not allow Edit when click button Edit
+        // This use for update state of TextBox ItemId not allow Edit when click button Edit
         [ObservableProperty]
         private bool _notAllowEdit;
 
