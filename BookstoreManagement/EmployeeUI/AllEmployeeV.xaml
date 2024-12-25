@@ -71,7 +71,8 @@
                         <Button
                             Background="YellowGreen"
                             BorderThickness="0"
-                            Command="{Binding NavigateToCreateEmployeeCommand}">
+                            Command="{Binding NavigateToCreateEmployeeCommand}"
+                            Visibility="{Binding CurrentUserService.IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <materialDesign:PackIcon Kind="plus" />
                         </Button>
                         <Button

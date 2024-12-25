@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.LoginUI.Services;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -15,15 +16,18 @@ namespace BookstoreManagement.UI.EmployeeUI
 
         [ObservableProperty]
         private String _searchText = "";
+        [ObservableProperty]
+        private CurrentUserService _currentUserService;
 
         protected readonly ApplicationDbContext db;
         public AllEmployeeVM(ApplicationDbContext db,
             IContextualNavigatorService<EditEmployeeVM, Employee> editItemNavigator,
-            INavigatorService<CreateEmployeeVM> createEmployeeNavigator)
+            INavigatorService<CreateEmployeeVM> createEmployeeNavigator , CurrentUserService currentUserService)
         {
             this.db = db;
             EditItemNavigator = editItemNavigator;
             this.createEmployeeNavigator = createEmployeeNavigator;
+            this.CurrentUserService = currentUserService;
         }
         [RelayCommand]
         protected void NavigateToCreateEmployee()

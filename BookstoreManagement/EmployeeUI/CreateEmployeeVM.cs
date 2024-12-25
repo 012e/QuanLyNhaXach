@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core;
+using BookstoreManagement.LoginUI.Services;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -24,7 +25,6 @@ namespace BookstoreManagement.UI.EmployeeUI
         };
         [ObservableProperty]
         private string _errorMessage = string.Empty;
-
         public CreateEmployeeVM(ApplicationDbContext db, INavigatorService<AllEmployeeVM> allEmployeeNavigator)
         {
             Db = db;
@@ -53,7 +53,7 @@ namespace BookstoreManagement.UI.EmployeeUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Couldn't add employee : Database Error", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Couldn't add employee : Database Error {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
            
