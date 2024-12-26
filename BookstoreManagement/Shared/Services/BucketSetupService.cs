@@ -2,43 +2,32 @@
 using Amazon.S3.Model;
 using Amazon.S3.Util;
 using Microsoft.Extensions.Hosting;
+using Supabase;
+using Supabase.Interfaces;
+using System.Windows.Media.Animation;
 
 namespace BookstoreManagement.Shared.Services;
 
 public class BucketSetupService : BackgroundService
 {
-    private readonly AmazonS3Client amazonS3Client;
+    private readonly Client supabaseClient;
 
-    public BucketSetupService(AmazonS3Client amazonS3Client)
+    public BucketSetupService(Supabase.Client supabaseClient)
     {
-        this.amazonS3Client = amazonS3Client;
-    }
-
-    public async Task StartAsync(CancellationToken cancellationToken)
-    {
-        if (!await AmazonS3Util.DoesS3BucketExistV2Async(amazonS3Client, "images"))
-        {
-            var putBucketRequest = new PutBucketRequest
-            {
-                BucketName = "images",
-                UseClientRegion = true
-            };
-            PutBucketResponse putBucketResponse = await amazonS3Client.PutBucketAsync(putBucketRequest, cancellationToken);
-        }
-    }
-
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
+        this.supabaseClient = supabaseClient;
     }
 
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var putBucketRequest = new PutBucketRequest
+        var buckets = await supabaseClient.Storage.ListBuckets();
+        foreach (var bucket in buckets)
         {
-            BucketName = "pornpornporn",
-            BucketRegion = S3Region.APSoutheast1
-        };
-        PutBucketResponse putBucketResponse = await amazonS3Client.PutBucketAsync(putBucketRequest, stoppingToken);
+            if (bucket.Name == "images")
+            {
+                await supabaseClient.Storage.UpdateBucket("images", new Supabase.Storage.BucketUpsertOptions { Public = true });
+                return;
+            }
+        }
+        await supabaseClient.Storage.CreateBucket("images", new Supabase.Storage.BucketUpsertOptions { Public = true });
     }
 }

@@ -22,6 +22,8 @@ using Amazon.S3;
 using BookstoreManagement.Shared.Services;
 using Amazon.S3.Transfer;
 using BookstoreManagement.SettingUI;
+using Supabase.Interfaces;
+using Supabase;
 
 namespace BookstoreManagement;
 
@@ -39,6 +41,19 @@ public partial class App : Application
             options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION")), ServiceLifetime.Transient);
 
         AddAmazonS3(builder);
+
+        builder.Services.AddSingleton<Supabase.Client>(provider =>
+        {
+            return new Supabase.Client(
+                Environment.GetEnvironmentVariable("SUPABASE_URL"),
+                Environment.GetEnvironmentVariable("SUPABASE_KEY"),
+                new SupabaseOptions
+                {
+                    AutoRefreshToken = true,
+                    AutoConnectRealtime = true,
+                }
+            );
+        });
 
         builder.Services.AddSingleton<ImageUploader>();
         builder.Services.AddHostedService<BucketSetupService>();
