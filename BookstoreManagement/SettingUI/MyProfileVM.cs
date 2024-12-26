@@ -1,6 +1,7 @@
 ﻿using BookstoreManagement.Core;
 using BookstoreManagement.LoginUI.Services;
 using BookstoreManagement.Shared.DbContexts;
+using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HarfBuzzSharp;
@@ -24,12 +25,15 @@ namespace BookstoreManagement.SettingUI
     {
         private readonly ApplicationDbContext db;
         private readonly CurrentUserService currentUserService;
+        private readonly ImageUploader imageUploader;
+
         public MyProfileVM(ApplicationDbContext db,
-            CurrentUserService currentUserService)
+            CurrentUserService currentUserService,
+            ImageUploader imageUploader)
         {
             this.db = db;
             this.currentUserService = currentUserService;
-            ResetState();
+            this.imageUploader = imageUploader;
         }
 
         [ObservableProperty]
@@ -111,11 +115,11 @@ namespace BookstoreManagement.SettingUI
         }
 
         [RelayCommand]
-        private void SaveEdit()
+        private async Task SaveEdit()
         {
             IsEnableEdit = false;
             var userId = currentUserService.CurrentUser.Id;
-            var userInfo = db.Employees.FirstOrDefault(e => e.Id == userId);
+            var userInfo = await db.Employees.FirstAsync(e => e.Id == userId);
 
             userInfo.FirstName = UserFirstName;
             userInfo.LastName = UserLastName;
@@ -124,8 +128,6 @@ namespace BookstoreManagement.SettingUI
             userInfo.Birthday = UserBirthDay;
             userInfo.Address = UserAddress;
             db.SaveChanges();
-            db.SaveChanges();
-            ResetState();
         }
 
         [ObservableProperty]
@@ -138,7 +140,6 @@ namespace BookstoreManagement.SettingUI
                 ImageSource = null;
                 return;
             }
-
             try
             {
                 Application.Current.Dispatcher.Invoke(() =>
@@ -160,28 +161,21 @@ namespace BookstoreManagement.SettingUI
         private string _newProfilePicture;
 
         [RelayCommand]        
-        private void ImportImage()
+        private async Task ImportImage()
         {
             var userId = currentUserService.CurrentUser.Id;
-            var userInfo = db.Employees.FirstOrDefault(e => e.Id == userId);
+            var userInfo = await db.Employees.FirstAsync(e => e.Id == userId);
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image files|*.jpg;*.png";
             openFileDialog.FilterIndex = 1;
             if (openFileDialog.ShowDialog() == true)
             {
-                NewProfilePicture = GetConvertPathToUrl(openFileDialog.FileName);
-                LoadImageFromUrl(NewProfilePicture);
+                NewProfilePicture = await imageUploader.ReplaceImageAsync(userInfo.ProfilePicture, openFileDialog.FileName);
                 userInfo.ProfilePicture = NewProfilePicture;
                 db.SaveChanges();
-                ResetState();
+                LoadImageFromUrl(NewProfilePicture);
             }
-        }
-
-        private string GetConvertPathToUrl(string filePath)
-        {
-            return new Uri(filePath).AbsoluteUri;
-            
         }
     }
 }

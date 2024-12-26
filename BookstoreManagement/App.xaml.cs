@@ -16,12 +16,12 @@ using BookstoreManagement.UI.TagUI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.IO;
 using System.Windows;
-using System.Windows.Navigation;
 using BookstoreManagement.PricingUI.Services;
-using BookstoreManagement.SettingUI;
+using Amazon.S3;
 using BookstoreManagement.Shared.Services;
+using Amazon.S3.Transfer;
+using BookstoreManagement.SettingUI;
 
 namespace BookstoreManagement;
 
@@ -37,6 +37,11 @@ public partial class App : Application
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION")), ServiceLifetime.Transient);
+
+        AddAmazonS3(builder);
+
+        builder.Services.AddSingleton<ImageUploader>();
+        builder.Services.AddHostedService<BucketSetupService>();
 
         builder.Services.AddViewViewModel<MainWindowV, MainWindowVM>();
 
@@ -88,6 +93,26 @@ public partial class App : Application
         builder.Services.AddKeyedSingleton<NavigatorStore>("setting");
 
         AppHost = builder.Build();
+    }
+
+    private static void AddAmazonS3(HostApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<AmazonS3Client>((i) =>
+        {
+            return new AmazonS3Client(
+                Environment.GetEnvironmentVariable("AWS_ACCESS_TOKEN"),
+                Environment.GetEnvironmentVariable("AWS_SECRET_KEY"),
+                new AmazonS3Config
+                {
+                    RegionEndpoint = Amazon.RegionEndpoint.APSoutheast1
+                }
+               );
+        });
+
+        builder.Services.AddSingleton<TransferUtility>((isp) =>
+        {
+            return new TransferUtility(isp.GetRequiredService<AmazonS3Client>());
+        });
     }
 
     private bool NeedLogin()

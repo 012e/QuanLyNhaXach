@@ -30,8 +30,6 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<ItemPrice> ItemPrices { get; set; }
 
-    public virtual DbSet<PriceType> PriceTypes { get; set; }
-
     public virtual DbSet<Provider> Providers { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
@@ -239,18 +237,6 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Item).WithMany(p => p.ItemPrices)
                 .HasForeignKey(d => d.ItemId)
                 .HasConstraintName("item_prices_item_id_fkey");
-        });
-
-        modelBuilder.Entity<PriceType>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("price_types_pkey");
-
-            entity.ToTable("price_types");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(255)
-                .HasColumnName("name");
         });
 
         modelBuilder.Entity<Provider>(entity =>
