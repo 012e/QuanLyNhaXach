@@ -2,6 +2,7 @@
     x:Class="BookstoreManagement.UI.ItemUI.EditItemV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:component="clr-namespace:BookstoreManagement.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:BookstoreManagement.UI.ItemUI"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -51,14 +52,13 @@
                 CornerRadius="10">
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-                    <Border
+                    <component:ImageFrame
                         Width="150"
                         Height="150"
-                        CornerRadius="10">
-                        <Border.Background>
-                            <ImageBrush ImageSource="{Binding ImageSource}" />
-                        </Border.Background>
-                    </Border>
+                        Command="{Binding ImportImageCommand}"
+                        CornerRadius="10"
+                        ImageSource="{Binding ImageSource}" />
+
                     <Label FontWeight="Bold">Item Id</Label>
                     <TextBox IsReadOnly="True" Text="{Binding Item.Id}" />
 

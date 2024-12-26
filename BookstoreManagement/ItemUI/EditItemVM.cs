@@ -11,12 +11,14 @@ using System.Windows.Media;
 using System.Collections.ObjectModel;
 using BookstoreManagement.UI.TagUI;
 using BookstoreManagement.ItemUI.Dtos;
+using Microsoft.Win32;
 
 namespace BookstoreManagement.UI.ItemUI;
 
 public partial class EditItemVM : EditItemVM<Item>
 {
     private readonly ApplicationDbContext db;
+    private readonly ImageUploader imageUploader;
 
     public INavigatorService<AllItemsVM> AllItemsNavigator { get; }
 
@@ -35,13 +37,32 @@ public partial class EditItemVM : EditItemVM<Item>
     [ObservableProperty]
     private bool _isSubmitSuccess = false;
 
+    [ObservableProperty]
+    private string _imagePath = "";
+
+    [RelayCommand]
+    private void ImportImage()
+    {
+
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        openFileDialog.Filter = "Image files|*.jpg;*.png";
+        openFileDialog.FilterIndex = 1;
+        if (openFileDialog.ShowDialog() == true)
+        {
+            ImagePath = openFileDialog.FileName;
+            LoadImageFromUrl(ImagePath);
+        }
+    }
+
     public EditItemVM(
         ApplicationDbContext db,
         INavigatorService<AllItemsVM> allItemsNavigator,
-        INavigatorService<CreateTagVM> createTagNavigator)
+        INavigatorService<CreateTagVM> createTagNavigator,
+        ImageUploader imageUploader)
     {
         this.db = db;
         AllItemsNavigator = allItemsNavigator;
+        this.imageUploader = imageUploader;
         Item = new Item();
     }
 
@@ -54,9 +75,10 @@ public partial class EditItemVM : EditItemVM<Item>
     public override void ResetState()
     {
         IsSet = false;
+        ImageSource = null;
         base.ResetState();
-        
     }
+
     private bool Check_Valid_Input()
     {
         if (string.IsNullOrWhiteSpace(Item.Name))
@@ -64,12 +86,12 @@ public partial class EditItemVM : EditItemVM<Item>
             ErrorMessage = "Item Name is empty!";
             return false;
         }
-        if(string.IsNullOrWhiteSpace(Item.Description))
+        if (string.IsNullOrWhiteSpace(Item.Description))
         {
             ErrorMessage = "Item description is empty!";
             return false;
         }
-        if(Item.Quantity < 0)
+        if (Item.Quantity < 0)
         {
             ErrorMessage = "Item quantity must be a non-negative integer!";
             return false;
@@ -89,7 +111,7 @@ public partial class EditItemVM : EditItemVM<Item>
         var itemTags = Item.Tags.ToHashSet();
 
         Tags = new ObservableCollection<ItemTagDto>();
-         
+
         foreach (var tag in allTags)
         {
             var exists = itemTags.Contains(tag);
@@ -99,7 +121,7 @@ public partial class EditItemVM : EditItemVM<Item>
                 IsChecked = exists
             };
 
-            
+
             itemTagDto.PropertyChanged += Tag_PropertyChanged;
 
             Tags.Add(itemTagDto);
@@ -116,21 +138,12 @@ public partial class EditItemVM : EditItemVM<Item>
             MessageBox.Show("item is null");
             return;
         }
+
+        ImagePath = Item.Image;
         if (!string.IsNullOrEmpty(Item.Image))
         {
-            LoadImageFromUrl(Item.Image);
+            LoadImageFromUrl(imageUploader.GetPublicUrl(Item.Image));
         }
-    }
-
-    protected override void OnSubmittingSuccess()
-    {
-        base.OnSubmittingSuccess();
-        if (IsSubmitSuccess)
-        {
-            MessageBox.Show("Submitted successfully");
-            IsSubmitSuccess = false;
-        }
-        return;
     }
 
     protected override void SubmitItemHandler()
@@ -140,10 +153,16 @@ public partial class EditItemVM : EditItemVM<Item>
             MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
-        db.Items.Update(Item);
-        db.SaveChanges();
-        IsSubmitSuccess = true;
+        Task.Run(async () =>
+        {
+            Item.Image = await imageUploader.ReplaceImageAsync(Item.Image, ImagePath);
+            db.Items.Update(Item);
+            await db.SaveChangesAsync();
+            MessageBox.Show("Updated item successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            IsSubmitSuccess = true;
+        });
     }
+
     private void LoadImageFromUrl(string url)
     {
         if (string.IsNullOrEmpty(url))
@@ -173,12 +192,12 @@ public partial class EditItemVM : EditItemVM<Item>
     {
         IsSet = true;
     }
-    
+
     [RelayCommand]
     private void CloseSetTag()
     {
         IsSet = false;
-        
+
     }
     private void Tag_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
@@ -188,7 +207,7 @@ public partial class EditItemVM : EditItemVM<Item>
 
             if (itemTag.IsChecked)
             {
-               
+
                 if (!ListTags.Any(t => t.Name == itemTag.Tag.Name))
                 {
                     ListTags.Add(itemTag.Tag);
@@ -197,7 +216,7 @@ public partial class EditItemVM : EditItemVM<Item>
             }
             else
             {
-               
+
                 var tagToRemove = ListTags.FirstOrDefault(t => t.Name == itemTag.Tag.Name);
                 if (tagToRemove != null)
                 {

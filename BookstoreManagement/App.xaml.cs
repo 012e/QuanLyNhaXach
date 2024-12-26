@@ -16,12 +16,11 @@ using BookstoreManagement.UI.TagUI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.IO;
 using System.Windows;
-using System.Windows.Navigation;
 using BookstoreManagement.PricingUI.Services;
-using BookstoreManagement.SettingUI;
 using BookstoreManagement.Shared.Services;
+using BookstoreManagement.SettingUI;
+using Supabase;
 
 namespace BookstoreManagement;
 
@@ -37,6 +36,22 @@ public partial class App : Application
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION")), ServiceLifetime.Transient);
+
+        builder.Services.AddSingleton<Supabase.Client>(provider =>
+        {
+            return new Supabase.Client(
+                Environment.GetEnvironmentVariable("SUPABASE_URL"),
+                Environment.GetEnvironmentVariable("SUPABASE_KEY"),
+                new SupabaseOptions
+                {
+                    AutoRefreshToken = true,
+                    AutoConnectRealtime = true,
+                }
+            );
+        });
+
+        builder.Services.AddSingleton<ImageUploader>();
+        builder.Services.AddHostedService<BucketSetupService>();
 
         builder.Services.AddViewViewModel<MainWindowV, MainWindowVM>();
 
