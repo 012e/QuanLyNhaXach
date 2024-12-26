@@ -16,6 +16,7 @@
     <Control.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+        <converter:GenderToTextConverter x:Key="GenderToTextConverter" />
     </Control.Resources>
     <Border
         Padding="50,30,50,50"
@@ -72,7 +73,15 @@
                             Background="YellowGreen"
                             BorderThickness="0"
                             Command="{Binding NavigateToCreateEmployeeCommand}"
-                            Visibility="{Binding CurrentUserService.IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            Visibility="{Binding CurrentUserService.IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <materialDesign:PackIcon Kind="plus" />
+                        </Button>
+                        <Button
+                            Background="YellowGreen"
+                            BorderThickness="0"
+                            Command="{Binding CanNotNavigateToCreateEmployeeCommand}"
+                            Opacity="0.5"
+                            Visibility="{Binding IsNotAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
                             <materialDesign:PackIcon Kind="plus" />
                         </Button>
                         <Button
@@ -104,9 +113,30 @@
                 </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
-                    <DataGridTextColumn Binding="{Binding FirstName}" Header="Fisrt Name" />
-                    <DataGridTextColumn Binding="{Binding LastName}" Header="Last Name" />
-                    <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
+                    <DataGridTextColumn
+                        Width="100"
+                        Binding="{Binding FirstName}"
+                        Header="Fisrt Name" />
+                    <DataGridTextColumn
+                        Width="100"
+                        Binding="{Binding LastName}"
+                        Header="Last Name" />
+                    <DataGridTemplateColumn Header="Address">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    MaxWidth="120"
+                                    Text="{Binding Address}"
+                                    TextTrimming="CharacterEllipsis" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn
+                        Width="150"
+                        Binding="{Binding Email}"
+                        Header="Email" />
+                    <DataGridTextColumn Binding="{Binding Birthday}" Header="Birthday" />
+                    <DataGridTextColumn Binding="{Binding Gender, Converter={StaticResource GenderToTextConverter}}" Header="Gender" />
                     <DataGridTextColumn Binding="{Binding Salary}" Header="Salary" />
 
                     <DataGridCheckBoxColumn Binding="{Binding IsManager}" Header="Is Manager" />

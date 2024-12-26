@@ -41,11 +41,19 @@ namespace BookstoreManagement.UI.EmployeeUI
         {
             return Regex.IsMatch(input, @"^[a-zA-Z\s]+$");
         }
+        private bool IsValidAddress(string input)
+        {
+            return Regex.IsMatch(input, @"^[a-zA-Z0-9\s,./\-#'sáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐ]+$");
+        }
         private bool IsValidEmail(string input)
         {
             string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
             return Regex.IsMatch(input, emailPattern);
+        }
+        private bool IsOnlyNumber(string input)
+        {
+            return Regex.IsMatch(input, @"\d");
         }
         private bool Check_Valid_Input()
         {
@@ -77,6 +85,30 @@ namespace BookstoreManagement.UI.EmployeeUI
             if (!IsValidEmail(Employee.Email))
             {
                 ErrorMessage = "Employee email is not a valid type(example@example.com)!";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(Employee.Address)){
+                ErrorMessage = "Employee address can not be empty!";
+                return false;
+            }
+            if (!IsValidAddress(Employee.Address))
+            {
+                ErrorMessage = "Employee address is not a valid type!";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(Employee.PhoneNumber))
+            {
+                ErrorMessage = "Employee phone number can not be empty!";
+                return false;
+            }
+            if (!IsOnlyNumber(Employee.PhoneNumber))
+            {
+                ErrorMessage = "Employee phone number must contain only number!";
+                return false;
+            }
+            if (Employee.PhoneNumber.Length != 10)
+            {
+                ErrorMessage = "Employee phone number must have only 10 number!";
                 return false;
             }
             if (Employee.Salary < 0)

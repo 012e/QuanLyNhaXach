@@ -6,6 +6,7 @@ using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace BookstoreManagement.UI.EmployeeUI
 {
@@ -18,6 +19,8 @@ namespace BookstoreManagement.UI.EmployeeUI
         private String _searchText = "";
         [ObservableProperty]
         private CurrentUserService _currentUserService;
+        [ObservableProperty]
+        private bool _isNotAdmin = false;
 
         protected readonly ApplicationDbContext db;
         public AllEmployeeVM(ApplicationDbContext db,
@@ -28,6 +31,12 @@ namespace BookstoreManagement.UI.EmployeeUI
             EditItemNavigator = editItemNavigator;
             this.createEmployeeNavigator = createEmployeeNavigator;
             this.CurrentUserService = currentUserService;
+            IsNotAdmin = !currentUserService.IsAdmin;
+        }
+        [RelayCommand]
+        private void CanNotNavigateToCreateEmployee()
+        {
+            MessageBox.Show("Your role must be admin to unlock this feature!","Warning",MessageBoxButton.OK, MessageBoxImage.Warning);
         }
         [RelayCommand]
         protected void NavigateToCreateEmployee()
