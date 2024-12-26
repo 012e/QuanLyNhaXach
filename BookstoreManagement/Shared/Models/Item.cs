@@ -12,6 +12,8 @@ public partial class Item
 
     public string? Description { get; set; }
 
+    public decimal BasePrice { get; set; }
+
     public int? ProviderId { get; set; }
 
     public virtual ICollection<ImportItem> ImportItems { get; set; } = new List<ImportItem>();

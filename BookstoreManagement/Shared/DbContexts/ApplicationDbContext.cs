@@ -195,6 +195,10 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.ProviderId).HasColumnName("provider_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
 
+            entity.Property(e => e.BasePrice)
+                .HasColumnType("decimal")
+                .HasColumnName("base_price");
+
             entity.HasOne(d => d.Provider).WithMany(p => p.Items)
                 .HasForeignKey(d => d.ProviderId)
                 .OnDelete(DeleteBehavior.Cascade)
@@ -226,19 +230,15 @@ public partial class ApplicationDbContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BeginDate).HasColumnName("begin_date");
-            entity.Property(e => e.Divider).HasColumnName("divider");
             entity.Property(e => e.EndDate).HasColumnName("end_date");
             entity.Property(e => e.ItemId).HasColumnName("item_id");
+            entity.Property(e => e.Ordering).HasColumnName("ordering");
+            entity.Property(e => e.Percentage).HasColumnName("percentage");
             entity.Property(e => e.PriceType).HasColumnName("price_type");
-            entity.Property(e => e.Value).HasColumnName("value");
 
             entity.HasOne(d => d.Item).WithMany(p => p.ItemPrices)
                 .HasForeignKey(d => d.ItemId)
                 .HasConstraintName("item_prices_item_id_fkey");
-
-            entity.HasOne(d => d.PriceTypeNavigation).WithMany(p => p.ItemPrices)
-                .HasForeignKey(d => d.PriceType)
-                .HasConstraintName("item_prices_price_type_fkey");
         });
 
         modelBuilder.Entity<PriceType>(entity =>

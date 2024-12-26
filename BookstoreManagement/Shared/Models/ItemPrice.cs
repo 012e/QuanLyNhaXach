@@ -6,17 +6,15 @@ public partial class ItemPrice
 
     public int ItemId { get; set; }
 
-    public int PriceType { get; set; }
+    public string PriceType { get; set; } = null!;
 
-    public int Divider { get; set; }
+    public decimal Percentage { get; set; }
 
-    public int Value { get; set; }
+    public int Ordering { get; set; }
 
     public DateOnly BeginDate { get; set; }
 
     public DateOnly EndDate { get; set; }
 
     public virtual Item Item { get; set; } = null!;
-
-    public virtual PriceType PriceTypeNavigation { get; set; } = null!;
 }

@@ -15,18 +15,15 @@ public class PricingService(ApplicationDbContext db)
 {
     private readonly ApplicationDbContext db = db;
 
-    private decimal GetConcreteValue(ItemPrice itemPrice) => (decimal)itemPrice.Value / itemPrice.Divider;
-
     public PricingResponseDto GetPrice(int itemId)
     {
         var item = db.Items
             .Include(i => i.ItemPrices)
-            .ThenInclude(ip => ip.PriceTypeNavigation)
             .FirstOrDefault(i => i.Id == itemId)
             ?? throw new ArgumentNullException(nameof(itemId));
 
         var prices = item.ItemPrices;
-        decimal basePrice = GetBasePrice(item, prices);
+        decimal basePrice = item.BasePrice;
 
         List<PricingDetail> otherPrices = GetOtherPrices(prices);
 
@@ -49,26 +46,15 @@ public class PricingService(ApplicationDbContext db)
         return GetPrice(item.Id);
     }
 
-    private decimal GetBasePrice(Item item, ICollection<ItemPrice> prices)
-    {
-        var basePriceRaw = item.ItemPrices.FirstOrDefault(p => p.PriceType == 1) ??
-            throw new InvalidOperationException($"Item with id {item.Id} doesn't have a base price");
-        var basePrice = GetConcreteValue(basePriceRaw);
-        return basePrice;
-    }
-
     private List<PricingDetail> GetOtherPrices(ICollection<ItemPrice> prices)
     {
-        var rawOtherPrices = prices.Where(p => p.PriceType != 1);
         List<PricingDetail> otherPrices = [];
-        foreach (var otherPrice in rawOtherPrices)
+        foreach (var otherPrice in prices)
         {
-            var divider = otherPrice.Divider;
-            var value = otherPrice.Value;
             PricingDetail pricingDetail = new()
             {
-                Name = otherPrice.PriceTypeNavigation.Name,
-                Percentage = GetConcreteValue(otherPrice)
+                Name = otherPrice.PriceType,
+                Percentage = otherPrice.Percentage,
             };
             otherPrices.Add(pricingDetail);
         }
