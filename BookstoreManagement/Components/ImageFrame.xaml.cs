@@ -49,6 +49,24 @@ namespace BookstoreManagement.Components
                 control.Command = asyncCommand;
             }
         }
+
+        public static readonly DependencyProperty ControlWidthProperty =
+            DependencyProperty.Register("Width", typeof(double), typeof(ImageFrame), new PropertyMetadata(100.0));
+
+        public static readonly DependencyProperty ControlHeightProperty =
+            DependencyProperty.Register("Height", typeof(double), typeof(ImageFrame), new PropertyMetadata(100.0));
+
+        public new double Width
+        {
+            get => (double)GetValue(ControlWidthProperty);
+            set => SetValue(ControlWidthProperty, value);
+        }
+
+        public new double Height
+        {
+            get => (double)GetValue(ControlHeightProperty);
+            set => SetValue(ControlHeightProperty, value);
+        }
     }
 
     public interface IAsyncCommand : ICommand
@@ -88,5 +106,6 @@ namespace BookstoreManagement.Components
             add => CommandManager.RequerySuggested += value;
             remove => CommandManager.RequerySuggested -= value;
         }
+
     }
 }
