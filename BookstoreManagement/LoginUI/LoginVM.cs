@@ -3,6 +3,7 @@ using BookstoreManagement.LoginUI.Dtos;
 using BookstoreManagement.LoginUI.Services;
 using BookstoreManagement.MainUI;
 using BookstoreManagement.Shared.Services;
+using BookstoreManagement.UI.DashboardUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MaterialDesignThemes.Wpf;
@@ -16,6 +17,7 @@ public partial class LoginVM : BaseViewModel
 {
     private readonly INavigatorService<MainVM> mainUINavigator;
     private readonly LoginService loginService;
+    private readonly INavigatorService<DashBoardVM> dashboardNavigator;
     [ObservableProperty]
     private string _email;
     [ObservableProperty]
@@ -43,6 +45,7 @@ public partial class LoginVM : BaseViewModel
             return;
         }
         mainUINavigator.Navigate("global");
+        dashboardNavigator.Navigate();
     }
 
     public override void ResetState()
@@ -52,11 +55,13 @@ public partial class LoginVM : BaseViewModel
         Email = "";
     }
 
-    public LoginVM(INavigatorService<MainVM> mainUINavigator, LoginService loginService)
+    public LoginVM(INavigatorService<MainVM> mainUINavigator, LoginService loginService, INavigatorService<DashBoardVM> dashboardNavigator)
     {
         this.mainUINavigator = mainUINavigator;
         this.loginService = loginService;
+        this.dashboardNavigator = dashboardNavigator;
     }
+
     [RelayCommand]
     private void HideAndShow()
     {
