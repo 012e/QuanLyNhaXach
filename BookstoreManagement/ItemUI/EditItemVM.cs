@@ -24,26 +24,34 @@ public partial class EditItemVM : EditItemVM<Item>
 
     [ObservableProperty]
     private Item _item;
+
     [ObservableProperty]
     private BitmapImage _imageSource;
+
     [ObservableProperty]
     private ObservableCollection<Tag> _listTags;
+
     [ObservableProperty]
     private ObservableCollection<ItemTagDto> _tags;
+
     [ObservableProperty]
     private bool _isSet = false;
+
     [ObservableProperty]
     private string _errorMessage = string.Empty;
+
     [ObservableProperty]
     private bool _isSubmitSuccess = false;
 
     [ObservableProperty]
     private string _imagePath = "";
 
+    [ObservableProperty]
+    private bool _isLoading = false;
+
     [RelayCommand]
     private void ImportImage()
     {
-
         OpenFileDialog openFileDialog = new OpenFileDialog();
         openFileDialog.Filter = "Image files|*.jpg;*.png";
         openFileDialog.FilterIndex = 1;
@@ -155,9 +163,11 @@ public partial class EditItemVM : EditItemVM<Item>
         }
         Task.Run(async () =>
         {
+            IsLoading = true;
             Item.Image = await imageUploader.ReplaceImageAsync(Item.Image, ImagePath);
             db.Items.Update(Item);
             await db.SaveChangesAsync();
+            IsLoading = false;
             MessageBox.Show("Updated item successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             IsSubmitSuccess = true;
         });
