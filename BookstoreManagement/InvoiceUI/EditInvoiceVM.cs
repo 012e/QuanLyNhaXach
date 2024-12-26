@@ -72,11 +72,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         InvoiceItemDto = new ObservableCollection<InvoiceItemDto>(itemsFromInvoice);
     }
 
-    protected override void SubmitItemHandler()
-    {
-        db.Invoices.Update(Invoice);
-        db.SaveChanges();
-    }
+  
 
     public EditInvoiceVM(ApplicationDbContext db,
         INavigatorService<AllInvoicesVM> allInvoicesNavigator,
@@ -193,9 +189,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                     MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
-        // Tao ra de luu vao co so du lieu
-        // Khong tao InvoiceItemDto vi cac do chi de hien thi thoi, con luu lai thi 
-        // phai su dung InvoicesItem
+      
         var itemIntoInvoiceItem = new InvoicesItem()
         {
             ItemId = ItemId,
@@ -213,8 +207,6 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                 {
                     item.Quantity += itemIntoInvoiceItem.Quantity;
                     check = true;
-                    // Luu vao csdl
-
                     break;
                 }
             }
@@ -235,7 +227,6 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         {
             MessageBox.Show($"Could'n add item : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-        ResetState();
     }
 
 
@@ -264,6 +255,52 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         }
     }
 
+    protected override void SubmitItemHandler()
+    {
+        db.Invoices.Update(Invoice);
+        SaveChange();
+        db.SaveChanges();
+    }
+    private void SaveChange()
+    {
+        try
+        {
+            var existingItemList = db.InvoicesItems.Where(ii => ii.InvoiceId == Invoice.Id).ToList();
+
+            // Tien hanh kiem tra 
+            foreach (var itemDto in InvoiceItemDto)
+            {
+                var existingItem = existingItemList.FirstOrDefault(ii => ii.ItemId == itemDto.id);
+
+                // Neu vat pham da co roi => Cap nhap so luong
+                if(existingItem != null)
+                {
+                    existingItem.Quantity = itemDto.Quantity;
+                }
+
+                // Neu chua vat pham => Them 1 vat pham moi
+                else
+                {
+                    var newItem = new InvoicesItem
+                    {
+                        InvoiceId = Invoice.Id,
+                        ItemId = itemDto.id,
+                        Quantity = itemDto.Quantity
+                    };
+                    db.InvoicesItems.Add(newItem);
+                }
+            }
+            var itemsToRemove = existingItemList.Where(ii => !InvoiceItemDto.Any(dto => dto.id == ii.ItemId)).ToList();
+            db.InvoicesItems.RemoveRange(itemsToRemove);
+
+            MessageBox.Show("Changes saved successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error saving changes: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
     [RelayCommand]
     private void SaveEdit()
     {
@@ -280,30 +317,6 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
             NotAllowEdit = false;
             IsIconSaveEdit = false;
 
-            try
-            {
-                // Xoa cac item cu trong CSDL
-                var exisItem = db.InvoicesItems.Where(ii => ii.InvoiceId == Invoice.Id).ToList();
-                db.InvoicesItems.RemoveRange(exisItem);
-
-                // Them cac item tu Dto vao CSDL - InvoiceItems;
-                foreach (var itemDto in InvoiceItemDto)
-                {
-                    var newItem = new InvoicesItem
-                    {
-                        InvoiceId = Invoice.Id,
-                        ItemId = itemDto.id,
-                        Quantity = itemDto.Quantity
-                    };
-                    db.InvoicesItems.Add(newItem);
-                }
-                db.SaveChanges();
-                MessageBox.Show("Changes saved successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show($"Error saving changes: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
     }
 
