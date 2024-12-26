@@ -116,7 +116,7 @@ public partial class App : Application
         if (NeedLogin())
         {
             var login = AppHost.Services.GetRequiredService<INavigatorService<LoginVM>>();
-            login.Navigate();
+            login.Navigate("global");
         }
         else
         {
