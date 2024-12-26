@@ -5,6 +5,7 @@ using BookstoreManagement.Shared.Services;
 using BookstoreManagement.UI.ItemUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Win32;
@@ -45,7 +46,7 @@ namespace BookstoreManagement.ImportUI
         private int _quantity;
 
         [ObservableProperty]
-        private ImportItem _selectIportItem;
+        private ImportItem _selectImportItem;
 
         [ObservableProperty]
         private bool isIconSaveEdit;
@@ -128,9 +129,11 @@ namespace BookstoreManagement.ImportUI
                     MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
+           
             var importItem = new ImportItem
             {
-                ImportId = SelectIportItem.ImportId,
+                ImportId = Item.Id,
                 ItemId = ItemId,
                 Quantity = Quantity
             };
@@ -215,7 +218,7 @@ namespace BookstoreManagement.ImportUI
         [RelayCommand]
         private void EditImportItem()
         {
-            if (SelectIportItem == null)
+            if (SelectImportItem == null)
             {
                 MessageBox.Show("Please choose Item !", "Error",
 
@@ -227,8 +230,8 @@ namespace BookstoreManagement.ImportUI
             {
                 NotAllowEdit = true;
                 IsIconSaveEdit = true;
-                ItemId = SelectIportItem.ItemId;
-                Quantity = SelectIportItem.Quantity;
+                ItemId = SelectImportItem.ItemId;
+                Quantity = SelectImportItem.Quantity;
             }
         }
 
@@ -236,7 +239,7 @@ namespace BookstoreManagement.ImportUI
         [RelayCommand]
         private void SaveEdit()
         {
-            if (SelectIportItem == null)
+            if (SelectImportItem == null)
             {
                 MessageBox.Show("Please choose Item !", "Error",
 
@@ -248,7 +251,7 @@ namespace BookstoreManagement.ImportUI
             {
                 NotAllowEdit = false;
                 IsIconSaveEdit = false;
-                SelectIportItem.Quantity = Quantity;
+                SelectImportItem.Quantity = Quantity;
                 MessageBox.Show("Update success", "Edit", MessageBoxButton.OK);
             }
         }
@@ -260,7 +263,7 @@ namespace BookstoreManagement.ImportUI
             var result = MessageBox.Show("Are you sure you want to delete?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
-                Item.ImportItems.Remove(SelectIportItem);
+                Item.ImportItems.Remove(SelectImportItem);
                 LoadItem(); // Update immediately item 
                 db.SaveChanges();
             }
