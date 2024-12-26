@@ -29,7 +29,7 @@ public partial class LoginVM : BaseViewModel
 
 
     [RelayCommand]
-    private async void Login()
+    private async Task Login()
     {
         var dto = new LoginDto
         {
@@ -37,7 +37,7 @@ public partial class LoginVM : BaseViewModel
             Password = Password
         };
 
-        if (loginService.Login(dto) == null)
+        if (await loginService.LoginAsync(dto) == null)
         {
             MessageBox.Show($"Login failed. Wrong email or password", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
