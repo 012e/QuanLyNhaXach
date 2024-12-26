@@ -4,19 +4,10 @@ using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using HarfBuzzSharp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
+using Supabase;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace BookstoreManagement.SettingUI
@@ -25,7 +16,7 @@ namespace BookstoreManagement.SettingUI
     {
         private readonly ApplicationDbContext db;
         private readonly CurrentUserService currentUserService;
-        private readonly ImageUploader imageUploader;
+        private readonly ImageUploader imageBucket;
 
         public MyProfileVM(ApplicationDbContext db,
             CurrentUserService currentUserService,
@@ -33,7 +24,7 @@ namespace BookstoreManagement.SettingUI
         {
             this.db = db;
             this.currentUserService = currentUserService;
-            this.imageUploader = imageUploader;
+            this.imageBucket = imageUploader;
         }
 
         [ObservableProperty]
@@ -58,6 +49,20 @@ namespace BookstoreManagement.SettingUI
         private string _userAddress;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsLoading))]
+        private bool _isUploadingImage = false;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsLoading))]
+        private bool _isUpdatingImage = false;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsLoading))]
+        private bool _isLoadingInitialData = false;
+
+        public bool IsLoading => IsUpdatingImage || IsUpdatingImage || IsLoadingInitialData;
+
+        [ObservableProperty]
         private string _userPhone;
         public override void ResetState()
         {
@@ -66,12 +71,13 @@ namespace BookstoreManagement.SettingUI
         }
 
 
-        private void LoadCurrentUser()
+        private async Task LoadCurrentUser()
         {
+            IsLoadingInitialData = true;
             var userId = currentUserService.CurrentUser.Id;
-            var userInfo = db.Employees
+            var userInfo = await db.Employees
                 .AsNoTracking()
-                .FirstOrDefault(e => e.Id == userId);
+                .FirstOrDefaultAsync(e => e.Id == userId);
 
             if (userInfo != null)
             {
@@ -91,7 +97,7 @@ namespace BookstoreManagement.SettingUI
 
                 UserPhone = userInfo.PhoneNumber;
 
-                LoadImageFromUrl(userInfo.ProfilePicture);
+                LoadImageFromUrl(imageBucket.GetPublicUrl(userInfo.ProfilePicture));
             }
             else
             {
@@ -99,10 +105,11 @@ namespace BookstoreManagement.SettingUI
                 UserLastName = string.Empty;
                 UserEmail = string.Empty;
                 UserRollText = "Unknown";
-                UserAddress= string.Empty;
+                UserAddress = string.Empty;
                 UserPhone = string.Empty;
-                UserGenderText= "Unknown";
+                UserGenderText = "Unknown";
             }
+            IsLoadingInitialData = false;
         }
 
         [ObservableProperty]
@@ -128,6 +135,7 @@ namespace BookstoreManagement.SettingUI
             userInfo.Birthday = UserBirthDay;
             userInfo.Address = UserAddress;
             db.SaveChanges();
+            MessageBox.Show("Updated user informations successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         [ObservableProperty]
@@ -144,11 +152,13 @@ namespace BookstoreManagement.SettingUI
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
+                    IsUpdatingImage = true;
                     BitmapImage bitmap = new BitmapImage();
                     bitmap.BeginInit();
                     bitmap.UriSource = new Uri(url, UriKind.Absolute);
                     bitmap.EndInit();
                     ImageSource = bitmap;
+                    IsUpdatingImage = false;
                 });
             }
             catch (Exception ex)
@@ -160,7 +170,7 @@ namespace BookstoreManagement.SettingUI
         [ObservableProperty]
         private string _newProfilePicture;
 
-        [RelayCommand]        
+        [RelayCommand]
         private async Task ImportImage()
         {
             var userId = currentUserService.CurrentUser.Id;
@@ -171,10 +181,13 @@ namespace BookstoreManagement.SettingUI
             openFileDialog.FilterIndex = 1;
             if (openFileDialog.ShowDialog() == true)
             {
-                NewProfilePicture = await imageUploader.ReplaceImageAsync(userInfo.ProfilePicture, openFileDialog.FileName);
+                IsUploadingImage = true;
+                NewProfilePicture = await imageBucket.ReplaceImageAsync(userInfo.ProfilePicture, openFileDialog.FileName);
                 userInfo.ProfilePicture = NewProfilePicture;
                 db.SaveChanges();
-                LoadImageFromUrl(NewProfilePicture);
+                MessageBox.Show("Profile picture uploaded sucessfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                LoadImageFromUrl(imageBucket.GetPublicUrl(NewProfilePicture));
+                IsUploadingImage = false;
             }
         }
     }
