@@ -18,11 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
 using BookstoreManagement.PricingUI.Services;
-using Amazon.S3;
 using BookstoreManagement.Shared.Services;
-using Amazon.S3.Transfer;
 using BookstoreManagement.SettingUI;
-using Supabase.Interfaces;
 using Supabase;
 
 namespace BookstoreManagement;
@@ -39,8 +36,6 @@ public partial class App : Application
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION")), ServiceLifetime.Transient);
-
-        AddAmazonS3(builder);
 
         builder.Services.AddSingleton<Supabase.Client>(provider =>
         {
@@ -108,26 +103,6 @@ public partial class App : Application
         builder.Services.AddKeyedSingleton<NavigatorStore>("setting");
 
         AppHost = builder.Build();
-    }
-
-    private static void AddAmazonS3(HostApplicationBuilder builder)
-    {
-        builder.Services.AddSingleton<AmazonS3Client>((i) =>
-        {
-            return new AmazonS3Client(
-                Environment.GetEnvironmentVariable("AWS_ACCESS_TOKEN"),
-                Environment.GetEnvironmentVariable("AWS_SECRET_KEY"),
-                new AmazonS3Config
-                {
-                    RegionEndpoint = Amazon.RegionEndpoint.APSoutheast1
-                }
-               );
-        });
-
-        builder.Services.AddSingleton<TransferUtility>((isp) =>
-        {
-            return new TransferUtility(isp.GetRequiredService<AmazonS3Client>());
-        });
     }
 
     private bool NeedLogin()

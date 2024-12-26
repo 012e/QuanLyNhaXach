@@ -1,10 +1,5 @@
-﻿using Amazon.S3;
-using Amazon.S3.Model;
-using Amazon.S3.Util;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Supabase;
-using Supabase.Interfaces;
-using System.Windows.Media.Animation;
 
 namespace BookstoreManagement.Shared.Services;
 

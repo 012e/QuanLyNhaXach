@@ -55,8 +55,10 @@
                     <component:ImageFrame
                         Width="150"
                         Height="150"
+                        Command="{Binding ImportImageCommand}"
                         CornerRadius="10"
                         ImageSource="{Binding ImageSource}" />
+
                     <Label FontWeight="Bold">Item Id</Label>
                     <TextBox IsReadOnly="True" Text="{Binding Item.Id}" />
 

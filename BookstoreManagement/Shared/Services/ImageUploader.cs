@@ -1,10 +1,5 @@
-﻿using Amazon.Runtime;
-using Amazon.S3;
-using Amazon.S3.Model;
-using Amazon.S3.Transfer;
-using Supabase;
+﻿using Supabase;
 using Supabase.Storage.Interfaces;
-using System.IO;
 
 namespace BookstoreManagement.Shared.Services;
 

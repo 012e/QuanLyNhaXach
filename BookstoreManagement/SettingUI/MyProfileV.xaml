@@ -33,7 +33,10 @@
             </Grid.RowDefinitions>
 
             <!--  My profile Title  -->
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <StackPanel
+                Grid.Row="0"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
                 <TextBlock FontSize="27" FontWeight="DemiBold">My profile</TextBlock>
                 <fa:ImageAwesome
                     Width="15"
