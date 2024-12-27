@@ -34,10 +34,7 @@ namespace BookstoreManagement.ImportUI
         [ObservableProperty]
         private bool _isImportItemVisible;
 
-        // Store items temp then store at ImportItem
-        [ObservableProperty]
-        private ObservableCollection<ImportItem> _listItem;
-
+  
         // Declare in ImportItemTab
         [ObservableProperty]
         private int _itemId;
@@ -62,7 +59,6 @@ namespace BookstoreManagement.ImportUI
             IsImportItemVisible = false;
             this.db = db;
             this.importNavigator = importNavigator;
-            ListItem = new ObservableCollection<ImportItem>();
         }
         // Go Back command
         [RelayCommand]
@@ -139,19 +135,15 @@ namespace BookstoreManagement.ImportUI
             };
             try
             {
-                bool check = false;
-                foreach (var item in ListItem)
+                var existingItem = Item.ImportItems.FirstOrDefault(item => item.ItemId == ItemId);
+                if (existingItem != null)
                 {
-                    if (item.ItemId == importItem.ItemId)
-                    {
-                        item.Quantity += importItem.Quantity;
-                        check = true;
-                        break;
-                    }
+                    existingItem.Quantity += Quantity;
                 }
-                if (!check)
+                else
                 {
-                    ListItem.Add(importItem);
+                    Item.ImportItems.Add(importItem);
+                    LoadItem();
                 }
                 MessageBox.Show("Added item successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -203,10 +195,10 @@ namespace BookstoreManagement.ImportUI
             using var workbook = new ClosedXML.Excel.XLWorkbook(filePath);
             var worksheet = workbook.Worksheets.First();
             var rows = worksheet.RowsUsed().Skip(1); // skip header line
-            ListItem.Clear();
+            Item.ImportItems.Clear();
             foreach (var row in rows)
             {
-                ListItem.Add(new ImportItem
+                Item.ImportItems.Add(new ImportItem
                 {
                     ItemId = row.Cell(1).GetValue<int>(),
                     Quantity = row.Cell(2).GetValue<int>()
