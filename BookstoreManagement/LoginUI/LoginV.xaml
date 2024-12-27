@@ -9,6 +9,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance local:LoginVM}"
     mc:Ignorable="d">
+    <Control.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding LoginCommand}" />
+    </Control.InputBindings>
     <Control.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Control.Resources>
