@@ -61,7 +61,8 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                                     id = items.Id,
                                     Name = items.Name,
                                     Quantity = invoiceItems.Quantity,
-                                    Price = pricingService.GetPrice(items.Id).FinalPrice
+                                    Price = pricingService.GetPrice(items.Id).FinalPrice,
+                                    TotalPrice = pricingService.GetPrice(items.Id).FinalPrice*invoiceItems.Quantity
                                 });
 
         InvoiceItemDto = new ObservableCollection<InvoiceItemDto>(itemsFromInvoice);
@@ -209,12 +210,14 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
             // Add new Item
             if (!check)
             {
+                decimal price = pricingService.GetPrice(ItemId).FinalPrice;
                 InvoiceItemDto.Add(new InvoiceItemDto
                 {
                     id = itemIntoInvoiceItem.ItemId,
                     Name = db.Items.FirstOrDefault(i => i.Id == itemIntoInvoiceItem.ItemId)?.Name ?? "Unknow",
                     Quantity = itemIntoInvoiceItem.Quantity,
-                    Price = pricingService.GetPrice(ItemId).FinalPrice
+                    Price = price,
+                    TotalPrice = itemIntoInvoiceItem.Quantity * price
                 });
             }
             MessageBox.Show("Added item successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -276,7 +279,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                     Quantity = itemDto.Quantity
 
                 };
-                total += (decimal)itemDto.Quantity * itemDto.Price;
+                total += itemDto.TotalPrice;
                 Invoice.InvoicesItems.Add(newItem);
             }
             Invoice.Total = total;
@@ -305,10 +308,14 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         {
             NotAllowEdit = false;
             IsIconSaveEdit = false;
-            SelectInvoiceItem.Quantity += Quantity;
+            SelectInvoiceItem.Quantity = Quantity;
+            SelectInvoiceItem.TotalPrice = SelectInvoiceItem.Quantity * SelectInvoiceItem.Price;
+
+            SaveChange();
+            LoadItem();
+            ResetValue();
         }
     }
-
 
     // Delete Command
     [RelayCommand]

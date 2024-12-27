@@ -47,7 +47,7 @@ public partial class CreateInvoiceVM : BaseViewModel
     private int _customerId;
 
     [ObservableProperty]
-    private DateTime _createAt;
+    private DateTime _createAt = DateTime.Now;
 
     // Declare in InvoiceItemTab
     [ObservableProperty]
@@ -91,10 +91,8 @@ public partial class CreateInvoiceVM : BaseViewModel
     // Reset Values TexBox in Create
     private void ResetToDefaultValues()
     {
-        _total = 0;
         _employeeId = 0;
         _customerId = 0;
-        CreateAt = DateTime.Now;
         IsInvoiceItemVisible = false;
     }
 
@@ -163,16 +161,21 @@ public partial class CreateInvoiceVM : BaseViewModel
             if (!check)
             {
                 // Add InvoiceItemDto
+                decimal price = pricingService.GetPrice(ItemId).FinalPrice;
                 InvoiceItemDto.Add(new InvoiceItemDto
                 {
                     id = invoiceItem.ItemId,
                     Name = db.Items.FirstOrDefault(i => i.Id == invoiceItem.ItemId)?.Name ?? "Unknow",
                     Quantity = invoiceItem.Quantity,
-                    Price = pricingService.GetPrice(ItemId).FinalPrice
+                    Price = price,
+                    TotalPrice = invoiceItem.Quantity * price
                 });
 
                 // Add InvoiceItem use save into Database
                 ListInvoiceItem.Add(invoiceItem);
+
+                // Resum total Invoice
+                GetTotalInvoice();
             }
             MessageBox.Show("Added item successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -208,18 +211,38 @@ public partial class CreateInvoiceVM : BaseViewModel
         }
     }
 
+    private decimal GetTotalInvoice()
+    {
+        // Reset value
+        TotalInvoice = 0;
+        foreach(var item in InvoiceItemDto)
+        {
+            TotalInvoice += item.TotalPrice;
+        }
+        return TotalInvoice;
+    }
+
+    [ObservableProperty]
+    private decimal _TotalInvoice;
     private void CreateNewInvoice()
     {
-
+        decimal total = 0;
         var newInvocie = new Invoice
         {
             EmployeeId = EmployeeId,
             CreatedAt = CreateAt,
             CustomerId = CustomerId,
+            Total = GetTotalInvoice(),
             InvoicesItems = ListInvoiceItem
         };
         try
         {
+            if(newInvocie.InvoicesItems.Count == 0)
+            {
+                MessageBox.Show("Please add item,", "Not exist item",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             db.Add(newInvocie);
             db.SaveChanges();
         }
@@ -258,6 +281,9 @@ public partial class CreateInvoiceVM : BaseViewModel
         if (result == MessageBoxResult.Yes)
         {
             InvoiceItemDto.Remove(SelecteInvoiceItemDto);
+
+            // Resum total
+            GetTotalInvoice();
             MessageBox.Show("Item removed from the list.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
