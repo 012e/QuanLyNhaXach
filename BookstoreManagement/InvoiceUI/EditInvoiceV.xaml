@@ -363,8 +363,8 @@
 
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" />
                             <DataGridTextColumn Binding="{Binding Price}" Header="Price" />
+                            <DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" />
 
 
                             <!--  Command In DataGrid  -->

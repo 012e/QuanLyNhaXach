@@ -1,10 +1,14 @@
 ﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.InvoiceUI.Dtos;
+using BookstoreManagement.PricingUI.Services;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
+using BookstoreManagement.UI.DashboardUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace BookstoreManagement.UI.InvoicesUI;
@@ -43,6 +47,7 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
     {
         db.ChangeTracker.Clear();
         var invoices = db.Invoices.OrderBy(invoice => invoice.Id).ToList();
+   
         Items = new(invoices);
     }
 
@@ -60,14 +65,36 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
         }
     }
 
+
+    private readonly PricingService pricingService;
+
+    private decimal GetTotalPrice(int invoiceId)
+    {
+        decimal sum = 0;
+        foreach(var total in db.InvoicesItems.Where(ii =>ii.InvoiceId == invoiceId))
+        {
+            sum += total.Quantity + pricingService.GetPrice(invoiceId).FinalPrice;
+        }
+        return sum;
+    }
+    private void SumTotalPriceInvoice(Invoice invoice)
+    {
+        decimal test = GetTotalPrice(invoice.Id);
+        invoice.Total = GetTotalPrice(invoice.Id);
+        db.Invoices.Update(invoice);
+        db.SaveChanges();
+    }
+
     public AllInvoicesVM(
         ApplicationDbContext db,
         IContextualNavigatorService<EditInvoiceVM, Invoice> editInvoiceNavigator,
-        INavigatorService<CreateInvoiceVM> createInvoiceNavigator
+        INavigatorService<CreateInvoiceVM> createInvoiceNavigator,
+        PricingService pricingService
         )
     {
         EditItemNavigator = editInvoiceNavigator;
         CreateInvoiceNavigator = createInvoiceNavigator;
         this.db = db;
+        this.pricingService = pricingService;   
     }
 }

@@ -12,6 +12,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
+using System.Security.Principal;
 using System.Windows;
 using System.Windows.Automation;
 
@@ -52,6 +53,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         base.ResetState();
         InvoiceItemDto = new(); // Lam moi lai danh sach = tao danh sach trong
         IsInvoiceItemVisible = false;
+        //SumTotalPriceInvoice();
     }
 
     protected override void LoadItem()
@@ -332,5 +334,9 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
             MessageBox.Show("Item removed from the list.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
+
+
+ 
+
     // ========================= End Section Detail Item ===================================
 }
