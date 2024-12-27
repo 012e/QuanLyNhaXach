@@ -6,14 +6,17 @@ using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace BookstoreManagement.UI.ItemUI;
 
 public partial class CreateItemVM : BaseViewModel
 {
     private readonly ApplicationDbContext db;
+    private readonly ImageUploader imageUploader;
     private readonly INavigatorService<AllItemsVM> allItemsNavigator;
 
     [ObservableProperty]
@@ -21,6 +24,8 @@ public partial class CreateItemVM : BaseViewModel
     {
         Image = ""
     };
+    [ObservableProperty]
+    private BitmapImage _imageSource;
     [ObservableProperty]
     private ObservableCollection<Tag> _listTags;
     [ObservableProperty]
@@ -30,6 +35,45 @@ public partial class CreateItemVM : BaseViewModel
     [ObservableProperty]
     private string _errorMessage = string.Empty;
 
+    [ObservableProperty]
+    private string _imagePath = "";
+    [RelayCommand]
+    private void ImportImage()
+    {
+
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        openFileDialog.Filter = "Image files|*.jpg;*.png";
+        openFileDialog.FilterIndex = 1;
+        if (openFileDialog.ShowDialog() == true)
+        {
+            ImagePath = openFileDialog.FileName;
+            LoadImageFromUrl(ImagePath);
+        }
+    }
+    private void LoadImageFromUrl(string url)
+    {
+        if (string.IsNullOrEmpty(url))
+        {
+            ImageSource = null;
+            return;
+        }
+
+        try
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(url, UriKind.Absolute);
+                bitmap.EndInit();
+                ImageSource = bitmap;
+            });
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading image: {ex.Message}");
+        }
+    }
 
     [RelayCommand]
     private void Submit()
@@ -41,6 +85,11 @@ public partial class CreateItemVM : BaseViewModel
                 MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            Task.Run(async () =>
+            {
+                Item.Image = await imageUploader.ReplaceImageAsync(Item.Image, ImagePath);
+                await db.SaveChangesAsync();
+            });
             db.Items.Add(Item);
             db.SaveChanges();
             MessageBox.Show("Added item successfully");
@@ -119,11 +168,12 @@ public partial class CreateItemVM : BaseViewModel
         allItemsNavigator.Navigate();
     }
 
-    public CreateItemVM(ApplicationDbContext db, INavigatorService<AllItemsVM> allItemsNavigator)
+    public CreateItemVM(ApplicationDbContext db, INavigatorService<AllItemsVM> allItemsNavigator, ImageUploader imageUploader)
     {
         ResetToDefaultValues();
         this.db = db;
         this.allItemsNavigator = allItemsNavigator;
+        this.imageUploader = imageUploader;
     }
     private void Tag_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {

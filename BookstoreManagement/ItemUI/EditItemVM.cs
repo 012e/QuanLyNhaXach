@@ -156,11 +156,22 @@ public partial class EditItemVM : EditItemVM<Item>
         Task.Run(async () =>
         {
             Item.Image = await imageUploader.ReplaceImageAsync(Item.Image, ImagePath);
-            db.Items.Update(Item);
             await db.SaveChangesAsync();
-            MessageBox.Show("Updated item successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            IsSubmitSuccess = true;
         });
+        db.Items.Update(Item);
+        db.SaveChanges();
+        IsSubmitSuccess = true;
+    }
+    protected override void OnSubmittingSuccess()
+    {
+        base.OnSubmittingSuccess();
+        if (IsSubmitSuccess)
+        {
+            MessageBox.Show("Submit successfully");
+            IsSubmitSuccess = false;
+            AllItemsNavigator.Navigate();
+        }
+        return;
     }
 
     private void LoadImageFromUrl(string url)

@@ -118,7 +118,6 @@ public abstract partial class EditItemVM<TItem> : BaseViewModel, IContextualView
     protected virtual void OnLoadingSuccess()
     {
     }
-
     protected virtual void OnSubmittingSuccess()
     {
     }
