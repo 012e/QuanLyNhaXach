@@ -33,9 +33,6 @@
     <Page Update="EmployeeUI\EditEmployeeV.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="InvoiceUI\AddInvoiceItemV.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Update="InvoiceUI\AllInvoicesV.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

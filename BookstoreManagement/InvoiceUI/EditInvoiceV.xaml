@@ -174,7 +174,7 @@
                                 Padding="0,0,0,4"
                                 FontSize="20"
                                 FontWeight="Bold">
-                                Import Items
+                                Invoice Items
                             </TextBlock>
                         </StackPanel>
                     </Grid>

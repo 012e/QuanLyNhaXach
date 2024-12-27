@@ -43,11 +43,17 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
     }
 
 
+    [ObservableProperty]
+    private ObservableCollection<InvoiceItemDto> _invoiceItemDto;
+
+    [ObservableProperty]
+    private Invoice _invoice;
     protected override void LoadItems()
     {
         db.ChangeTracker.Clear();
+
         var invoices = db.Invoices.OrderBy(invoice => invoice.Id).ToList();
-   
+       
         Items = new(invoices);
     }
 
@@ -73,7 +79,7 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
         decimal sum = 0;
         foreach(var total in db.InvoicesItems.Where(ii =>ii.InvoiceId == invoiceId))
         {
-            sum += total.Quantity + pricingService.GetPrice(invoiceId).FinalPrice;
+            sum += total.Quantity*pricingService.GetPrice(invoiceId).FinalPrice;
         }
         return sum;
     }

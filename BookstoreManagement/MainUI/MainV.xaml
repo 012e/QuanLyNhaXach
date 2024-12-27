@@ -131,9 +131,10 @@
             <DataTemplate DataType="{x:Type invoice:EditInvoiceVM}">
                 <invoice:EditInvoiceV />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type invoice:AddInvoiceItemVM}">
-                <invoice:AddInvoiceItemV />
+            <DataTemplate DataType="{x:Type invoice:CreateInvoiceVM}">
+                <invoice:CreateInvoiceV />
             </DataTemplate>
+
             <DataTemplate DataType="{x:Type employee:AllEmployeeVM}">
                 <employee:AllEmployeeV />
             </DataTemplate>
@@ -219,9 +220,9 @@
                     <StackPanel VerticalAlignment="Center" Orientation="Vertical">
 
                         <RadioButton
-                            IsChecked="True"
                             Height="50"
                             Command="{Binding NavigateToDashBoardCommand}"
+                            IsChecked="True"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="ChartLine" Style="{DynamicResource sidebarRadioButtonIcon}" />

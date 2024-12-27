@@ -46,7 +46,6 @@ public partial class App : Application
 
         builder.Services.AddViewViewModel<AllInvoicesV, AllInvoicesVM>();
         builder.Services.AddViewContextualViewModel<EditInvoiceV, EditInvoiceVM, Invoice>();
-        builder.Services.AddViewContextualViewModel<AddInvoiceItemV, AddInvoiceItemVM, Invoice>();
         builder.Services.AddViewViewModel<CreateInvoiceV, CreateInvoiceVM>();
 
         builder.Services.AddViewViewModel<AllTagsV, AllTagsVM>();
