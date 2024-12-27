@@ -121,23 +121,52 @@
                         Width="100"
                         Binding="{Binding LastName}"
                         Header="Last Name" />
-                    <DataGridTemplateColumn Header="Address">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    MaxWidth="120"
-                                    Text="{Binding Address}"
-                                    TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn
-                        Width="150"
-                        Binding="{Binding Email}"
-                        Header="Email" />
-                    <DataGridTextColumn Binding="{Binding Birthday}" Header="Birthday" />
+                    <DataGridTextColumn Binding="{Binding Address}" Header="Address">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                <Setter Property="ToolTip">
+                                    <Setter.Value>
+                                        <ToolTip
+                                            HorizontalOffset="10"
+                                            Placement="Right"
+                                            VerticalOffset="0">
+                                            <TextBlock
+                                                MaxWidth="300"
+                                                Text="{Binding Address}"
+                                                TextWrapping="Wrap" />
+                                        </ToolTip>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="MaxWidth" Value="140" />
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Email}" Header="Email">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                <Setter Property="ToolTip">
+                                    <Setter.Value>
+                                        <ToolTip
+                                            HorizontalOffset="10"
+                                            Placement="Right"
+                                            VerticalOffset="0">
+                                            <TextBlock
+                                                MaxWidth="300"
+                                                Text="{Binding Email}"
+                                                TextWrapping="Wrap" />
+                                        </ToolTip>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="MaxWidth" Value="120" />
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Gender, Converter={StaticResource GenderToTextConverter}}" Header="Gender" />
-                    <DataGridTextColumn Binding="{Binding Salary}" Header="Salary" />
+                    <DataGridTextColumn Binding="{Binding PhoneNumber}" Header="Phone Number" />
 
                     <DataGridCheckBoxColumn Binding="{Binding IsManager}" Header="Is Manager" />
                     <DataGridTemplateColumn CanUserResize="False" Header="Commands">
