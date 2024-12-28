@@ -21,5 +21,7 @@ namespace BookstoreManagement.InvoiceUI.Dtos
             set => SetProperty(ref _quantity, value);
         }
         public decimal Price { get; set; }
+
+        public decimal TotalPrice {  get; set; }
     }
 }

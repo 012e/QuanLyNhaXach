@@ -83,7 +83,7 @@
                     <TextBox Text="{Binding Invoice.CustomerId}" />
 
                     <Label>CreatedAt</Label>
-                    <TextBox Text="{Binding Invoice.CreatedAt}" />
+                    <DatePicker SelectedDate="{Binding Invoice.CreatedAt, Mode=TwoWay}" />
 
                     <StackPanel
                         Margin="0,10,0,10"
@@ -174,7 +174,7 @@
                                 Padding="0,0,0,4"
                                 FontSize="20"
                                 FontWeight="Bold">
-                                Import Items
+                                Invoice Items
                             </TextBlock>
                         </StackPanel>
                     </Grid>
@@ -363,8 +363,9 @@
 
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Price}" Header="Unit price" />
                             <DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" />
-                            <DataGridTextColumn Binding="{Binding Price}" Header="Price" />
+                            <DataGridTextColumn Binding="{Binding TotalPrice}" Header="Total price" />
 
 
                             <!--  Command In DataGrid  -->

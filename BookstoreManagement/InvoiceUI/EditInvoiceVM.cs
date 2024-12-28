@@ -12,6 +12,8 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using System.Security.Principal;
 using System.Windows;
 using System.Windows.Automation;
 
@@ -28,7 +30,6 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     private ObservableCollection<InvoiceItemDto> _invoiceItemDto = new();
 
     public INavigatorService<AllInvoicesVM> AllInvoicesNavigator { get; }
-    public IContextualNavigatorService<AddInvoiceItemVM, Invoice> AddInvoiceItemNavigator { get; }
 
     [ObservableProperty]
     private Invoice _invoice;
@@ -40,23 +41,17 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         AllInvoicesNavigator.Navigate();
     }
 
-    [RelayCommand]
-    private void NavigateToAddInvoiceItem()
-    {
-        if (Invoice == null) return;
-        AddInvoiceItemNavigator.Navigate(Invoice);
-    }
+ 
 
     public override void ResetState()
     {
         base.ResetState();
-        InvoiceItemDto = new(); // Lam moi lai danh sach = tao danh sach trong
         IsInvoiceItemVisible = false;
     }
 
     protected override void LoadItem()
     {
-        Invoice = ViewModelContext;
+        Invoice = db.Invoices.Find(ViewModelContext.Id)!;
         var itemsFromInvoice = (from invoiceItems in db.InvoicesItems
                                 join items in db.Items on invoiceItems.ItemId equals items.Id
                                 join itemPrice in db.ItemPrices on items.Id equals itemPrice.Id
@@ -66,24 +61,23 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                                     id = items.Id,
                                     Name = items.Name,
                                     Quantity = invoiceItems.Quantity,
-                                    Price = pricingService.GetPrice(items.Id).FinalPrice
+                                    Price = pricingService.GetPrice(items.Id).FinalPrice,
+                                    TotalPrice = pricingService.GetPrice(items.Id).FinalPrice*invoiceItems.Quantity
                                 });
 
         InvoiceItemDto = new ObservableCollection<InvoiceItemDto>(itemsFromInvoice);
     }
 
-  
+
 
     public EditInvoiceVM(ApplicationDbContext db,
         INavigatorService<AllInvoicesVM> allInvoicesNavigator,
-        IContextualNavigatorService<AddInvoiceItemVM, Invoice> addInvoiceItemNavigator,
         PricingService pricingService
         )
     {
         this.db = db;
         this.pricingService = pricingService;
         AllInvoicesNavigator = allInvoicesNavigator;
-        AddInvoiceItemNavigator = addInvoiceItemNavigator;
     }
 
     // Button SelectItem in CreateImport
@@ -101,7 +95,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     [ObservableProperty]
     private int _quantity;
 
-   
+
 
     // Visibility Detail Item
     [ObservableProperty]
@@ -134,7 +128,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     [RelayCommand]
     private void SubQuantity()
     {
-        if(Quantity > 0)
+        if (Quantity > 0)
         {
             Quantity--;
         }
@@ -173,8 +167,10 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         {
             InvoiceItemDto.Add(new InvoiceItemDto
             {
-                id  = row.Cell(1).GetValue<int>(),
-                Quantity = row.Cell(2).GetValue<int>()
+                id = row.Cell(1).GetValue<int>(),
+                Quantity = row.Cell(2).GetValue<int>(),
+                Price = row.Cell(3).GetValue<decimal>()
+
             });
         }
     }
@@ -189,7 +185,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                     MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
-      
+
         var itemIntoInvoiceItem = new InvoicesItem()
         {
             ItemId = ItemId,
@@ -198,11 +194,11 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         };
         try
         {
-            // Neu nhu Id item them da co trong danh sach
-            // thi chi can cap nhap so luong
+            // Check Item is existed in InvoiceItemDto
             bool check = false;
             foreach (var item in InvoiceItemDto)
             {
+                // If find => add quantity
                 if (item.id == ItemId)
                 {
                     item.Quantity += itemIntoInvoiceItem.Quantity;
@@ -210,15 +206,18 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                     break;
                 }
             }
-            // Neu them item moi => them item nay vao 
+            // else = not find Item want add in InvoiceItemDto
+            // Add new Item
             if (!check)
             {
+                decimal price = pricingService.GetPrice(ItemId).FinalPrice;
                 InvoiceItemDto.Add(new InvoiceItemDto
                 {
                     id = itemIntoInvoiceItem.ItemId,
                     Name = db.Items.FirstOrDefault(i => i.Id == itemIntoInvoiceItem.ItemId)?.Name ?? "Unknow",
                     Quantity = itemIntoInvoiceItem.Quantity,
-                    Price = pricingService.GetPrice(ItemId).FinalPrice
+                    Price = price,
+                    TotalPrice = itemIntoInvoiceItem.Quantity * price
                 });
             }
             MessageBox.Show("Added item successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -230,7 +229,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     }
 
 
-    // Edit ImportItem
+    // Edit InvoiceItem
     [RelayCommand]
     private void EditInvoiceItem()
     {
@@ -244,55 +243,48 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         var result = MessageBox.Show("Are you sure you want to edit?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
         {
-            
+
             NotAllowEdit = true;
             IsIconSaveEdit = true;
 
             // Biding du lieu tu item duoc chon lenh o Input
             ItemId = SelectInvoiceItem.id;
             Quantity = SelectInvoiceItem.Quantity;
-            
+
         }
     }
 
     protected override void SubmitItemHandler()
     {
-        db.Invoices.Update(Invoice);
         SaveChange();
-        db.SaveChanges();
     }
     private void SaveChange()
     {
         try
         {
-            var existingItemList = db.InvoicesItems.Where(ii => ii.InvoiceId == Invoice.Id).ToList();
+            var existingItems = db.InvoicesItems.Where(ii => ii.InvoiceId == Invoice.Id).ToList();
+            db.InvoicesItems.RemoveRange(existingItems);
 
-            // Tien hanh kiem tra 
+            //Invoice.InvoicesItems = [];
+            Invoice.InvoicesItems = new List<InvoicesItem>();
+
+            // Tien hanh kiem tra
+            decimal total = 0;
             foreach (var itemDto in InvoiceItemDto)
             {
-                var existingItem = existingItemList.FirstOrDefault(ii => ii.ItemId == itemDto.id);
-
-                // Neu vat pham da co roi => Cap nhap so luong
-                if(existingItem != null)
+                var newItem = new InvoicesItem
                 {
-                    existingItem.Quantity = itemDto.Quantity;
-                }
+                    InvoiceId = Invoice.Id,
+                    ItemId = itemDto.id,
+                    Quantity = itemDto.Quantity
 
-                // Neu chua vat pham => Them 1 vat pham moi
-                else
-                {
-                    var newItem = new InvoicesItem
-                    {
-                        InvoiceId = Invoice.Id,
-                        ItemId = itemDto.id,
-                        Quantity = itemDto.Quantity
-                    };
-                    db.InvoicesItems.Add(newItem);
-                }
+                };
+                total += itemDto.TotalPrice;
+                Invoice.InvoicesItems.Add(newItem);
             }
-            var itemsToRemove = existingItemList.Where(ii => !InvoiceItemDto.Any(dto => dto.id == ii.ItemId)).ToList();
-            db.InvoicesItems.RemoveRange(itemsToRemove);
-
+            Invoice.Total = total;
+            db.Invoices.Update(Invoice);
+            db.SaveChanges();
             MessageBox.Show("Changes saved successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
@@ -316,10 +308,14 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         {
             NotAllowEdit = false;
             IsIconSaveEdit = false;
+            SelectInvoiceItem.Quantity = Quantity;
+            SelectInvoiceItem.TotalPrice = SelectInvoiceItem.Quantity * SelectInvoiceItem.Price;
 
+            SaveChange();
+            LoadItem();
+            ResetValue();
         }
     }
-
 
     // Delete Command
     [RelayCommand]
@@ -332,5 +328,6 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
             MessageBox.Show("Item removed from the list.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
+
     // ========================= End Section Detail Item ===================================
 }
