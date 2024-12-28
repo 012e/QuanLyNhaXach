@@ -22,6 +22,10 @@ using System.Windows.Navigation;
 using BookstoreManagement.PricingUI.Services;
 using BookstoreManagement.SettingUI;
 using BookstoreManagement.Shared.Services;
+using Flattinger.UI.ToastMessage.Controls;
+using ToastNotifications;
+using ToastNotifications.Lifetime;
+using ToastNotifications.Position;
 
 namespace BookstoreManagement;
 
@@ -81,7 +85,7 @@ public partial class App : Application
         builder.Services.AddViewViewModel<AllSettingV, AllSettingVM>();
         builder.Services.AddViewViewModel<MyProfileV, MyProfileVM>();
         builder.Services.AddViewViewModel<AccountV, AccountVM>();
-
+        builder.Services.AddViewViewModel<AllNotificationV, AllNotificationVM>();
         builder.Services.AddKeyedSingleton<NavigatorStore>("default");
         builder.Services.AddKeyedSingleton<NavigatorStore>("global");
         builder.Services.AddKeyedSingleton<NavigatorStore>("setting");

@@ -10,6 +10,7 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:myProfile="clr-namespace:BookstoreManagement.SettingUI"
+    xmlns:notification="clr-namespace:BookstoreManagement.SettingUI"
     d:DesignHeight="800"
     d:DesignWidth="1000"
     mc:Ignorable="d">
@@ -127,6 +128,10 @@
                     <account:AccountV />
                 </DataTemplate>
 
+                <DataTemplate DataType="{x:Type notification:AllNotificationVM}">
+                    <notification:AllNotificationV />
+                </DataTemplate>
+
 
             </Grid.Resources>
 
@@ -217,7 +222,7 @@
                             </RadioButton>
                             <RadioButton
                                 Height="50"
-                                Command="{Binding}"
+                                Command="{Binding NavigateToNotificationCommand}"
                                 Style="{DynamicResource sidebarRadioButton}">
                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                                     <TextBlock

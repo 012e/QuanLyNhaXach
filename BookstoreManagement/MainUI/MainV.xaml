@@ -13,6 +13,7 @@
     xmlns:local="clr-namespace:BookstoreManagement"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:notification="clr-namespace:BookstoreManagement.SettingUI"
     xmlns:provider="clr-namespace:BookstoreManagement.UI.ProviderUI"
     xmlns:setting="clr-namespace:BookstoreManagement.SettingUI"
     xmlns:tag="clr-namespace:BookstoreManagement.UI.TagUI"
