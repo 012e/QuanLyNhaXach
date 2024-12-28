@@ -8,6 +8,7 @@ using BookstoreManagement.UI.DashboardUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
@@ -20,11 +21,11 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
 {
     private readonly ApplicationDbContext db;
     private readonly PricingService pricingService;
-    
+
 
     // Day la danh sach chua cac item co trong hoa don
     [ObservableProperty]
-    private ObservableCollection<InvoiceItemDto> _invoiceItems = new();
+    private ObservableCollection<InvoiceItemDto> _invoiceItemDto = new();
 
     public INavigatorService<AllInvoicesVM> AllInvoicesNavigator { get; }
     public IContextualNavigatorService<AddInvoiceItemVM, Invoice> AddInvoiceItemNavigator { get; }
@@ -49,7 +50,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     public override void ResetState()
     {
         base.ResetState();
-        InvoiceItems = new(); // Lam moi lai danh sach = tao danh sach trong
+        InvoiceItemDto = new(); // Lam moi lai danh sach = tao danh sach trong
         IsInvoiceItemVisible = false;
     }
 
@@ -68,14 +69,10 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                                     Price = pricingService.GetPrice(items.Id).FinalPrice
                                 });
 
-        InvoiceItems = new ObservableCollection<InvoiceItemDto>(itemsFromInvoice);
+        InvoiceItemDto = new ObservableCollection<InvoiceItemDto>(itemsFromInvoice);
     }
 
-    protected override void SubmitItemHandler()
-    {
-        db.Invoices.Update(Invoice);
-        db.SaveChanges();
-    }
+  
 
     public EditInvoiceVM(ApplicationDbContext db,
         INavigatorService<AllInvoicesVM> allInvoicesNavigator,
@@ -132,48 +129,6 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         Quantity = 0;
     }
 
-    // Add Item Command
-    [RelayCommand]
-    private void AddItemIntoInvoiceItem()
-    {
-        if(Quantity <= 0)
-        {
-            MessageBox.Show("Quantity must larger than 0", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            return;
-        }
-        var itemIntoInvoiceItem = new InvoiceItemDto()
-        {
-            id = ItemId,
-            Quantity = Quantity,
-        };
-        try
-        {
-            // Neu nhu Id item them da co trong danh sach
-            // thi chi can cap nhap so luong
-            bool check = false;
-            foreach(var item in InvoiceItems)
-            {
-                if(item.id == itemIntoInvoiceItem.id)
-                {
-                    item.Quantity += itemIntoInvoiceItem.Quantity;
-                    check = true;
-                    break;
-                }
-            }
-            // Neu them item moi => them item nay vao 
-            if (!check)
-            {
-                InvoiceItems.Add(itemIntoInvoiceItem);
-            }
-            MessageBox.Show("Added item successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-        catch(Exception ex)
-        {
-            MessageBox.Show($"Could'n add item : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-        ResetState();
-    }
 
     // Decrease quantity Button
     [RelayCommand]
@@ -213,16 +168,67 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         using var workbook = new ClosedXML.Excel.XLWorkbook(filePath);
         var worksheet = workbook.Worksheets.First();
         var rows = worksheet.RowsUsed().Skip(1); // skip header line
-        InvoiceItems.Clear();
+        InvoiceItemDto.Clear();
         foreach (var row in rows)
         {
-            InvoiceItems.Add(new InvoiceItemDto
+            InvoiceItemDto.Add(new InvoiceItemDto
             {
                 id  = row.Cell(1).GetValue<int>(),
                 Quantity = row.Cell(2).GetValue<int>()
             });
         }
     }
+
+    // Add Item Command
+    [RelayCommand]
+    private void AddItemIntoInvoiceItem()
+    {
+        if (Quantity <= 0)
+        {
+            MessageBox.Show("Quantity must larger than 0", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+      
+        var itemIntoInvoiceItem = new InvoicesItem()
+        {
+            ItemId = ItemId,
+            InvoiceId = Invoice.Id,
+            Quantity = Quantity
+        };
+        try
+        {
+            // Neu nhu Id item them da co trong danh sach
+            // thi chi can cap nhap so luong
+            bool check = false;
+            foreach (var item in InvoiceItemDto)
+            {
+                if (item.id == ItemId)
+                {
+                    item.Quantity += itemIntoInvoiceItem.Quantity;
+                    check = true;
+                    break;
+                }
+            }
+            // Neu them item moi => them item nay vao 
+            if (!check)
+            {
+                InvoiceItemDto.Add(new InvoiceItemDto
+                {
+                    id = itemIntoInvoiceItem.ItemId,
+                    Name = db.Items.FirstOrDefault(i => i.Id == itemIntoInvoiceItem.ItemId)?.Name ?? "Unknow",
+                    Quantity = itemIntoInvoiceItem.Quantity,
+                    Price = pricingService.GetPrice(ItemId).FinalPrice
+                });
+            }
+            MessageBox.Show("Added item successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Could'n add item : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
 
     // Edit ImportItem
     [RelayCommand]
@@ -245,6 +251,53 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
             // Biding du lieu tu item duoc chon lenh o Input
             ItemId = SelectInvoiceItem.id;
             Quantity = SelectInvoiceItem.Quantity;
+            
+        }
+    }
+
+    protected override void SubmitItemHandler()
+    {
+        db.Invoices.Update(Invoice);
+        SaveChange();
+        db.SaveChanges();
+    }
+    private void SaveChange()
+    {
+        try
+        {
+            var existingItemList = db.InvoicesItems.Where(ii => ii.InvoiceId == Invoice.Id).ToList();
+
+            // Tien hanh kiem tra 
+            foreach (var itemDto in InvoiceItemDto)
+            {
+                var existingItem = existingItemList.FirstOrDefault(ii => ii.ItemId == itemDto.id);
+
+                // Neu vat pham da co roi => Cap nhap so luong
+                if(existingItem != null)
+                {
+                    existingItem.Quantity = itemDto.Quantity;
+                }
+
+                // Neu chua vat pham => Them 1 vat pham moi
+                else
+                {
+                    var newItem = new InvoicesItem
+                    {
+                        InvoiceId = Invoice.Id,
+                        ItemId = itemDto.id,
+                        Quantity = itemDto.Quantity
+                    };
+                    db.InvoicesItems.Add(newItem);
+                }
+            }
+            var itemsToRemove = existingItemList.Where(ii => !InvoiceItemDto.Any(dto => dto.id == ii.ItemId)).ToList();
+            db.InvoicesItems.RemoveRange(itemsToRemove);
+
+            MessageBox.Show("Changes saved successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error saving changes: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -263,8 +316,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         {
             NotAllowEdit = false;
             IsIconSaveEdit = false;
-            SelectInvoiceItem.Quantity = Quantity;
-            MessageBox.Show("Update success", "Edit", MessageBoxButton.OK);
+
         }
     }
 
@@ -276,14 +328,9 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         var result = MessageBox.Show("Are you sure you want to delete?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
         {
-            InvoiceItems.Remove(SelectInvoiceItem);
-            LoadItem(); // Update immediately item 
-            db.SaveChanges();
+            InvoiceItemDto.Remove(SelectInvoiceItem);
+            MessageBox.Show("Item removed from the list.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
-
-
-   
-
     // ========================= End Section Detail Item ===================================
 }

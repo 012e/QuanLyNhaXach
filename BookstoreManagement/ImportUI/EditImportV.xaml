@@ -347,7 +347,7 @@
                         AutoGenerateColumns="False"
                         IsReadOnly="True"
                         ItemsSource="{Binding Item.ImportItems}"
-                        SelectedItem="{Binding SelectIportItem, Mode=TwoWay}">
+                        SelectedItem="{Binding SelectImportItem, Mode=TwoWay}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding ItemId}" Header="Item Id" />
                             <DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" />

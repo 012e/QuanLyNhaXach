@@ -351,7 +351,7 @@
                         Grid.Row="1"
                         AutoGenerateColumns="False"
                         IsReadOnly="True"
-                        ItemsSource="{Binding InvoiceItems}"
+                        ItemsSource="{Binding InvoiceItemDto}"
                         SelectedItem="{Binding SelectInvoiceItem, Mode=TwoWay}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Name}" Header="Name">
