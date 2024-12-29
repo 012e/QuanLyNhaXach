@@ -124,7 +124,6 @@ public partial class App : Application
             var db = AppHost.Services.GetRequiredService<ApplicationDbContext>();
             currentUser.CurrentUser = db.Employees.Find(1);
             mainVM.Navigate("global");
-
         }
 
         var dashboard = AppHost.Services.GetRequiredService<INavigatorService<DashBoardVM>>();

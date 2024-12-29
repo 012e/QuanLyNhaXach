@@ -11,6 +11,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows;
 using ToastNotifications.Core;
 
@@ -29,7 +30,7 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
 
     private bool _isDatePickerActive;
 
-   
+
     [RelayCommand]
     protected void NavigateToCreateInvoice()
     {
