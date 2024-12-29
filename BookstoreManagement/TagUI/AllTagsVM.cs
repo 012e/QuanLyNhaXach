@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -6,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Windows;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.TagUI
 {
@@ -54,6 +56,7 @@ namespace BookstoreManagement.UI.TagUI
 
         private bool ConfirmDelete(Tag tag)
         {
+            WarningNotification();
             var result = MessageBox.Show($"Are you sure you want to delete {tag.Name}?", "Delete Tag", MessageBoxButton.YesNo);
             return result == MessageBoxResult.Yes;
         }
@@ -67,10 +70,26 @@ namespace BookstoreManagement.UI.TagUI
             if (ConfirmDelete(tag))
             {
                 db.Tags.Where(e => e.Id == tag.Id).ExecuteDelete();
+                SuccessNotification();
                 db.SaveChanges();
                 LoadItemsInBackground();
             }
-
+        }
+        private void WarningNotification()
+        {
+            GetNotification.NotifierInstance.WarningMessage("Warning", "This action cannot be undone", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void SuccessNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Deleted tag successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
         }
     }
 }

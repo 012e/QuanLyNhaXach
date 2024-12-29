@@ -29,8 +29,8 @@
 
                 <Grid Grid.Column="0">
                     <Image
-                        Width="30"
-                        Height="30"
+                        Width="37"
+                        Height="37"
                         Source="{Binding IconPath}" />
                 </Grid>
                 <Grid Grid.Column="1" VerticalAlignment="Center">
@@ -41,7 +41,7 @@
                             Foreground="{Binding CodeColorT}"
                             Text="{Binding Title}" />
                         <TextBlock
-                            FontSize="14"
+                            FontSize="15"
                             FontWeight="Medium"
                             Foreground="{Binding CodeColorT}"
                             Text="{Binding Message}" />

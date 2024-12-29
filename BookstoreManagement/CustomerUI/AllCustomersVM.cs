@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -6,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Windows;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.CustomerUI
 {
@@ -51,6 +53,7 @@ namespace BookstoreManagement.UI.CustomerUI
 
         private bool ConfirmDelete(Customer customer)
         {
+            WarningNotification();
             MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this customer?", "Delete Customer", MessageBoxButton.YesNo);
             return result == MessageBoxResult.Yes;
         }
@@ -65,8 +68,25 @@ namespace BookstoreManagement.UI.CustomerUI
             {
                 db.Customers.Remove(customer);
                 db.SaveChanges();
+                SuccessNotification();
                 LoadItemsInBackground();
             }
+        }
+        private void SuccessNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Deleted customer successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void WarningNotification()
+        {
+            GetNotification.NotifierInstance.WarningMessage("Warning", "This action cannot be undone", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
         }
     }
 }

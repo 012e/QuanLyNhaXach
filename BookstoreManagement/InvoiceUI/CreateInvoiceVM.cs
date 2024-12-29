@@ -1,6 +1,7 @@
 ﻿using BookstoreManagement.Core;
 using BookstoreManagement.InvoiceUI.Dtos;
 using BookstoreManagement.PricingUI.Services;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -12,6 +13,8 @@ using System.ComponentModel.Design.Serialization;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Documents;
+using ToastNotifications.Core;
+using ToastNotifications.Messages.Error;
 
 namespace BookstoreManagement.UI.InvoicesUI;
 
@@ -135,8 +138,11 @@ public partial class CreateInvoiceVM : BaseViewModel
     {
         if (Quantity <= 0)
         {
-            MessageBox.Show("Quantity must larger than 0", "Error",
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            GetNotification.NotifierInstance.ErrorMessage("Error", "Quantity must larger than 0", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
             return;
         }
         var invoiceItem = new InvoicesItem
@@ -177,11 +183,11 @@ public partial class CreateInvoiceVM : BaseViewModel
                 // Resum total Invoice
                 GetTotalInvoice();
             }
-            MessageBox.Show("Added item successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            SuccessNotification();
         }
-        catch (Exception ex)
+        catch 
         {
-            MessageBox.Show($"Could'n add item : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            ErrorDBNotification();
         }
         ResetValue();
     }
@@ -192,11 +198,14 @@ public partial class CreateInvoiceVM : BaseViewModel
     {
         if (SelecteInvoiceItemDto == null)
         {
-            MessageBox.Show("Please choose Item !", "Error",
-
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            GetNotification.NotifierInstance.ErrorMessage("Error", "Please choose Item", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
             return;
         }
+        WarningNotification();
         var result = MessageBox.Show("Are you sure you want to edit?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
         {
@@ -207,7 +216,6 @@ public partial class CreateInvoiceVM : BaseViewModel
             // Bingding data from SelectInvoiceItem
             ItemId = SelecteInvoiceItemDto.id;
             Quantity = SelecteInvoiceItemDto.Quantity;
-
         }
     }
 
@@ -239,19 +247,22 @@ public partial class CreateInvoiceVM : BaseViewModel
         {
             if(newInvocie.InvoicesItems.Count == 0)
             {
-                MessageBox.Show("Please add item,", "Not exist item",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                GetNotification.NotifierInstance.ErrorMessage("Error","Not exist item, please add item", NotificationType.Error, new MessageOptions
+                {
+                    FreezeOnMouseEnter = false,
+                    ShowCloseButton = true
+                });
                 return;
             }
             db.Add(newInvocie);
             db.SaveChanges();
         }
-        catch (Exception ex)
+        catch
         {
-            MessageBox.Show($"Could'n add Invoice : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            ErrorDBNotification();
             return;
         }
-        MessageBox.Show("Added Invoice successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+        SuccessNotification();
     }
 
     [RelayCommand]
@@ -259,14 +270,18 @@ public partial class CreateInvoiceVM : BaseViewModel
     {
         if (SelecteInvoiceItemDto == null)
         {
-            MessageBox.Show("Please choose Item !", "Error",
-
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            GetNotification.NotifierInstance.ErrorMessage("Error", "Please choose Item !", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
             return;
         }
+        WarningNotification();
         var result = MessageBox.Show("Are you sure you want to save changes?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
         {
+            SuccessNotification();
             NotAllowEdit = false;
             IsIconSaveEdit = false;
             SelecteInvoiceItemDto.Quantity += Quantity;
@@ -277,6 +292,7 @@ public partial class CreateInvoiceVM : BaseViewModel
     [RelayCommand]
     private void DeleteInvoiceItem()
     {
+        WarningNotification();
         var result = MessageBox.Show("Are you sure you want to delete?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
         {
@@ -284,7 +300,11 @@ public partial class CreateInvoiceVM : BaseViewModel
 
             // Resum total
             GetTotalInvoice();
-            MessageBox.Show("Item removed from the list.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Deleted item successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
         }
     }
 
@@ -338,5 +358,29 @@ public partial class CreateInvoiceVM : BaseViewModel
                 Price = row.Cell(3).GetValue<decimal>()
             });
         }
+    }
+    private void WarningNotification()
+    {
+        GetNotification.NotifierInstance.WarningMessage("Warning", "This action cannot be undone", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void ErrorDBNotification()
+    {
+        GetNotification.NotifierInstance.ErrorMessage("Error", "Couldn't add item: Database Error", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void SuccessNotification()
+    {
+        GetNotification.NotifierInstance.SuccessMessage("Success", "Added item successfully", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
     }
 }

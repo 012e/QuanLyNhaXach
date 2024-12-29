@@ -92,13 +92,8 @@
     <None Remove="Shared\Images\success_icon.png" />
     <None Remove="Shared\Images\sunset.png" />
     <None Remove="Shared\Images\user.png" />
-    <None Remove="Shared\Images\warning.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <DesignDataWithDesignTimeCreatableTypes Include="Shared\Images\warning.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </DesignDataWithDesignTimeCreatableTypes>
+    <None Remove="Shared\Images\warning2.png" />
+    <None Remove="Shared\Images\warning3.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -109,7 +104,9 @@
     <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc4.5" />
+    <PackageReference Include="MaterialDesignColors" Version="3.1.0" />
     <PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
+    <PackageReference Include="MaterialMessageBox" Version="4.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -170,6 +167,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Shared\Images\user.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shared\Images\warning2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shared\Images\warning3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

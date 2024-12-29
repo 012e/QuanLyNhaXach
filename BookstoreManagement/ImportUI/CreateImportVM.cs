@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -17,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
+using ToastNotifications.Core;
 using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace BookstoreManagement.ImportUI
@@ -100,7 +102,7 @@ namespace BookstoreManagement.ImportUI
                 MessageBox.Show($"Could'n add Import : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            MessageBox.Show("Added Import successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            SuccessAddNotification();
         }
 
         // Go Back Command
@@ -149,8 +151,7 @@ namespace BookstoreManagement.ImportUI
         {
             if (Quantity <= 0)
             {
-                MessageBox.Show("Quantity must larger than 0", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorNotificationQuantity();
                 return;
             }
             var importItem = new ImportItem
@@ -174,7 +175,7 @@ namespace BookstoreManagement.ImportUI
                 {
                     ListItem.Add(importItem);
                 }
-                MessageBox.Show("Added item successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                SuccessAddNotification();
             }
             catch (Exception ex)
             {
@@ -247,11 +248,10 @@ namespace BookstoreManagement.ImportUI
         {
             if (SelectImportItem == null)
             {
-                MessageBox.Show("Please choose Item !", "Error",
-
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorNotificationChooseItem();
                 return;
             }
+            WarningNotification();
             var result = MessageBox.Show("Are you sure you want to edit?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
@@ -268,18 +268,17 @@ namespace BookstoreManagement.ImportUI
         {
             if (SelectImportItem == null)
             {
-                MessageBox.Show("Please choose Item !", "Error",
-
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorNotificationChooseItem();
                 return;
             }
+            WarningNotification();
             var result = MessageBox.Show("Are you sure you want to save changes?","Confirm",MessageBoxButton.YesNo, MessageBoxImage.Question);
             if(result == MessageBoxResult.Yes)
             {
                 NotAllowEdit = false;
                 IsIconSaveEdit = false;
                 SelectImportItem.Quantity = Quantity;
-                MessageBox.Show("Update success", "Edit", MessageBoxButton.OK);
+                SuccessSaveNotification();
             }
         }
 
@@ -291,12 +290,66 @@ namespace BookstoreManagement.ImportUI
         [RelayCommand]
         private void DeleteImportItem()
         {
+            WarningNotification();
             var result = MessageBox.Show("Are you sure you want to delete?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 ListItem.Remove(SelectImportItem);
+                SuccessDeleteNotification();
             }
         }
         // ===================================== END SECTION FOR IMPORT ITEM =============================================
+
+        // Toast notification
+        private void WarningNotification()
+        {
+            GetNotification.NotifierInstance.WarningMessage("Warning", "This action cannot be undone", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+
+        private void SuccessDeleteNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Deleted import successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void SuccessAddNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Add import successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+
+        private void SuccessSaveNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Save successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void ErrorNotificationChooseItem()
+        {
+            GetNotification.NotifierInstance.ErrorMessage("Error", "Please choose Import", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void ErrorNotificationQuantity()
+        {
+            GetNotification.NotifierInstance.ErrorMessage("Error", "Quantity must langer than 0", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
     }
 }

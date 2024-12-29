@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -6,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Text.RegularExpressions;
 using System.Windows;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.ProviderUI;
 
@@ -42,7 +44,7 @@ public partial class EditProviderVM : EditItemVM<Provider>
     {
         if (!Check_Valid_Input())
         {
-            MessageBox.Show(ErrorMessage , "Warning" , MessageBoxButton.OK , MessageBoxImage.Warning);
+            ErrorNotification();
             return;
         }
         db.Providers.Update(Provider);
@@ -54,7 +56,7 @@ public partial class EditProviderVM : EditItemVM<Provider>
         base.OnSubmittingSuccess();
         if (IsSubmitSuccess)
         {
-            MessageBox.Show("Submit successfully!");
+            SuccessNotification();
             IsSubmitSuccess = true;
         }
         return;  
@@ -91,5 +93,21 @@ public partial class EditProviderVM : EditItemVM<Provider>
         }
         ErrorMessage = string.Empty;
         return true;
+    }
+    private void SuccessNotification()
+    {
+        GetNotification.NotifierInstance.SuccessMessage("Success", "Submit Successfully", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void ErrorNotification()
+    {
+        GetNotification.NotifierInstance.ErrorMessage("Error", ErrorMessage, NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
     }
 }

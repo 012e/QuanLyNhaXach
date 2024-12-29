@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -6,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MaterialDesignThemes.Wpf;
 using System.Windows;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.TagUI
 {
@@ -62,7 +64,7 @@ namespace BookstoreManagement.UI.TagUI
         {
             if (!Check_Valid_Input())
             {
-                MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ErrorNotification();
                 return;
             }
             db.Tags.Update(Tag);
@@ -75,7 +77,7 @@ namespace BookstoreManagement.UI.TagUI
             base.OnSubmittingSuccess();
             if (IsSubmitSuccess)
             {
-                MessageBox.Show("Submitted successfully");
+                SuccessNotification();
                 IsSubmitSuccess = false;
             }
         }
@@ -85,6 +87,23 @@ namespace BookstoreManagement.UI.TagUI
             this.db = db;
             this.allTagsNavigator = allTagsNavigator;
             Tag = new Tag();
+        }
+
+        private void SuccessNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Submit tag successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void ErrorNotification()
+        {
+            GetNotification.NotifierInstance.ErrorMessage("Error", ErrorMessage, NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
         }
     }
 }

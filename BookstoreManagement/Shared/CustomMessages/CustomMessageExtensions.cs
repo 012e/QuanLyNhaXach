@@ -48,7 +48,7 @@ namespace BookstoreManagement.Shared.CustomMessages
            MessageOptions messageOptions = null)
         {
             notifier.Notify(() => new CustomNotification(title, message, type,
-                messageOptions, "#FDF3DC", "#EF9E11", "#EF9E11", "pack://application:,,,/Shared/Images/warning.png"));
+                messageOptions, "#FDF3DC", "#EF9E11", "#EF9E11", "pack://application:,,,/Shared/Images/warning3.png"));
         }
     }
 }

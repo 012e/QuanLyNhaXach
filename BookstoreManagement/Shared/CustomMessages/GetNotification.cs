@@ -25,7 +25,7 @@ namespace BookstoreManagement.Shared.CustomMessages
                     {
                         cfg.PositionProvider = new WindowPositionProvider(
                             parentWindow: Application.Current.MainWindow,
-                            corner: Corner.TopRight,
+                            corner: Corner.BottomRight,
                             offsetX: 10,
                             offsetY: 10);
 
@@ -33,7 +33,7 @@ namespace BookstoreManagement.Shared.CustomMessages
                             notificationLifetime: TimeSpan.FromSeconds(3),
                             maximumNotificationCount: MaximumNotificationCount.FromCount(5));
 
-                        cfg.DisplayOptions.Width = 350; // Kích thước mặc định
+                        cfg.DisplayOptions.Width = 350;
                         cfg.Dispatcher = Application.Current.Dispatcher;
                     });
                 }
@@ -41,8 +41,6 @@ namespace BookstoreManagement.Shared.CustomMessages
                 return _notifier;
             }
         }
-
-        // Hàm giải phóng Notifier khi không cần thiết
         public static void DisposeNotifier()
         {
             _notifier?.Dispose();

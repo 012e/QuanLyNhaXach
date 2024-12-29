@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -6,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Text.RegularExpressions;
 using System.Windows;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.CustomerUI
 {
@@ -42,7 +44,7 @@ namespace BookstoreManagement.UI.CustomerUI
         {
             if (!Check_Valid_Input())
             {
-                MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ErrorNotification();
                 return;
             }
             db.Customers.Update(Customer);
@@ -54,7 +56,7 @@ namespace BookstoreManagement.UI.CustomerUI
             base.OnSubmittingSuccess();
             if(IsSubmitSuccess)
             {
-                MessageBox.Show("submit successfully");
+                SuccessNotification();
                 IsSubmitSuccess = false;
             }
             return;
@@ -123,6 +125,24 @@ namespace BookstoreManagement.UI.CustomerUI
             ErrorMessage = string.Empty;
             return true;
 
+        }
+
+        // Toast Notification
+        private void SuccessNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Submit Successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void ErrorNotification()
+        {
+            GetNotification.NotifierInstance.ErrorMessage("Error", ErrorMessage, NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
         }
 
     }

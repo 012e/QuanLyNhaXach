@@ -1,4 +1,6 @@
-﻿using BookstoreManagement.Core.Shortcut;
+﻿using BespokeFusion;
+using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -8,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
+using ToastNotifications.Core;
+using ToastNotifications.Messages.Error;
 
 namespace BookstoreManagement.UI.ItemUI;
 
@@ -66,7 +70,8 @@ public partial class AllItemsVM : ListVM<Item, EditItemVM>
 
     private bool ConfirmDeleteItem(Item item)
     {
-        var result = MessageBox.Show($"Are you sure you want to delete {item.Name}?", "Delete Item", MessageBoxButton.YesNo);
+        WarningNotification();
+        var result = MessageBox.Show($"Are you sure you want to delete {item.Name}?", "Delete Item", MessageBoxButton.YesNo,MessageBoxImage.Warning);
         return result == MessageBoxResult.Yes;
     }
 
@@ -83,10 +88,29 @@ public partial class AllItemsVM : ListVM<Item, EditItemVM>
         }
         if (ConfirmDeleteItem(itemToDelete))
         {
+            SuccessNotification();
             db.Items.Remove(itemToDelete);
             db.SaveChanges();
             LoadItemsInBackground();
         }
 
+    }
+
+    // Toast Nofification
+    private void SuccessNotification()
+    {
+        GetNotification.NotifierInstance.SuccessMessage("Success", "Deleted item successfully", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void WarningNotification()
+    {
+        GetNotification.NotifierInstance.WarningMessage("Warning","This action cannot be undone", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
     }
 }

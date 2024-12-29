@@ -1,5 +1,6 @@
 ﻿using BookstoreManagement.Core;
 using BookstoreManagement.ItemUI.Dtos;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -8,6 +9,8 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Windows;
+using ToastNotifications.Core;
+using ToastNotifications.Messages;
 
 namespace BookstoreManagement.UI.ItemUI;
 
@@ -31,6 +34,8 @@ public partial class CreateItemVM : BaseViewModel
     private string _errorMessage = string.Empty;
 
 
+   
+
     [RelayCommand]
     private void Submit()
     {
@@ -38,17 +43,18 @@ public partial class CreateItemVM : BaseViewModel
         {
             if (!Check_Valid_Input())
             {
-                MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ErrorNotification();
                 return;
             }
             db.Items.Add(Item);
             db.SaveChanges();
-            MessageBox.Show("Added item successfully");
+
+            SuccessNotification();           
             allItemsNavigator.Navigate();
         }
         catch (Exception e)
         {
-            MessageBox.Show($"Couldn't add item: Database Error" , "Error" , MessageBoxButton.OK , MessageBoxImage.Error);
+            ErrorDBNotification();  
             return;
         }
     }
@@ -151,5 +157,29 @@ public partial class CreateItemVM : BaseViewModel
                 }
             }
         }
+    }
+    private void SuccessNotification()
+    {
+        GetNotification.NotifierInstance.SuccessMessage("Success", "Added item successfully", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void ErrorNotification()
+    {
+        GetNotification.NotifierInstance.ErrorMessage("Error", ErrorMessage, NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void ErrorDBNotification()
+    {
+        GetNotification.NotifierInstance.ErrorMessage("Error", "Database Error", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
     }
 }

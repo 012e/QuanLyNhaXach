@@ -278,6 +278,15 @@
                         </RadioButton>
                         <RadioButton
                             Height="50"
+                            Command="{Binding NavigateToProviderCommand}"
+                            Style="{DynamicResource sidebarRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ShoppingCart" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Provider" />
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Height="50"
                             Command="{Binding NavigateToImportCommand}"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">

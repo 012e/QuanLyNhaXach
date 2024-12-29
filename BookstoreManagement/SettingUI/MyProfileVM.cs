@@ -1,6 +1,8 @@
 ﻿using BookstoreManagement.Core;
 using BookstoreManagement.LoginUI.Services;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
+using BookstoreManagement.Shared.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HarfBuzzSharp;
@@ -12,11 +14,14 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using ToastNotifications.Core;
+using ToastNotifications.Messages.Error;
 
 namespace BookstoreManagement.SettingUI
 {
@@ -55,6 +60,9 @@ namespace BookstoreManagement.SettingUI
 
         [ObservableProperty]
         private string _userPhone;
+
+        [ObservableProperty]
+        private string _errorMessage = string.Empty;
         public override void ResetState()
         {
             base.ResetState();
@@ -107,27 +115,87 @@ namespace BookstoreManagement.SettingUI
         [RelayCommand]
         private void Edit()
         {
+            WarningNotification();
             IsEnableEdit = true;
         }
 
         [RelayCommand]
         private void SaveEdit()
         {
-            IsEnableEdit = false;
-            var userId = currentUserService.CurrentUser.Id;
-            var userInfo = db.Employees.FirstOrDefault(e => e.Id == userId);
+            try
+            {
+                if (!Check_Valid_Input())
+                {
+                    ErrorNotification();
+                    return;
+                }
+                IsEnableEdit = false;
+                var userId = currentUserService.CurrentUser.Id;
+                var userInfo = db.Employees.FirstOrDefault(e => e.Id == userId);
 
-            userInfo.FirstName = UserFirstName;
-            userInfo.LastName = UserLastName;
-            userInfo.PhoneNumber = UserPhone;
-            userInfo.Email = UserEmail;
-            userInfo.Birthday = UserBirthDay;
-            userInfo.Address = UserAddress;
-            db.SaveChanges();
-            db.SaveChanges();
-            ResetState();
+                userInfo.FirstName = UserFirstName;
+                userInfo.LastName = UserLastName;
+                userInfo.PhoneNumber = UserPhone;
+                userInfo.Email = UserEmail;
+                userInfo.Birthday = UserBirthDay;
+                userInfo.Address = UserAddress;
+                SuccessNotification();
+                db.SaveChanges();
+                ResetState();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Couldn't changes infomation user : Database Error {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
         }
 
+
+        private bool IsOnlyLetterAndSpaces(string input)
+        {
+            return Regex.IsMatch(input, @"^[a-zA-Z\s]+$");
+        }
+        private bool IsValidEmail(string input)
+        {
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+
+            return Regex.IsMatch(input, emailPattern);
+        }
+        private bool Check_Valid_Input()
+        {
+            if (string.IsNullOrWhiteSpace(UserFirstName))
+            {
+                ErrorMessage = "Employee first name can not be empty!";
+                return false;
+            }
+            if (!IsOnlyLetterAndSpaces(UserFirstName))
+            {
+                ErrorMessage = "Employee first name must contain only letters!";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(UserLastName))
+            {
+                ErrorMessage = "Employee last name can not be empty!";
+                return false;
+            }
+            if (!IsOnlyLetterAndSpaces(UserLastName))
+            {
+                ErrorMessage = "Employee last name must contain only letters!";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(UserEmail))
+            {
+                ErrorMessage = "Employee email can not be empty!";
+                return false;
+            }
+            if (!IsValidEmail(UserEmail))
+            {
+                ErrorMessage = "Employee email is not a valid type (example@example.com)!";
+                return false;
+            }
+            ErrorMessage = string.Empty;
+            return true;
+        }
         [ObservableProperty]
         private BitmapImage _imageSource;
 
@@ -138,7 +206,6 @@ namespace BookstoreManagement.SettingUI
                 ImageSource = null;
                 return;
             }
-
             try
             {
                 Application.Current.Dispatcher.Invoke(() =>
@@ -181,7 +248,30 @@ namespace BookstoreManagement.SettingUI
         private string GetConvertPathToUrl(string filePath)
         {
             return new Uri(filePath).AbsoluteUri;
-            
+        }
+        private void WarningNotification()
+        {
+            GetNotification.NotifierInstance.WarningMessage("Warning", "This action cannot be undone", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void SuccessNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Save Successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void ErrorNotification()
+        {
+            GetNotification.NotifierInstance.ErrorMessage("Error", ErrorMessage, NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
         }
     }
 }

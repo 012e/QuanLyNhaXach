@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Collections.ObjectModel;
 using BookstoreManagement.UI.TagUI;
 using BookstoreManagement.ItemUI.Dtos;
+using BookstoreManagement.Shared.CustomMessages;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.ItemUI;
 
@@ -113,7 +115,11 @@ public partial class EditItemVM : EditItemVM<Item>
         else
         {
             ListTags = new ObservableCollection<Tag>();
-            MessageBox.Show("item is null");
+            GetNotification.NotifierInstance.WarningMessage("Warning", "Item is null", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
             return;
         }
         if (!string.IsNullOrEmpty(Item.Image))
@@ -127,7 +133,7 @@ public partial class EditItemVM : EditItemVM<Item>
         base.OnSubmittingSuccess();
         if (IsSubmitSuccess)
         {
-            MessageBox.Show("Submitted successfully");
+            SuccessNotification();
             IsSubmitSuccess = false;
         }
         return;
@@ -137,7 +143,7 @@ public partial class EditItemVM : EditItemVM<Item>
     {
         if (!Check_Valid_Input())
         {
-            MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ErrorNotification();
             return;
         }
         db.Items.Update(Item);
@@ -178,7 +184,6 @@ public partial class EditItemVM : EditItemVM<Item>
     private void CloseSetTag()
     {
         IsSet = false;
-        
     }
     private void Tag_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
@@ -188,7 +193,6 @@ public partial class EditItemVM : EditItemVM<Item>
 
             if (itemTag.IsChecked)
             {
-               
                 if (!ListTags.Any(t => t.Name == itemTag.Tag.Name))
                 {
                     ListTags.Add(itemTag.Tag);
@@ -197,7 +201,6 @@ public partial class EditItemVM : EditItemVM<Item>
             }
             else
             {
-               
                 var tagToRemove = ListTags.FirstOrDefault(t => t.Name == itemTag.Tag.Name);
                 if (tagToRemove != null)
                 {
@@ -206,5 +209,21 @@ public partial class EditItemVM : EditItemVM<Item>
                 }
             }
         }
+    }
+    private void SuccessNotification()
+    {
+        GetNotification.NotifierInstance.SuccessMessage("Success", "Submit successfully", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void ErrorNotification()
+    {
+        GetNotification.NotifierInstance.ErrorMessage("Error", ErrorMessage, NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
     }
 }

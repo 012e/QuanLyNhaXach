@@ -1,11 +1,13 @@
 ﻿using BookstoreManagement.Core.Shortcut;
 using BookstoreManagement.LoginUI.Services;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.EmployeeUI
 {
@@ -53,7 +55,17 @@ namespace BookstoreManagement.UI.EmployeeUI
 
         protected override void DeleteItem(Employee item)
         {
+            SuccessNotification();
             throw new NotImplementedException();
+        }
+
+        private void SuccessNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Deleted employee successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
         }
     }
 }
