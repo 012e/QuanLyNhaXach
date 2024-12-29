@@ -316,11 +316,8 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
             Quantity = SelectInvoiceItem.Quantity;
         }
     }
-    protected override void OnSubmittingSuccess()
-    {
-        base.OnSubmittingSuccess();
-        MessageBox.Show("Changes saved successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-    }
+    [ObservableProperty]
+    private bool _isSubmitSuccess = false;
     protected override void SubmitItemHandler()
     {
         SaveChange();
@@ -364,7 +361,6 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
             Invoice.CustomerId = CustomerId;
             db.Invoices.Update(Invoice);
             db.SaveChanges();
-            MessageBox.Show("Changes saved successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
