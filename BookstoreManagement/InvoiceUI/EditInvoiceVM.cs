@@ -47,6 +47,9 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     [ObservableProperty]
     private String _searchText = "";
 
+    [ObservableProperty]
+    private int _customerId;
+
     [RelayCommand]
     private void GoBack()
     {
@@ -60,7 +63,8 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         base.ResetState();
         IsInvoiceItemVisible = false;
         
-        
+
+
     }
 
     protected override void LoadItem()
@@ -78,7 +82,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                                     Price = pricingService.GetPrice(items.Id).FinalPrice,
                                     TotalPrice = pricingService.GetPrice(items.Id).FinalPrice*invoiceItems.Quantity
                                 });
-
+        CustomerId = Invoice.CustomerId;
         InvoiceItemDto = new ObservableCollection<InvoiceItemDto>(itemsFromInvoice);
         var customers = db.Customers.OrderBy(i => i.Id).ToList();
         CustomerList = new ObservableCollection<Customer>(customers);
@@ -122,7 +126,14 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
 
         CustomerList = query;
     }
-
+    partial void OnSelectedCutomerChanged(Customer? oldValue, Customer newValue)
+    {
+        if(newValue is null)
+        {
+            return;
+        }
+        CustomerId = newValue.Id;
+    }
 
     public EditInvoiceVM(ApplicationDbContext db,
         INavigatorService<AllInvoicesVM> allInvoicesNavigator,
@@ -341,7 +352,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                 Invoice.InvoicesItems.Add(newItem);
             }
             Invoice.Total = total;
-            Invoice.CustomerId = SelectedCutomer.Id;
+            Invoice.CustomerId = CustomerId;
             db.Invoices.Update(Invoice);
             db.SaveChanges();
             

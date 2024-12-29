@@ -162,7 +162,7 @@
                             <materialDesign:PackIcon Kind="TagPlus" />
                         </Button>
                     </StackPanel>
-                    <TextBox Text="{Binding Invoice.CustomerId}" />
+                    <TextBox Text="{Binding CustomerId}" />
 
                     <Label>CreatedAt</Label>
                     <DatePicker SelectedDate="{Binding Invoice.CreatedAt, Mode=TwoWay}" />
