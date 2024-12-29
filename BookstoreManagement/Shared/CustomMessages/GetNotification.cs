@@ -13,8 +13,6 @@ namespace BookstoreManagement.Shared.CustomMessages
     public class GetNotification
     {
         private static Notifier _notifier;
-
-        // Hàm khởi tạo singleton
         public static Notifier NotifierInstance
         {
             get

@@ -14,6 +14,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Security.Principal;
 using System.Windows;
@@ -58,9 +59,6 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     {
         AllInvoicesNavigator.Navigate();
     }
-
- 
-
     public override void ResetState()
     {
         base.ResetState();
@@ -316,7 +314,6 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
             // Biding du lieu tu item duoc chon lenh o Input
             ItemId = SelectInvoiceItem.id;
             Quantity = SelectInvoiceItem.Quantity;
-
         }
     }
     protected override void OnSubmittingSuccess()
@@ -327,6 +324,17 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     protected override void SubmitItemHandler()
     {
         SaveChange();
+        IsSubmitSuccess = true;
+    }
+    protected override void OnSubmittingSuccess()
+    {
+        base.OnSubmittingSuccess();
+        if (IsSubmitSuccess)
+        {
+            SuccessSaveNotification();
+            IsSubmitSuccess = false;
+        }
+        return;
     }
     private void SaveChange()
     {
@@ -380,7 +388,6 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
             IsIconSaveEdit = false;
             SelectInvoiceItem.Quantity = Quantity;
             SelectInvoiceItem.TotalPrice = SelectInvoiceItem.Quantity * SelectInvoiceItem.Price;
-            SuccessSaveNotification();
             SaveChange();
             LoadItem();
             ResetValue();

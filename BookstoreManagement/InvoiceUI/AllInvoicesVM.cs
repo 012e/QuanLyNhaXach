@@ -9,6 +9,7 @@ using BookstoreManagement.UI.DashboardUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Collections.ObjectModel;
 using System.Windows;
 using ToastNotifications.Core;
@@ -23,6 +24,12 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
     [ObservableProperty]
     private String _searchText = "";
 
+    [ObservableProperty]
+    private DateTime _filterByDate = new DateTime(DateTime.Now.Year + 1,1,1);
+
+    private bool _isDatePickerActive;
+
+   
     [RelayCommand]
     protected void NavigateToCreateInvoice()
     {
@@ -31,10 +38,17 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
     protected override bool FitlerItem(Invoice item)
     {
         string findString = item.EmployeeId.ToString() + item.CreatedAt.ToString() + item.CustomerId.ToString();
-        return findString.ToLower().Contains(SearchText.ToLower());
+        bool searchByText = findString.ToLower().Contains(SearchText.ToLower());
+        bool searchByDate = !_isDatePickerActive || item.CreatedAt.Date == FilterByDate.Date;
+        return searchByText && searchByDate;
     }
     partial void OnSearchTextChanged(string value)
     {
+        ItemsView.Refresh();
+    }
+    partial void OnFilterByDateChanged(DateTime oldValue)
+    {
+        _isDatePickerActive = true;
         ItemsView.Refresh();
     }
 
@@ -51,8 +65,11 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
 
     [ObservableProperty]
     private Invoice _invoice;
+
+    
     protected override void LoadItems()
     {
+        _isDatePickerActive = false;
         db.ChangeTracker.Clear();
 
         var invoices = db.Invoices.OrderBy(invoice => invoice.Id).ToList();

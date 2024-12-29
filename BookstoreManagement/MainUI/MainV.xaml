@@ -281,7 +281,7 @@
                             Command="{Binding NavigateToProviderCommand}"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="ShoppingCart" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <materialDesign:PackIcon Kind="AccountTieHat" Style="{DynamicResource sidebarRadioButtonIcon}" />
                                 <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Provider" />
                             </StackPanel>
                         </RadioButton>
@@ -299,7 +299,7 @@
                             Command="{Binding NavigateToSettingCommand}"
                             Style="{DynamicResource sidebarRadioButton}">
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="AccountTie" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <materialDesign:PackIcon Kind="Settings" Style="{DynamicResource sidebarRadioButtonIcon}" />
                                 <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Settings" />
                             </StackPanel>
                         </RadioButton>
