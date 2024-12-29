@@ -22,7 +22,8 @@
     <Border
         Padding="0,30,0,40"
         Background="#fff"
-        BorderThickness="30">
+        BorderThickness="30"
+        CornerRadius="30">
         <Grid>
             <Grid.Resources>
                 <Style x:Key="sidebarRadioButton" TargetType="RadioButton">
