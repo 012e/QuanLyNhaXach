@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -6,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Windows;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.ImportUI
 {
@@ -36,6 +38,7 @@ namespace BookstoreManagement.ImportUI
         // Confirm Delete 
         private bool ConfirmDelete(Import import)
         {
+            WarningNotification();
             MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this customer?", "Delete Customer", MessageBoxButton.YesNo);
             return result == MessageBoxResult.Yes;
         }
@@ -51,6 +54,7 @@ namespace BookstoreManagement.ImportUI
             {
                 db.Imports.Remove(import);
                 db.SaveChanges();
+                SuccessNotification();
                 LoadItemsInBackground();
             }
         }
@@ -73,6 +77,23 @@ namespace BookstoreManagement.ImportUI
         partial void OnSearchTextChanged(string value)
         {
             ItemsView.Refresh();
+        }
+
+        private void WarningNotification()
+        {
+            GetNotification.NotifierInstance.WarningMessage("Warning", "This action cannot be undone", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void SuccessNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Deleted import successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
         }
     }
 }

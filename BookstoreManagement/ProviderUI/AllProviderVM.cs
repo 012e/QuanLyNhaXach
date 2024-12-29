@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core.Shortcut;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -7,6 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.ProviderUI;
 
@@ -52,6 +54,7 @@ public partial class AllProviderVM : ListVM<Provider, EditProviderVM>
 
     private bool ConfirmDelete(Provider provider)
     {
+        WarningNotification();
         var result = MessageBox.Show("Are you sure you want to delete this provider?", "Delete Invoice", MessageBoxButton.YesNo);
         return result == MessageBoxResult.Yes;
     }
@@ -66,7 +69,24 @@ public partial class AllProviderVM : ListVM<Provider, EditProviderVM>
         {
             db.Providers.Where(i => i.Id == provider.Id).ExecuteDelete();
             db.SaveChanges();
+            SuccessNotification();
             LoadItemsInBackground();
         }
+    }
+    private void WarningNotification()
+    {
+        GetNotification.NotifierInstance.WarningMessage("Warning", "This action cannot be undone", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void SuccessNotification()
+    {
+        GetNotification.NotifierInstance.SuccessMessage("Success", "Deleted provider successfully", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
     }
 }

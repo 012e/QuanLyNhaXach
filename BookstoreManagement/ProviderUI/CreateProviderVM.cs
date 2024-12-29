@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -7,6 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using System.Windows;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.ProviderUI
 {
@@ -37,12 +39,12 @@ namespace BookstoreManagement.UI.ProviderUI
             {
                 if (!Check_Valid_Input())
                 {
-                    MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ErrorNotification();
                     return;
                 }
                 Db.Add(Provider);
                 Db.SaveChanges();
-                MessageBox.Show("Added provider successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                SuccessNotification();
                 allProviderNavigator.Navigate();
             }
             catch (Exception ex)
@@ -98,6 +100,22 @@ namespace BookstoreManagement.UI.ProviderUI
         {
             base.ResetState();
             ResetToDefaultValues();
+        }
+        private void SuccessNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Added provider successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void ErrorNotification()
+        {
+            GetNotification.NotifierInstance.ErrorMessage("Error", ErrorMessage, NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
         }
     }
 }

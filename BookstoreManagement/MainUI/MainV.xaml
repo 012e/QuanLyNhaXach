@@ -13,6 +13,7 @@
     xmlns:local="clr-namespace:BookstoreManagement"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:notification="clr-namespace:BookstoreManagement.SettingUI"
     xmlns:provider="clr-namespace:BookstoreManagement.UI.ProviderUI"
     xmlns:setting="clr-namespace:BookstoreManagement.SettingUI"
     xmlns:tag="clr-namespace:BookstoreManagement.UI.TagUI"
@@ -273,6 +274,15 @@
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Account" Style="{DynamicResource sidebarRadioButtonIcon}" />
                                 <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Customer" />
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Height="50"
+                            Command="{Binding NavigateToProviderCommand}"
+                            Style="{DynamicResource sidebarRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ShoppingCart" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Provider" />
                             </StackPanel>
                         </RadioButton>
                         <RadioButton

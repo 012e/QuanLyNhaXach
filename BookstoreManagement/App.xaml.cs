@@ -96,7 +96,7 @@ public partial class App : Application
         builder.Services.AddViewViewModel<AllSettingV, AllSettingVM>();
         builder.Services.AddViewViewModel<MyProfileV, MyProfileVM>();
         builder.Services.AddViewViewModel<AccountV, AccountVM>();
-
+        builder.Services.AddViewViewModel<AllNotificationV, AllNotificationVM>();
         builder.Services.AddKeyedSingleton<NavigatorStore>("default");
         builder.Services.AddKeyedSingleton<NavigatorStore>("global");
         builder.Services.AddKeyedSingleton<NavigatorStore>("setting");

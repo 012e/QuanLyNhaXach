@@ -1,5 +1,6 @@
 ﻿using BookstoreManagement.Core.Shortcut;
 using BookstoreManagement.LoginUI.Services;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -7,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Windows;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.EmployeeUI
 {
@@ -25,7 +27,7 @@ namespace BookstoreManagement.UI.EmployeeUI
         protected readonly ApplicationDbContext db;
         public AllEmployeeVM(ApplicationDbContext db,
             IContextualNavigatorService<EditEmployeeVM, Employee> editItemNavigator,
-            INavigatorService<CreateEmployeeVM> createEmployeeNavigator , CurrentUserService currentUserService)
+            INavigatorService<CreateEmployeeVM> createEmployeeNavigator, CurrentUserService currentUserService)
         {
             this.db = db;
             EditItemNavigator = editItemNavigator;
@@ -33,11 +35,13 @@ namespace BookstoreManagement.UI.EmployeeUI
             this.CurrentUserService = currentUserService;
             IsNotAdmin = !currentUserService.IsAdmin;
         }
+
         [RelayCommand]
         private void CanNotNavigateToCreateEmployee()
         {
-            MessageBox.Show("Your role must be admin to unlock this feature!","Warning",MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show("Your role must be admin to unlock this feature!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
+        
         [RelayCommand]
         protected void NavigateToCreateEmployee()
         {
@@ -62,7 +66,17 @@ namespace BookstoreManagement.UI.EmployeeUI
 
         protected override void DeleteItem(Employee item)
         {
+            SuccessNotification();
             throw new NotImplementedException();
+        }
+
+        private void SuccessNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Deleted employee successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
         }
     }
 }

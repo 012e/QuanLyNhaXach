@@ -1,5 +1,6 @@
 ﻿using BookstoreManagement.Core;
 using BookstoreManagement.LoginUI.Services;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -10,6 +11,7 @@ using System.Data.Common;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.EmployeeUI
 {
@@ -38,17 +40,16 @@ namespace BookstoreManagement.UI.EmployeeUI
         [RelayCommand]
         private void Submit()
         {
-            
             try
             {
                 if (!Check_Valid_Input())
                 {
-                    MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ErrorNotification();
                     return;
                 }
+                SuccessNotification();
                 Db.Add(Employee);
                 Db.SaveChanges();
-                MessageBox.Show("Added employee successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 allEmployeeNavigator.Navigate();
             }
             catch (Exception ex)
@@ -200,7 +201,23 @@ namespace BookstoreManagement.UI.EmployeeUI
         {
             ResetToDefaultValues();
             base.ResetState();
-            
+        }
+
+        private void SuccessNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Add employee successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void ErrorNotification()
+        {
+            GetNotification.NotifierInstance.ErrorMessage("Error", ErrorMessage, NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
         }
     }
 }

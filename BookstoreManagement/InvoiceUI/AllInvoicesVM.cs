@@ -1,6 +1,7 @@
 ﻿using BookstoreManagement.Core.Shortcut;
 using BookstoreManagement.InvoiceUI.Dtos;
 using BookstoreManagement.PricingUI.Services;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -10,6 +11,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.InvoicesUI;
 
@@ -38,6 +40,7 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
 
     private bool ConfirmDelete(Invoice invoice)
     {
+        WarningNotification();
         var result = MessageBox.Show("Are you sure you want to delete this invoice?", "Delete Invoice", MessageBoxButton.YesNo);
         return result == MessageBoxResult.Yes;
     }
@@ -67,6 +70,7 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
         {
             db.Invoices.Where(i => i.Id == invoice.Id).ExecuteDelete();
             db.SaveChanges();
+            SuccessNotification();
             LoadItemsInBackground();
         }
     }
@@ -102,5 +106,22 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
         CreateInvoiceNavigator = createInvoiceNavigator;
         this.db = db;
         this.pricingService = pricingService;   
+    }
+
+    private void WarningNotification()
+    {
+        GetNotification.NotifierInstance.WarningMessage("Warning", "This action cannot be undone", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void SuccessNotification()
+    {
+        GetNotification.NotifierInstance.SuccessMessage("Success", "Deleted item successfully", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
     }
 }

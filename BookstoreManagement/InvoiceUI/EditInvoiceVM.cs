@@ -1,6 +1,7 @@
 ﻿using BookstoreManagement.Core.Shortcut;
 using BookstoreManagement.InvoiceUI.Dtos;
 using BookstoreManagement.PricingUI.Services;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -16,6 +17,8 @@ using System.Linq.Expressions;
 using System.Security.Principal;
 using System.Windows;
 using System.Windows.Automation;
+using ToastNotifications.Core;
+using ToastNotifications.Messages.Error;
 
 namespace BookstoreManagement.UI.InvoicesUI;
 
@@ -181,8 +184,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     {
         if (Quantity <= 0)
         {
-            MessageBox.Show("Quantity must larger than 0", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+            ErrorNotificationQuantity();
             return;
         }
 
@@ -220,7 +222,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                     TotalPrice = itemIntoInvoiceItem.Quantity * price
                 });
             }
-            MessageBox.Show("Added item successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            SuccessAddNotification();
         }
         catch (Exception ex)
         {
@@ -235,11 +237,10 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     {
         if (SelectInvoiceItem == null)
         {
-            MessageBox.Show("Please choose Item !", "Error",
-
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            ErrorNotificationChooseItem();
             return;
         }
+        WarningNotification();
         var result = MessageBox.Show("Are you sure you want to edit?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
         {
@@ -283,9 +284,9 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                 Invoice.InvoicesItems.Add(newItem);
             }
             Invoice.Total = total;
+            SuccessSaveNotification();
             db.Invoices.Update(Invoice);
             db.SaveChanges();
-            MessageBox.Show("Changes saved successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
@@ -298,11 +299,10 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     {
         if (SelectInvoiceItem == null)
         {
-            MessageBox.Show("Please choose Item !", "Error",
-
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            ErrorNotificationChooseItem();
             return;
         }
+        WarningNotification();
         var result = MessageBox.Show("Are you sure you want to save changes?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
         {
@@ -310,7 +310,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
             IsIconSaveEdit = false;
             SelectInvoiceItem.Quantity = Quantity;
             SelectInvoiceItem.TotalPrice = SelectInvoiceItem.Quantity * SelectInvoiceItem.Price;
-
+            SuccessSaveNotification();
             SaveChange();
             LoadItem();
             ResetValue();
@@ -321,13 +321,64 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     [RelayCommand]
     private void DeleteInvoiceItem()
     {
+        WarningNotification();
         var result = MessageBox.Show("Are you sure you want to delete?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
         {
             InvoiceItemDto.Remove(SelectInvoiceItem);
-            MessageBox.Show("Item removed from the list.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            SuccessDeleteNotification();
         }
     }
+    // Toast notification
+    private void WarningNotification()
+    {
+        GetNotification.NotifierInstance.WarningMessage("Warning", "This action cannot be undone", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
 
+    private void SuccessDeleteNotification()
+    {
+        GetNotification.NotifierInstance.SuccessMessage("Success", "Deleted invoice successfully", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void SuccessAddNotification()
+    {
+        GetNotification.NotifierInstance.SuccessMessage("Success", "Add invoice successfully", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+
+    private void SuccessSaveNotification()
+    {
+        GetNotification.NotifierInstance.SuccessMessage("Success", "Save successfully", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void ErrorNotificationChooseItem()
+    {
+        GetNotification.NotifierInstance.ErrorMessage("Error", "Please choose Item", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void ErrorNotificationQuantity()
+    {
+        GetNotification.NotifierInstance.ErrorMessage("Error", "Quantity must langer than 0", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
     // ========================= End Section Detail Item ===================================
 }

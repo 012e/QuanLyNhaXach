@@ -142,6 +142,7 @@
                             Command="{Binding LoginCommand}"
                             Content="Login"
                             FontSize="16" />
+
                     </StackPanel>
                 </Grid>
             </Border>

@@ -15,15 +15,18 @@ namespace BookstoreManagement.SettingUI
     {
         private readonly INavigatorService<MyProfileVM> myProfileNavigator;
         private readonly INavigatorService<AccountVM> accountNavigator;
+        private readonly INavigatorService<AllNotificationVM> allNotificationNavigator;
         [ObservableProperty]
         private NavigatorStore _navigatorStore;
         public AllSettingVM([FromKeyedServices("setting")] NavigatorStore navigatorStore,
             INavigatorService<MyProfileVM> myProfileNavigator,
-            INavigatorService<AccountVM> accountNavigator)
+            INavigatorService<AccountVM> accountNavigator,
+            INavigatorService<AllNotificationVM> allNotificationNavigator)
         {
             this.NavigatorStore = navigatorStore;
             this.myProfileNavigator = myProfileNavigator;
             this.accountNavigator = accountNavigator;
+            this.allNotificationNavigator = allNotificationNavigator;
         }
 
         [RelayCommand]
@@ -36,6 +39,12 @@ namespace BookstoreManagement.SettingUI
         private void NavigateToAccount()
         {
             accountNavigator.Navigate("setting");
+        }
+
+        [RelayCommand]
+        private void NavigateToNotification()
+        {
+            allNotificationNavigator.Navigate("setting");
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BookstoreManagement.Core;
+using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
@@ -6,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DocumentFormat.OpenXml.Office.CustomUI;
 using System.Windows;
+using ToastNotifications.Core;
 
 namespace BookstoreManagement.UI.TagUI
 {
@@ -35,12 +37,12 @@ namespace BookstoreManagement.UI.TagUI
             {
                 if (!Check_Valid_Input())
                 {
-                    MessageBox.Show(ErrorMessage, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    ErrorNotification();
                     return;
                 }
                 Db.Add(Tag);
                 Db.SaveChanges();
-                MessageBox.Show("Added tag successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                SuccessNotification();
                 AllTagNavigator.Navigate();
             }
             catch (Exception ex)
@@ -88,6 +90,22 @@ namespace BookstoreManagement.UI.TagUI
         {
             base.ResetState();
             ResetToDefaultValues();
+        }
+        private void SuccessNotification()
+        {
+            GetNotification.NotifierInstance.SuccessMessage("Success", "Added tag successfully", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+        private void ErrorNotification()
+        {
+            GetNotification.NotifierInstance.ErrorMessage("Error", ErrorMessage, NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
         }
     }
 }
