@@ -8,6 +8,7 @@
     xmlns:local="clr-namespace:BookstoreManagement.UI.InvoicesUI"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="clr-namespace:BookstoreManagement.UI.Components"
     d:DataContext="{d:DesignInstance local:EditInvoiceVM}"
     d:DesignHeight="800"
     d:DesignWidth="1000"
@@ -23,7 +24,77 @@
             <ColumnDefinition Width="0.7*" />
             <ColumnDefinition Width="0.5*" />
         </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Visibility="{Binding IsSet, Converter={StaticResource BooleanToVisibilityConverter}}">
 
+            <Border
+                x:Name="CustomerSelectorPanel"
+                Padding="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="White"
+                BorderBrush="Black"
+                BorderThickness="1"
+                CornerRadius="20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            Margin="10"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Text="Select Customer"
+                            TextAlignment="Center">
+                            <materialDesign:PackIcon
+                                Width="30"
+                                Height="30"
+                                Margin="10,0,0,-5"
+                                VerticalAlignment="Center"
+                                Kind="Account" />
+                        </TextBlock>
+                        <Button
+                            Height="30"
+                            Margin="85,0,0,0"
+                            VerticalAlignment="Center"
+                            Background="IndianRed"
+                            BorderThickness="0"
+                            Command="{Binding CloseSetCustomerCommand}">
+                            <materialDesign:PackIcon Kind="Close" />
+                        </Button>
+                    </StackPanel>
+                    <!--  Search Box  -->
+                    <ui:Search
+                        Margin="0,0,0,10"
+                        HorizontalAlignment="Left"
+                        PlaceHolder="Search for customers"
+                        Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--  DataGrid  -->
+                    <DataGrid
+                        x:Name="CustomerDataGrid"
+                        Height="400"
+                        Margin="0,0,0,10"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        HeadersVisibility="Column"
+                        ItemsSource="{Binding CustomerList}"
+                        SelectedItem="{Binding SelectedCutomer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <!--  Cột checkbox  -->
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Binding="{Binding FirstName}"
+                                Header="First Name"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding LastName}"
+                                Header="Last Name"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding PhoneNumber}"
+                                Header="Phone Number"
+                                IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+        </Grid>
         <StackPanel
             Grid.Column="1"
             HorizontalAlignment="Center"
@@ -79,8 +150,19 @@
                     <Label>EmployeeID</Label>
                     <TextBox Text="{Binding Invoice.EmployeeId}" />
 
-                    <Label>CustomerID</Label>
-                    <TextBox Text="{Binding Invoice.CustomerId}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom">Customer Id</Label>
+                        <Button
+                            Margin="10,10,0,0"
+                            HorizontalAlignment="left"
+                            VerticalAlignment="Center"
+                            Background="Green"
+                            BorderThickness="0"
+                            Command="{Binding OpenSetCustomerCommand}">
+                            <materialDesign:PackIcon Kind="TagPlus" />
+                        </Button>
+                    </StackPanel>
+                    <TextBox Text="{Binding CustomerId}" />
 
                     <Label>CreatedAt</Label>
                     <DatePicker SelectedDate="{Binding Invoice.CreatedAt, Mode=TwoWay}" />
