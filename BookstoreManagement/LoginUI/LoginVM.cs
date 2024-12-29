@@ -6,14 +6,21 @@ using BookstoreManagement.Shared.Services;
 using BookstoreManagement.UI.DashboardUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Flattinger.Core.Interface.ToastMessage;
-using Flattinger.UI.ToastMessage;
-using Flattinger.UI.ToastMessage.Controls;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using ToastNotifications;
+using ToastNotifications.Lifetime;
+using ToastNotifications.Position;
+using ToastNotifications.Messages;
+using System.ComponentModel.Design.Serialization;
+using ToastNotifications.Core;
+using Microsoft.Extensions.Options;
+using ToastNotifications.Events;
+using BookstoreManagement.Shared.CustomMessages;
+using ToastNotifications.Lifetime.Clear;
 
 namespace BookstoreManagement.LoginUI;
 
@@ -33,7 +40,7 @@ public partial class LoginVM : BaseViewModel
     [ObservableProperty]
     private PackIconKind _passwordVisibilityIcon = PackIconKind.EyeOff;
 
- 
+
 
     [RelayCommand]
     private async Task Login()
@@ -46,10 +53,10 @@ public partial class LoginVM : BaseViewModel
 
         if (await loginService.LoginAsync(dto) == null)
         {
-            //ToastLoginSuccess();
-            MessageBox.Show($"Login failed. Wrong email or password", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            ErrorNotification();
             return;
         }
+        SuccessNotification();
         mainUINavigator.Navigate("global");
         dashboardNavigator.Navigate();
     }
@@ -61,7 +68,7 @@ public partial class LoginVM : BaseViewModel
         Email = "";
     }
 
-    public LoginVM(INavigatorService<MainVM> mainUINavigator, LoginService loginService, 
+    public LoginVM(INavigatorService<MainVM> mainUINavigator, LoginService loginService,
         INavigatorService<DashBoardVM> dashboardNavigator)
     {
         this.mainUINavigator = mainUINavigator;
@@ -77,10 +84,27 @@ public partial class LoginVM : BaseViewModel
         PasswordVisibilityIcon = IsPasswordVisible ? PackIconKind.Eye : PackIconKind.EyeOff;
     }
 
-    //private void ToastLoginSuccess()
-    //{
-    //    ToastProvider.NotificationService.AddNotification(Flattinger.Core.Enums.ToastType.SUCCESS,
-    //        "Login successful",
-    //        "Welcome back, you’ve successfully logged in!",3,animationConfig: new AnimationConfig { });
-    //}
+    private void SuccessNotification()
+    {
+        GetNotification.NotifierInstance.SuccessMessage("Success", "Welcome back H2K BookStore !", NotificationType.Success, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+        
+    }
+    private void ErrorNotification()
+    {
+        GetNotification.NotifierInstance.ErrorMessage("Login error", "Wrong username or passrword !", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+
+  
+
+
+
+
 }

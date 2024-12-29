@@ -1,10 +1,6 @@
 ﻿using BookstoreManagement.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Flattinger.Core.Interface.ToastMessage;
-using Flattinger.Core.Theme;
-using Flattinger.UI.ToastMessage;
-using Flattinger.UI.ToastMessage.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;

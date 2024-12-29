@@ -22,10 +22,6 @@ using System.Windows.Navigation;
 using BookstoreManagement.PricingUI.Services;
 using BookstoreManagement.SettingUI;
 using BookstoreManagement.Shared.Services;
-using Flattinger.UI.ToastMessage.Controls;
-using ToastNotifications;
-using ToastNotifications.Lifetime;
-using ToastNotifications.Position;
 
 namespace BookstoreManagement;
 

@@ -7,7 +7,6 @@
     xmlns:local="clr-namespace:BookstoreManagement.LoginUI"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:toast="clr-namespace:Flattinger.UI.ToastMessage.Controls;assembly=Flattinger.UI.ToastMessage"
     d:DataContext="{d:DesignInstance local:LoginVM}"
     mc:Ignorable="d">
     <Control.Resources>
@@ -136,6 +135,7 @@
                             Command="{Binding LoginCommand}"
                             Content="Login"
                             FontSize="16" />
+
                     </StackPanel>
                 </Grid>
             </Border>

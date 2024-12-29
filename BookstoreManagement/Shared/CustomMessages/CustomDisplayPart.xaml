@@ -1,0 +1,61 @@
+﻿<core:NotificationDisplayPart
+    x:Class="BookstoreManagement.Shared.CustomMessages.CustomDisplayPart"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:ToastNotifications.Core;assembly=ToastNotifications"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:BookstoreManagement.Shared.CustomMessages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="70"
+    d:DesignWidth="400"
+    Background="Transparent"
+    mc:Ignorable="d">
+    <Border
+        Background="{Binding CodeColorBG}"
+        BorderBrush="{Binding CodeColorBG}"
+        BorderThickness="2"
+        CornerRadius="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="0.1*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Image
+                        Width="30"
+                        Height="30"
+                        Source="{Binding IconPath}" />
+                </Grid>
+                <Grid Grid.Column="1" VerticalAlignment="Center">
+                    <StackPanel>
+                        <TextBlock
+                            FontSize="17"
+                            FontWeight="Bold"
+                            Foreground="{Binding CodeColorT}"
+                            Text="{Binding Title}" />
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Foreground="{Binding CodeColorT}"
+                            Text="{Binding Message}" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Rectangle
+                    Name="TimeBar"
+                    Height="5"
+                    VerticalAlignment="Bottom"
+                    Fill="{Binding CodeColorTimeBar}" />
+            </Grid>
+
+        </Grid>
+    </Border>
+</core:NotificationDisplayPart>
