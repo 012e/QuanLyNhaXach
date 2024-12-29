@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Media;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BookstoreManagement.UI.DashboardUI
 {
@@ -168,13 +169,17 @@ namespace BookstoreManagement.UI.DashboardUI
         // Total Revenue
         private async Task<decimal> GetTotalRevenue()
         {
-            return await db.Invoices.SumAsync(i => i.Total);
+            return await db.Invoices
+                .Where(i => i.CreatedAt >= StartDateRevenue.Date && i.CreatedAt <= EndDateRevenue.Date)
+                .SumAsync(i => i.Total);
         }
 
         // Total Expense
         private async Task<decimal> GetTotalExpense()
         {
-            return await db.Imports.SumAsync(ip => ip.TotalCost);
+            return await db.Imports
+                .Where(i => i.CreatedAt >= StartDateRevenue.Date && i.CreatedAt <= EndDateRevenue.Date)
+                .SumAsync(ip => ip.TotalCost);
         }
 
         // Percent Profit
