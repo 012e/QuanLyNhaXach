@@ -11,11 +11,12 @@
     xmlns:ui="clr-namespace:BookstoreManagement.UI.Components"
     d:DataContext="{d:DesignInstance local:AllInvoicesVM}"
     d:DesignHeight="800"
-    d:DesignWidth="800"
+    d:DesignWidth="1400"
     mc:Ignorable="d">
     <Control.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+        <converter:DateTimeConverter x:Key="DateTimeFormatter" />
     </Control.Resources>
 
     <Border
@@ -70,17 +71,39 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <!--  Row Tool Search  -->
-                    <StackPanel
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
 
-                        <!--  Search Bar  -->
-                        <ui:Search PlaceHolder="Search for invoices" Text="{Binding SearchText}" />
-                        <!--  End Search Bar  -->
-                    </StackPanel>
-                    <!--  End Row Tool Search  -->
+                    <!--  Row Tool Filter  -->
+                    <Grid Grid.Column="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <!--  Search Bar  -->
+                            <Grid Grid.Column="0" HorizontalAlignment="Left">
+                                <ui:Search PlaceHolder="Search for invoices" Text="{Binding SearchText}" />
+                            </Grid>
+                            <!--  End Search Bar  -->
+
+                            <!--  Filter Combobox  -->
+                            <Grid Grid.Column="1" HorizontalAlignment="Left">
+                                <StackPanel>
+                                    <Label FontSize="15" FontWeight="Bold">Filter by date</Label>
+                                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                        <Label FontSize="15">For example</Label>
+                                        <DatePicker
+                                            HorizontalAlignment="Left"
+                                            FontSize="15"
+                                            SelectedDate="{Binding FilterByDate, Mode=TwoWay}" />
+
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                            <!--  End Filter Combobox  -->
+                        </Grid>
+                    </Grid>
+                    <!--  End Row Tool Filter  -->
 
                     <!--  Row Tool And and Refresh  -->
                     <StackPanel

@@ -5,7 +5,7 @@ namespace BookstoreManagement.Shared.Converters;
 
 
 [ValueConversion(typeof(bool), typeof(bool))]
-public class InvertBooleanConverter : IValueConverter
+public  class InvertBooleanConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
