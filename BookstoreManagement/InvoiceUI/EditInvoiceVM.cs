@@ -7,6 +7,7 @@ using BookstoreManagement.Shared.Services;
 using BookstoreManagement.UI.DashboardUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DocumentFormat.OpenXml.Office2010.CustomUI;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -34,6 +35,17 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     [ObservableProperty]
     private Invoice _invoice;
 
+    [ObservableProperty]
+    private Customer _selectedCutomer ;
+
+    [ObservableProperty]
+    private bool _isSet = false;
+
+    [ObservableProperty]
+    private ObservableCollection<Customer> _customerList;
+
+    [ObservableProperty]
+    private String _searchText = "";
 
     [RelayCommand]
     private void GoBack()
@@ -47,6 +59,8 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     {
         base.ResetState();
         IsInvoiceItemVisible = false;
+        
+        
     }
 
     protected override void LoadItem()
@@ -66,8 +80,48 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                                 });
 
         InvoiceItemDto = new ObservableCollection<InvoiceItemDto>(itemsFromInvoice);
+        var customers = db.Customers.OrderBy(i => i.Id).ToList();
+        CustomerList = new ObservableCollection<Customer>(customers);
+        this.PropertyChanged += (sender, e) =>
+        {
+            if (e.PropertyName == nameof(SearchText))
+            {
+                UpdateFilter();
+            }
+        };
+        PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(SelectedCutomer))
+            {
+
+                IsSet = SelectedCutomer != null ? false : true;
+            }
+        };
+
     }
 
+    [RelayCommand]
+    private void OpenSetCustomer()
+    {
+        IsSet = true;
+    }
+    [RelayCommand]
+    private void CloseSetCustomer()
+    {
+        IsSet = false;  
+    }
+    private void UpdateFilter()
+    {
+        var customers = db.Customers.OrderBy(i => i.Id).ToList();
+        var query = string.IsNullOrWhiteSpace(SearchText)
+            ? new ObservableCollection<Customer>(customers)
+        : new ObservableCollection<Customer>(
+                customers.Where(i => i.FirstName.ToLower().Contains(SearchText.ToLower()) ||
+                i.LastName.ToLower().Contains(SearchText.ToLower()) ||
+                i.PhoneNumber.ToString().ToLower().Contains(SearchText.ToLower())));
+
+        CustomerList = query;
+    }
 
 
     public EditInvoiceVM(ApplicationDbContext db,
@@ -253,7 +307,11 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
 
         }
     }
-
+    protected override void OnSubmittingSuccess()
+    {
+        base.OnSubmittingSuccess();
+        MessageBox.Show("Changes saved successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+    }
     protected override void SubmitItemHandler()
     {
         SaveChange();
@@ -283,9 +341,10 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                 Invoice.InvoicesItems.Add(newItem);
             }
             Invoice.Total = total;
+            Invoice.CustomerId = SelectedCutomer.Id;
             db.Invoices.Update(Invoice);
             db.SaveChanges();
-            MessageBox.Show("Changes saved successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            
         }
         catch (Exception ex)
         {

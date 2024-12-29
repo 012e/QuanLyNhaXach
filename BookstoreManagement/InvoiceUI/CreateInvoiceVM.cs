@@ -4,11 +4,13 @@ using BookstoreManagement.PricingUI.Services;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
+using BookstoreManagement.UI.ItemUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design.Serialization;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Documents;
@@ -20,6 +22,14 @@ public partial class CreateInvoiceVM : BaseViewModel
     private readonly ApplicationDbContext db;
     private readonly INavigatorService<AllInvoicesVM> allInvoiceNavigator;
 
+    [ObservableProperty]
+    private String _searchText = "";
+
+    [ObservableProperty]
+    private ObservableCollection<Customer> _customerList;
+
+    [ObservableProperty]
+    private bool _isSet = false;
     // Hide and display tab ivoice item
     [ObservableProperty]
     private bool _isInvoiceItemVisible;
@@ -43,8 +53,6 @@ public partial class CreateInvoiceVM : BaseViewModel
     [ObservableProperty]
     private int _employeeId;
 
-    [ObservableProperty]
-    private int _customerId;
 
     [ObservableProperty]
     private DateTime _createAt = DateTime.Now;
@@ -53,8 +61,13 @@ public partial class CreateInvoiceVM : BaseViewModel
     [ObservableProperty]
     private int _itemId;
 
+    
+
     [ObservableProperty]
     private int _quantity;
+
+    [ObservableProperty]
+    private Customer _selectedCutomer;
 
     [ObservableProperty]
     private InvoiceItemDto _selecteInvoiceItemDto;
@@ -92,7 +105,6 @@ public partial class CreateInvoiceVM : BaseViewModel
     private void ResetToDefaultValues()
     {
         _employeeId = 0;
-        _customerId = 0;
         IsInvoiceItemVisible = false;
     }
 
@@ -102,9 +114,47 @@ public partial class CreateInvoiceVM : BaseViewModel
         base.ResetState();
         ResetToDefaultValues();
         ListInvoiceItem = new ObservableCollection<InvoicesItem>();
-        InvoiceItemDto = new ObservableCollection<InvoiceItemDto>();  
+        InvoiceItemDto = new ObservableCollection<InvoiceItemDto>();
+        var customers = db.Customers.OrderBy(i => i.Id).ToList();
+        CustomerList = new ObservableCollection<Customer>(customers);
+        this.PropertyChanged += (sender, e) =>
+        {
+            if (e.PropertyName == nameof(SearchText))
+            {
+                UpdateFilter();
+            }
+        };
+        PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(SelectedCutomer))
+            {
+                
+                IsSet = SelectedCutomer != null ? false : true;
+            }
+        };
     }
+    private void UpdateFilter()
+    {
+        var customers = db.Customers.OrderBy(i => i.Id).ToList();
+        var query = string.IsNullOrWhiteSpace(SearchText)
+            ? new ObservableCollection<Customer>(customers)
+        : new ObservableCollection<Customer>(
+                customers.Where(i => i.FirstName.ToLower().Contains(SearchText.ToLower()) ||
+                i.LastName.ToLower().Contains(SearchText.ToLower())||
+                i.PhoneNumber.ToString().ToLower().Contains(SearchText.ToLower())));
 
+        CustomerList = query;
+    }
+    [RelayCommand]
+    private void OpenSetCustomer()
+    {
+        IsSet = true;
+    }
+    [RelayCommand]
+    private void CloseSetCustomer()
+    {
+        IsSet = false;
+    }
     // Button SelectItem In CreateInvoice
     [RelayCommand]
     private void SelectItem()
@@ -231,7 +281,7 @@ public partial class CreateInvoiceVM : BaseViewModel
         {
             EmployeeId = EmployeeId,
             CreatedAt = CreateAt,
-            CustomerId = CustomerId,
+            CustomerId = SelectedCutomer.Id,
             Total = GetTotalInvoice(),
             InvoicesItems = ListInvoiceItem
         };
