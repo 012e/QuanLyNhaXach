@@ -52,7 +52,7 @@ public partial class EditItemVM : EditItemVM<Item>
         if (openFileDialog.ShowDialog() == true)
         {
             ImagePath = openFileDialog.FileName;
-            LoadImageFromUrl(ImagePath);
+            LoadImageFromUrl(imageUploader.GetPublicUrl(ImagePath));
         }
     }
 
@@ -148,7 +148,7 @@ public partial class EditItemVM : EditItemVM<Item>
         ImagePath = Item.Image;
         if (!string.IsNullOrEmpty(Item.Image))
         {
-            LoadImageFromUrl(Item.Image);
+            LoadImageFromUrl(imageUploader.GetPublicUrl(ImagePath));
         }
     }
 
