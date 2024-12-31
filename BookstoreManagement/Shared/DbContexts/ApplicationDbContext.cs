@@ -30,6 +30,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<ItemPrice> ItemPrices { get; set; }
 
+    public virtual DbSet<Note> Notes { get; set; }
+
     public virtual DbSet<Provider> Providers { get; set; }
 
     public virtual DbSet<Tag> Tags { get; set; }
@@ -41,6 +43,10 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("customers_pkey");
 
             entity.ToTable("customers");
+
+            entity.HasIndex(e => e.Email, "idx_customers_email");
+
+            entity.HasIndex(e => e.PhoneNumber, "idx_customers_phone_number");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Email)
@@ -63,6 +69,12 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("employees");
 
+            entity.HasIndex(e => e.Email, "idx_employees_email");
+
+            entity.HasIndex(e => e.IsManager, "idx_employees_is_manager");
+
+            entity.HasIndex(e => e.PhoneNumber, "idx_employees_phone_number");
+
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Address).HasColumnName("address");
             entity.Property(e => e.Birthday).HasColumnName("birthday");
@@ -72,12 +84,10 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.FirstName)
                 .HasMaxLength(255)
                 .HasColumnName("first_name");
+            entity.Property(e => e.Gender).HasColumnName("gender");
             entity.Property(e => e.IsManager)
                 .HasDefaultValue(false)
                 .HasColumnName("is_manager");
-            entity.Property(e => e.Gender)
-                .HasColumnType("boolean")
-                .HasColumnName("gender");
             entity.Property(e => e.LastName)
                 .HasMaxLength(255)
                 .HasColumnName("last_name");
@@ -98,6 +108,10 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("imports_pkey");
 
             entity.ToTable("imports");
+
+            entity.HasIndex(e => e.CreatedAt, "idx_imports_created_at");
+
+            entity.HasIndex(e => e.ProviderId, "idx_imports_provider_id");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
@@ -120,6 +134,10 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("import_items");
 
+            entity.HasIndex(e => e.ImportId, "idx_import_items_import_id");
+
+            entity.HasIndex(e => e.ItemId, "idx_import_items_item_id");
+
             entity.Property(e => e.ImportId).HasColumnName("import_id");
             entity.Property(e => e.ItemId).HasColumnName("item_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
@@ -139,7 +157,15 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("invoices");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.HasIndex(e => e.CreatedAt, "idx_invoices_created_at");
+
+            entity.HasIndex(e => e.CustomerId, "idx_invoices_customer_id");
+
+            entity.HasIndex(e => e.EmployeeId, "idx_invoices_employee_id");
+
+            entity.Property(e => e.Id)
+                .UseIdentityAlwaysColumn()
+                .HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
@@ -165,6 +191,10 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("invoices_items");
 
+            entity.HasIndex(e => e.InvoiceId, "idx_invoices_items_invoice_id");
+
+            entity.HasIndex(e => e.ItemId, "idx_invoices_items_item_id");
+
             entity.Property(e => e.InvoiceId).HasColumnName("invoice_id");
             entity.Property(e => e.ItemId).HasColumnName("item_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
@@ -184,7 +214,16 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("items");
 
+            entity.HasIndex(e => e.BasePrice, "idx_items_base_price");
+
+            entity.HasIndex(e => e.Name, "idx_items_name");
+
+            entity.HasIndex(e => e.ProviderId, "idx_items_provider_id");
+
+            entity.HasIndex(e => e.Quantity, "idx_items_quantity");
+
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.BasePrice).HasColumnName("base_price");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Image).HasColumnName("image");
             entity.Property(e => e.Name)
@@ -192,10 +231,6 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("name");
             entity.Property(e => e.ProviderId).HasColumnName("provider_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
-
-            entity.Property(e => e.BasePrice)
-                .HasColumnType("decimal")
-                .HasColumnName("base_price");
 
             entity.HasOne(d => d.Provider).WithMany(p => p.Items)
                 .HasForeignKey(d => d.ProviderId)
@@ -215,6 +250,8 @@ public partial class ApplicationDbContext : DbContext
                     {
                         j.HasKey("ItemId", "TagId").HasName("items_tags_pkey");
                         j.ToTable("items_tags");
+                        j.HasIndex(new[] { "ItemId" }, "idx_items_tags_item_id");
+                        j.HasIndex(new[] { "TagId" }, "idx_items_tags_tag_id");
                         j.IndexerProperty<int>("ItemId").HasColumnName("item_id");
                         j.IndexerProperty<int>("TagId").HasColumnName("tag_id");
                     });
@@ -225,6 +262,12 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("item_prices_pkey");
 
             entity.ToTable("item_prices");
+
+            entity.HasIndex(e => e.BeginDate, "idx_item_prices_begin_date");
+
+            entity.HasIndex(e => e.ItemId, "idx_item_prices_item_id");
+
+            entity.HasIndex(e => e.PriceType, "idx_item_prices_price_type");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BeginDate).HasColumnName("begin_date");
@@ -239,11 +282,38 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("item_prices_item_id_fkey");
         });
 
+        modelBuilder.Entity<Note>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("notes_pkey");
+
+            entity.ToTable("notes");
+
+            entity.HasIndex(e => e.EmployeeId, "idx_notes_employee_id");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Content).HasColumnName("content");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
+            entity.Property(e => e.DueDate).HasColumnName("due_date");
+            entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
+            entity.Property(e => e.Title)
+                .HasMaxLength(255)
+                .HasColumnName("title");
+
+            entity.HasOne(d => d.Employee).WithMany(p => p.Notes)
+                .HasForeignKey(d => d.EmployeeId)
+                .HasConstraintName("notes_employee_id_fkey");
+        });
+
         modelBuilder.Entity<Provider>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("providers_pkey");
 
             entity.ToTable("providers");
+
+            entity.HasIndex(e => e.Address, "idx_providers_address");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Address)
@@ -259,6 +329,8 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("tags_pkey");
 
             entity.ToTable("tags");
+
+            entity.HasIndex(e => e.Name, "idx_tags_name");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Description).HasColumnName("description");

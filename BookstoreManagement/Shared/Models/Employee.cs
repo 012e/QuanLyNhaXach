@@ -27,4 +27,6 @@ public partial class Employee
     public string Password { get; set; } = null!;
 
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+
+    public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 }

@@ -74,12 +74,6 @@
                         FlowDirection="RightToLeft"
                         Orientation="Horizontal">
                         <Button
-                            Background="YellowGreen"
-                            BorderThickness="0"
-                            Command="{Binding NavigateToCreateItemCommand}">
-                            <materialDesign:PackIcon Kind="plus" />
-                        </Button>
-                        <Button
                             Margin="10,0,0,0"
                             Background="Navy"
                             BorderThickness="0"

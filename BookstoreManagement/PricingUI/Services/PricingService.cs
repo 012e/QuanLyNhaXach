@@ -22,7 +22,7 @@ public class PricingService(ApplicationDbContext db)
             .FirstOrDefault(i => i.Id == itemId)
             ?? throw new ArgumentNullException(nameof(itemId));
 
-        var prices = item.ItemPrices;
+        var prices = item.ItemPrices.ToList();
         decimal basePrice = item.BasePrice;
 
         List<PricingDetail> otherPrices = GetOtherPrices(prices);
@@ -62,7 +62,7 @@ public class PricingService(ApplicationDbContext db)
 
         var pricingResponses = itemsWithPrices.Select(item =>
         {
-            var prices = item.ItemPrices;
+            var prices = item.ItemPrices.ToList();
             decimal basePrice = item.BasePrice;
 
             List<PricingDetail> otherPrices = GetOtherPrices(prices);
@@ -86,10 +86,10 @@ public class PricingService(ApplicationDbContext db)
         return GetPrice(item.Id);
     }
 
-    private List<PricingDetail> GetOtherPrices(ICollection<ItemPrice> prices)
+    private List<PricingDetail> GetOtherPrices(List<ItemPrice> prices)
     {
         List<PricingDetail> otherPrices = [];
-        foreach (var otherPrice in prices)
+        foreach (var otherPrice in prices.OrderBy(i => i.Ordering))
         {
             PricingDetail pricingDetail = new()
             {
@@ -121,13 +121,16 @@ public class PricingService(ApplicationDbContext db)
             db.ItemPrices.Remove(price);
         }
 
-        foreach (var pricingDetail in dto.PricingDetails)
+        for (var i = 0; i < dto.PricingDetails.Count; i++)
         {
+            var pricingDetail = dto.PricingDetails[i];
             var itemPrice = new ItemPrice
             {
                 PriceType = pricingDetail.Name,
                 Percentage = pricingDetail.Percentage,
-                Item = item
+                Item = item,
+                Ordering = i
+
             };
 
             db.ItemPrices.Add(itemPrice);
