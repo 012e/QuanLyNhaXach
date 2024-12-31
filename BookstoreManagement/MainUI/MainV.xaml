@@ -10,14 +10,16 @@
     xmlns:import="clr-namespace:BookstoreManagement.ImportUI"
     xmlns:invoice="clr-namespace:BookstoreManagement.UI.InvoicesUI"
     xmlns:item="clr-namespace:BookstoreManagement.UI.ItemUI"
-    xmlns:local="clr-namespace:BookstoreManagement"
+    xmlns:local="clr-namespace:BookstoreManagement.MainUI"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pricing="clr-namespace:BookstoreManagement.PricingUI"
     xmlns:notification="clr-namespace:BookstoreManagement.SettingUI"
     xmlns:provider="clr-namespace:BookstoreManagement.UI.ProviderUI"
     xmlns:setting="clr-namespace:BookstoreManagement.SettingUI"
     xmlns:tag="clr-namespace:BookstoreManagement.UI.TagUI"
     xmlns:vm="clr-namespace:BookstoreManagement.UI.MainWindow"
+    d:DataContext="{d:DesignInstance local:MainVM}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -181,6 +183,12 @@
             <DataTemplate DataType="{x:Type import:CreateImportVM}">
                 <import:CreateImportV />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type pricing:AllPricingVM}">
+                <pricing:AllPricingV />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type pricing:EditPricingVM}">
+                <pricing:EditPricingV />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type setting:AllSettingVM}">
                 <setting:AllSettingV />
             </DataTemplate>
@@ -238,6 +246,15 @@
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="BookOpen" Style="{DynamicResource sidebarRadioButtonIcon}" />
                                 <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Books" />
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton
+                            Height="50"
+                            Command="{Binding NavigateToPricingCommand}"
+                            Style="{DynamicResource sidebarRadioButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="AttachMoney" Style="{DynamicResource sidebarRadioButtonIcon}" />
+                                <TextBlock Style="{DynamicResource sideBarRadioButtonText}" Text="Pricing" />
                             </StackPanel>
                         </RadioButton>
                         <RadioButton

@@ -1,22 +1,23 @@
 ﻿<UserControl
-    x:Class="BookstoreManagement.UI.ItemUI.AllItemsV"
+    x:Class="BookstoreManagement.PricingUI.AllPricingV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converter="clr-namespace:BookstoreManagement.Shared.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
-    xmlns:local="clr-namespace:BookstoreManagement.UI.ItemUI"
+    xmlns:local="clr-namespace:BookstoreManagement.PricingUI"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:BookstoreManagement.UI.Components"
-    d:DataContext="{d:DesignInstance local:AllItemsVM}"
-    d:DesignHeight="800"
-    d:DesignWidth="1400"
+    d:DataContext="{d:DesignInstance local:AllPricingVM}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
     mc:Ignorable="d">
     <Control.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
         <converter:ListToStringConverter x:Key="ListToStringConverter" />
+        <converter:CurrencyConverter x:Key="CurrencyConverter" />
     </Control.Resources>
 
     <Border
@@ -40,9 +41,9 @@
                         FontSize="30"
                         FontWeight="Bold">
                         <materialDesign:PackIcon
-                            Width="23"
-                            Height="23"
-                            Kind="BookOpenVariant" />
+                            Width="26"
+                            Height="26"
+                            Kind="Money" />
                         Items
                     </TextBlock>
 
@@ -107,22 +108,10 @@
                 </DataGrid.InputBindings>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Id}" Header="Id" />
-                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                    <DataGridTextColumn
-                        Width="200"
-                        Binding="{Binding Description}"
-                        Header="Description" />
-                    <DataGridTemplateColumn Header="Tags">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    MaxWidth="150"
-                                    Text="{Binding Tags, Converter={StaticResource ListToStringConverter}}"
-                                    TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding Item.Id}" Header="Item Id" />
+                    <DataGridTextColumn Binding="{Binding Item.Name}" Header="Item Name" />
+                    <DataGridTextColumn Binding="{Binding BasePrice, Converter={StaticResource CurrencyConverter}}" Header="Base Price" />
+                    <DataGridTextColumn Binding="{Binding FinalPrice, Converter={StaticResource CurrencyConverter}}" Header="Selling Price" />
                     <DataGridTemplateColumn CanUserResize="False" Header="Commands">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -134,13 +123,6 @@
                                         Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                         CommandParameter="{Binding}">
                                         <materialDesign:PackIcon Kind="pencil" />
-                                    </Button>
-                                    <Button
-                                        Background="IndianRed"
-                                        BorderThickness="0"
-                                        Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                        CommandParameter="{Binding}">
-                                        <materialDesign:PackIcon Kind="TrashCanOutline" />
                                     </Button>
                                 </StackPanel>
                             </DataTemplate>

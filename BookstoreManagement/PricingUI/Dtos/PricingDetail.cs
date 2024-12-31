@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookstoreManagement.PricingUI.Dto;
+namespace BookstoreManagement.PricingUI.Dtos;
 
 public class PricingDetail
 {

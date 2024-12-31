@@ -1,5 +1,6 @@
 ﻿using BookstoreManagement.Core;
 using BookstoreManagement.ImportUI;
+using BookstoreManagement.PricingUI;
 using BookstoreManagement.LoginUI;
 using BookstoreManagement.SettingUI;
 using BookstoreManagement.Shared.Services;
@@ -29,6 +30,7 @@ public partial class MainVM : BaseViewModel
     private readonly INavigatorService<AllProviderVM> providerNavigator;
     private readonly INavigatorService<AllCustomersVM> customerNavigator;
     private readonly INavigatorService<AllImportVM> importNavigator;
+    private readonly INavigatorService<AllPricingVM> pricingNavigator;
     private readonly INavigatorService<AllSettingVM> settingNavigator;
     private readonly INavigatorService<MyProfileVM> profileNavigator;
     [ObservableProperty]
@@ -51,11 +53,13 @@ public partial class MainVM : BaseViewModel
     {
         tagNavigator.Navigate();
     }
+
     [RelayCommand]
     private void NavigateToDashBoard()
     {
         dashboardNavigator.Navigate();
     }
+
     [RelayCommand]
     private void NavigateToEmployee()
     {
@@ -81,6 +85,12 @@ public partial class MainVM : BaseViewModel
     }
 
     [RelayCommand]
+    private void NavigateToPricing()
+    {
+        pricingNavigator.Navigate();
+    }
+
+    [RelayCommand]
     private void NavigateToSetting()
     {
         profileNavigator.Navigate("setting");
@@ -97,6 +107,7 @@ public partial class MainVM : BaseViewModel
         INavigatorService<AllEmployeeVM> employeeNavigator,
         INavigatorService<AllCustomersVM> customerNavigator,
         INavigatorService<AllImportVM>  importNavigator,
+        INavigatorService<AllPricingVM>  pricingNavigator,
         INavigatorService<AllSettingVM> settingNavigator,
         INavigatorService<MyProfileVM> profileNavigator
     )
@@ -110,6 +121,7 @@ public partial class MainVM : BaseViewModel
         this.employeeNavigator = employeeNavigator;
         this.customerNavigator = customerNavigator;
         this.importNavigator = importNavigator;
+        this.pricingNavigator = pricingNavigator;
         this.settingNavigator = settingNavigator;
         this.profileNavigator = profileNavigator;
     }

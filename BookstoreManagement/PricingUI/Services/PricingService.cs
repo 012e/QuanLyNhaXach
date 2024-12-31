@@ -1,4 +1,4 @@
-﻿using BookstoreManagement.PricingUI.Dto;
+﻿using BookstoreManagement.PricingUI.Dtos;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using Microsoft.EntityFrameworkCore;
@@ -27,18 +27,58 @@ public class PricingService(ApplicationDbContext db)
 
         List<PricingDetail> otherPrices = GetOtherPrices(prices);
 
+        decimal finalPrice = CalculateFinalPrice(basePrice, otherPrices);
+
+        return new()
+        {
+            Item = item,
+            BasePrice = basePrice,
+            PricingDetails = otherPrices,
+            FinalPrice = finalPrice
+        };
+    }
+
+    private static decimal CalculateFinalPrice(decimal basePrice, List<PricingDetail> otherPrices)
+    {
         var finalPrice = basePrice;
         for (int i = 0; i < otherPrices.Count; i++)
         {
             finalPrice += finalPrice * otherPrices[i].Percentage;
         }
 
-        return new()
+        return finalPrice;
+    }
+
+    public IEnumerable<PricingResponseDto> GetAllPricing()
+    {
+        var itemsWithPrices = db.Items
+            .Include(i => i.ItemPrices)
+            .ToList();
+
+        if (!itemsWithPrices.Any())
         {
-            BasePrice = basePrice,
-            PricingDetails = otherPrices,
-            FinalPrice = finalPrice
-        };
+            return [];
+        }
+
+        var pricingResponses = itemsWithPrices.Select(item =>
+        {
+            var prices = item.ItemPrices;
+            decimal basePrice = item.BasePrice;
+
+            List<PricingDetail> otherPrices = GetOtherPrices(prices);
+
+            decimal finalPrice = CalculateFinalPrice(basePrice, otherPrices);
+
+            return new PricingResponseDto
+            {
+                Item = item,
+                BasePrice = basePrice,
+                PricingDetails = otherPrices,
+                FinalPrice = finalPrice
+            };
+        });
+
+        return pricingResponses;
     }
 
     public PricingResponseDto GetPrice(Item item)
@@ -60,5 +100,41 @@ public class PricingService(ApplicationDbContext db)
         }
 
         return otherPrices;
+    }
+
+    public bool SavePrice(UpdatePricingRequestDto dto)
+    {
+        var item = db.Items
+            .Include(i => i.ItemPrices)
+            .FirstOrDefault(i => i.Id == dto.ItemId);
+
+        if (item == null)
+        {
+            return false;
+        }
+
+        item.BasePrice = dto.BasePrice;
+
+        var prices = item.ItemPrices;
+        foreach (var price in prices)
+        {
+            db.ItemPrices.Remove(price);
+        }
+
+        foreach (var pricingDetail in dto.PricingDetails)
+        {
+            var itemPrice = new ItemPrice
+            {
+                PriceType = pricingDetail.Name,
+                Percentage = pricingDetail.Percentage,
+                Item = item
+            };
+
+            db.ItemPrices.Add(itemPrice);
+        }
+
+        db.SaveChanges();
+
+        return true;
     }
 }

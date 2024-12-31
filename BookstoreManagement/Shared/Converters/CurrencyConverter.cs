@@ -19,7 +19,7 @@ public class CurrencyConverter : IValueConverter
         try
         {
             decimal amountInVND = System.Convert.ToDecimal(value);
-            return amountInVND.ToString("N0", culture) + "đ"; // Format with thousands separator
+            return "$" + amountInVND.ToString("N0", culture); // Format with thousands separator
         }
         catch (Exception)
         {

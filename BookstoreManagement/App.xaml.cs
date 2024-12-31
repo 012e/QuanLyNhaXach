@@ -17,7 +17,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
+using System.Windows.Navigation;
+using BookstoreManagement.PricingUI;
 using BookstoreManagement.PricingUI.Services;
+using BookstoreManagement.PricingUI.Dtos;
 using BookstoreManagement.Shared.Services;
 using BookstoreManagement.SettingUI;
 using Supabase;
@@ -84,7 +87,10 @@ public partial class App : Application
         builder.Services.AddViewViewModel<CreateImportV, CreateImportVM>();
 
 
+        builder.Services.AddViewViewModel<AllPricingV, AllPricingVM>();
+        builder.Services.AddViewContextualViewModel<EditPricingV, EditPricingVM, PricingResponseDto>();
         builder.Services.AddSingleton<PricingService>();
+
         builder.Services.AddViewViewModel<DashBoardV, DashBoardVM>();
         builder.Services.AddViewViewModel<MainV, MainVM>();
 
