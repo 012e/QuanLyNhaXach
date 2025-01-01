@@ -141,7 +141,7 @@
 
                 <StackPanel Width="200" HorizontalAlignment="Center">
                     <Label>Id</Label>
-                    <TextBox Text="{Binding Invoice.Id}" />
+                    <TextBox IsReadOnly="True" Text="{Binding Invoice.Id}" />
 
                     <Label>Total</Label>
                     <TextBox IsReadOnly="True" Text="{Binding Invoice.Total}" />
