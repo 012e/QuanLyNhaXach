@@ -4,12 +4,318 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:BookstoreManagement.SettingUI"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    xmlns:ui="clr-namespace:BookstoreManagement.UI.Components"
+    d:DataContext="{d:DesignInstance local:AllNotificationVM}"
+    d:DesignHeight="500"
+    d:DesignWidth="1020"
     mc:Ignorable="d">
-    <StackPanel Background="#fff">
-        <Button Name="btnTest" Command="{Binding TestCommand}" />
-        <TextBlock>Heelo</TextBlock>
-    </StackPanel>
+    <Grid Background="#fff">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding WidthListNote}" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="{Binding WidthDetailNote}" />
+        </Grid.ColumnDefinitions>
+
+        <!--  Su dung minWidth de gioi han chieu rong cua cot  -->
+
+        <!--  bg_note.jfif  -->
+        <!--  List Note  -->
+        <Grid Grid.Column="0" Background="#fff">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.4*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+
+            <!--  Back Ground Picture  -->
+            <Border
+                Grid.Row="0"
+                Margin="0,0,0,10"
+                BorderBrush="Transparent"
+                BorderThickness="2"
+                CornerRadius="10">
+                <Border.Background>
+                    <ImageBrush ImageSource="pack://application:,,,/BookstoreManagement;component/Shared/Images/bg_note.jfif" Stretch="UniformToFill" />
+                </Border.Background>
+            </Border>
+            <!--  End Back Ground Picture  -->
+
+
+            <!--  Body  -->
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.2*" />
+                    <RowDefinition Height="0.2*" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <!--  Body Header ListNote  -->
+
+                <!--  Tile ListNote  -->
+                <Grid Grid.Row="0" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.1*" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Icon  -->
+                    <Grid Grid.Column="0">
+                        <Image
+                            Width="50"
+                            Height="50"
+                            Source="pack://application:,,,/Shared/Images/note2.png" />
+                    </Grid>
+                    <!--  End Icon  -->
+
+                    <!--  Title Text  -->
+                    <Grid Grid.Column="1">
+                        <TextBlock FontSize="30" FontWeight="Bold">Work Notes</TextBlock>
+                    </Grid>
+                    <!--  End Title Text  -->
+                </Grid>
+                <!--  End Tile ListNote  -->
+
+                <!--  Tool bar  -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" MinWidth="200" />
+                        <ColumnDefinition Width="0.7*" />
+                        <ColumnDefinition Width="1*" MinWidth="300" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Search Bar  -->
+                    <Grid
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
+                        <ui:Search
+                            Height="50"
+                            PlaceHolder="Search for provider"
+                            Text="{Binding SearchText}" />
+                    </Grid>
+                    <!--  End Search Bar  -->
+
+                    <!--  List button  ListNote  -->
+                    <Grid Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="0.5*" />
+                        </Grid.ColumnDefinitions>
+                        <!--  Button Mode  -->
+                        <Grid Grid.Column="0" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid
+                                Grid.Column="0"
+                                Margin="0,0,10,0"
+                                HorizontalAlignment="Right">
+                                <Label FontSize="20" FontWeight="DemiBold">Mode</Label>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <Button Width="70" Padding="0">Mode</Button>
+                            </Grid>
+                        </Grid>
+                        <!--  End Button Mode  -->
+                        <!--  Button New  -->
+                        <Grid Grid.Column="1" HorizontalAlignment="Center">
+                            <Button
+                                Width="70"
+                                Padding="0"
+                                Command="{Binding TestCommand}"
+                                Content="New" />
+                        </Grid>
+                        <!--  End Button New  -->
+
+                    </Grid>
+                    <!--  End List button ListNote  -->
+
+                </Grid>
+                <!--  End Body Header  -->
+                <!--  End Body Header ListNote  -->
+
+                <!--  Dataview ListNote  -->
+                <Grid Grid.Row="2" Margin="0,20,0,0">
+                    <DataGrid
+                        AutoGenerateColumns="False"
+                        Background="#fff"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding}">
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="BorderBrush" Value="Black" />
+                                <Setter Property="Padding" Value="10,0,0,10" />
+                                <Setter Property="BorderThickness" Value="0,0,0,1" />
+                                <Setter Property="FontSize" Value="15" />
+                            </Style>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="FontWeight" Value="DemiBold" />
+                                <Setter Property="Margin" Value="10,0,0,0" />
+
+                            </Style>
+
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="0.2*"
+                                Binding="{Binding}"
+                                Header="Title" />
+                            <!--  Binding full name  -->
+                            <DataGridTextColumn
+                                Width="0.2*"
+                                Binding="{Binding}"
+                                Header="Create by" />
+                            <!--  End Binding full name  -->
+
+                            <DataGridTemplateColumn
+                                Width="0.2*"
+                                CanUserResize="False"
+                                Header="">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button
+                                                Margin="5"
+                                                Background="DarkBlue"
+                                                BorderThickness="0"
+                                                Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                CommandParameter="{Binding}">
+                                                <materialDesign:PackIcon Kind="pencil" />
+                                            </Button>
+                                            <Button
+                                                Background="IndianRed"
+                                                BorderThickness="0"
+                                                Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                CommandParameter="{Binding}">
+                                                <materialDesign:PackIcon Kind="TrashCanOutline" />
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+                <!--  End Dataview ListNote  -->
+
+            </Grid>
+            <!--  End Body  -->
+        </Grid>
+        <!--  End List Note  -->
+
+        <GridSplitter
+            Grid.Column="1"
+            Width="5"
+            HorizontalAlignment="Stretch"
+            Background="Gray" />
+
+        <!--  Create Note  -->
+        <Grid
+            Grid.Column="2"
+            Margin="30"
+            Background="#ffff">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <!--  Header  -->
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.25*" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <!--  Tile  -->
+                    <Grid
+                        Grid.Row="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
+                        <TextBox
+                            x:Name="NewPage"
+                            Width="400"
+                            Height="55"
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            FontSize="30"
+                            FontWeight="DemiBold"
+                            Text="{Binding Text, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock
+                            Padding="10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="30"
+                            Foreground="DarkGray"
+                            IsHitTestVisible="False"
+                            Text="New page...">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=NewPage}" Value="">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                    <!--  End Tile  -->
+
+                    <!--  Info Create  -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  Lable  Col 0  -->
+                        <StackPanel Grid.Column="0">
+                            <StackPanel>
+                                <Label>Create at</Label>
+                            </StackPanel>
+                            <StackPanel>
+                                <Label>Create by</Label>
+                            </StackPanel>
+                            <StackPanel>
+                                <Label>Due day</Label>
+                            </StackPanel>
+                        </StackPanel>
+                        <!--  End Lable Col 0  -->
+
+                        <!--  TextBox Col 1  -->
+                        <StackPanel Grid.Column="1">
+                            <StackPanel>
+                                <DatePicker SelectedDate="" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBox
+                                    BorderBrush="Transparent"
+                                    IsReadOnly="True"
+                                    Text="Current User" />
+                            </StackPanel>
+                            <StackPanel>
+                                <DatePicker SelectedDate="" />
+                            </StackPanel>
+
+                        </StackPanel>
+                        <!--  End TextBox Col 1  -->
+
+                    </Grid>
+                    <!--  End Info Create  -->
+                </Grid>
+                <!--  End Header  -->
+
+                <!--  Body  -->
+                <Grid Grid.Row="1" />
+                <!--  End Body  -->
+            </Grid>
+        </Grid>
+        <!--  End Create Note  -->
+    </Grid>
 </UserControl>

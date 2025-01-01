@@ -19,25 +19,21 @@ namespace BookstoreManagement.SettingUI
 {
     public partial class AllNotificationVM : BaseViewModel
     {
-        Notifier notifier = new Notifier(cfg =>
-        {
-            cfg.PositionProvider = new WindowPositionProvider(
-                parentWindow: Application.Current.MainWindow,
-                corner: Corner.TopRight,
-                offsetX: 10,
-                offsetY: 10);
+        [ObservableProperty]
+        private GridLength _widthDetailNote = new GridLength(0,GridUnitType.Star);
 
-            cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
-                notificationLifetime: TimeSpan.FromSeconds(3),
-                maximumNotificationCount: MaximumNotificationCount.FromCount(5));
-
-            cfg.Dispatcher = Application.Current.Dispatcher;
-        });
+        [ObservableProperty]
+        private GridLength _widthListNote = new GridLength(1,GridUnitType.Star);
 
         [RelayCommand]
         private void Test()
         {
-            notifier.ShowSuccess("Success");
+            WidthDetailNote = new GridLength(0.8, GridUnitType.Star);
+            WidthListNote = new GridLength(1, GridUnitType.Star);
+        }
+        public AllNotificationVM()
+        {
+            
         }
     }
 }

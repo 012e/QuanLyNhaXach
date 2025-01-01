@@ -77,6 +77,7 @@
   <ItemGroup>
     <None Remove="Shared\Images\background_login.png" />
     <None Remove="Shared\Images\bg1.png" />
+    <None Remove="Shared\Images\bg_note.jfif" />
     <None Remove="Shared\Images\Close_Icon.png" />
     <None Remove="Shared\Images\edit.png" />
     <None Remove="Shared\Images\Error_Icon.png" />
@@ -85,6 +86,7 @@
     <None Remove="Shared\Images\info.png" />
     <None Remove="Shared\Images\logo.png" />
     <None Remove="Shared\Images\note.png" />
+    <None Remove="Shared\Images\note2.png" />
     <None Remove="Shared\Images\Poppins-Light.ttf" />
     <None Remove="Shared\Images\Poppins-Medium.ttf" />
     <None Remove="Shared\Images\profile.png" />
@@ -122,6 +124,9 @@
     <Resource Include="Shared\Images\background_login.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Shared\Images\bg_note.jfif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Shared\Images\Close_Icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -147,6 +152,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Shared\Images\note.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shared\Images\note2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Shared\Images\Poppins-Light.ttf">

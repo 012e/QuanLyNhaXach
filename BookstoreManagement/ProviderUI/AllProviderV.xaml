@@ -65,7 +65,6 @@
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
                         <ui:Search PlaceHolder="Search for provider" Text="{Binding SearchText}" />
-
                     </StackPanel>
                     <StackPanel
                         Grid.Column="1"
