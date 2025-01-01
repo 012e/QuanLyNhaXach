@@ -44,7 +44,8 @@
                             FontSize="15"
                             FontWeight="Medium"
                             Foreground="{Binding CodeColorT}"
-                            Text="{Binding Message}" />
+                            Text="{Binding Message}"
+                            TextWrapping="Wrap" />
                     </StackPanel>
                 </Grid>
             </Grid>

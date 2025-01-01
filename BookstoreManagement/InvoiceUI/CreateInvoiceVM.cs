@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Design.Serialization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Documents;
 using ToastNotifications.Core;
@@ -88,12 +89,48 @@ public partial class CreateInvoiceVM : BaseViewModel
         this.allInvoiceNavigator = allInvoiceNavigator;
         this.pricingService = pricingService;
     }
+    //check input
+    [ObservableProperty]
+    private string _errorMessage = string.Empty;
+    private bool IsOnlyNumber(string input)
+    {
+        return Regex.IsMatch(input, @"\d");
+    }
+    private bool Check_Valid_Input()
+    {
+        if (string.IsNullOrWhiteSpace(EmployeeId.ToString()))
+        {
+            ErrorMessage = "Employee Id can not be empty!";
+            return false;
+        }
+        if(!IsOnlyNumber(EmployeeId.ToString()))
+        {
+            ErrorMessage = "Employee Id must be a non-negative integer!";
+            return false;
+        }
+        if(!db.Employees.Any(e => e.Id == EmployeeId))
+        {
+            ErrorMessage = "Employee Id is not exists!";
+            return false;
+        }
+        ErrorMessage = string.Empty;
+        return true;
 
+    }
 
     // Submit command
     [RelayCommand]
     private void Submit()
     {
+        if (!Check_Valid_Input())
+        {
+            GetNotification.NotifierInstance.ErrorMessage("Error", ErrorMessage, NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+            return;
+        } 
         CreateNewInvoice();
     }
 
