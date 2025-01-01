@@ -18,6 +18,7 @@ public class PricingService(ApplicationDbContext db)
     public PricingResponseDto GetPrice(int itemId)
     {
         var item = db.Items
+            .AsNoTracking()
             .Include(i => i.ItemPrices)
             .FirstOrDefault(i => i.Id == itemId)
             ?? throw new ArgumentNullException(nameof(itemId));
@@ -49,9 +50,43 @@ public class PricingService(ApplicationDbContext db)
         return finalPrice;
     }
 
+    public async Task<IEnumerable<PricingResponseDto>> GetAllPricingAsync()
+    {
+        var itemsWithPrices = await db.Items
+            .AsNoTracking()
+            .Include(i => i.ItemPrices)
+            .ToListAsync();
+
+        if (itemsWithPrices.Count == 0)
+        {
+            return [];
+        }
+
+        var pricingResponses = itemsWithPrices.Select(item =>
+        {
+            var prices = item.ItemPrices.ToList();
+            decimal basePrice = item.BasePrice;
+
+            List<PricingDetail> otherPrices = GetOtherPrices(prices);
+
+            decimal finalPrice = CalculateFinalPrice(basePrice, otherPrices);
+
+            return new PricingResponseDto
+            {
+                Item = item,
+                BasePrice = basePrice,
+                PricingDetails = otherPrices,
+                FinalPrice = finalPrice
+            };
+        });
+
+        return pricingResponses;
+    }
+
     public IEnumerable<PricingResponseDto> GetAllPricing()
     {
         var itemsWithPrices = db.Items
+            .AsNoTracking()
             .Include(i => i.ItemPrices)
             .ToList();
 

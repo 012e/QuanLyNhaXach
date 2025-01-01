@@ -140,7 +140,6 @@
                 CornerRadius="10">
 
                 <StackPanel Width="200" HorizontalAlignment="Center">
-
                     <Label>Id</Label>
                     <TextBox Text="{Binding Invoice.Id}" />
 

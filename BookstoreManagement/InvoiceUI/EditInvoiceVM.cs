@@ -1,26 +1,17 @@
 ﻿using BookstoreManagement.Core.Shortcut;
 using BookstoreManagement.InvoiceUI.Dtos;
+using BookstoreManagement.InvoiceUI.Exporters;
 using BookstoreManagement.PricingUI.Services;
 using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
-using BookstoreManagement.UI.DashboardUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DocumentFormat.OpenXml.Office2010.CustomUI;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
-using System.Security.Principal;
 using System.Windows;
-using System.Windows.Automation;
 using ToastNotifications.Core;
-using ToastNotifications.Messages.Error;
 
 namespace BookstoreManagement.UI.InvoicesUI;
 
@@ -28,6 +19,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
 {
     private readonly ApplicationDbContext db;
     private readonly PricingService pricingService;
+    private readonly InvoiceExporter invoiceExporter;
 
 
     // Day la danh sach chua cac item co trong hoa don
@@ -40,7 +32,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     private Invoice _invoice;
 
     [ObservableProperty]
-    private Customer _selectedCutomer ;
+    private Customer _selectedCutomer;
 
     [ObservableProperty]
     private bool _isSet = false;
@@ -59,13 +51,11 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     {
         AllInvoicesNavigator.Navigate();
     }
+
     public override void ResetState()
     {
         base.ResetState();
         IsInvoiceItemVisible = false;
-        
-
-
     }
 
     protected override void LoadItem()
@@ -81,7 +71,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
                                     Name = items.Name,
                                     Quantity = invoiceItems.Quantity,
                                     Price = pricingService.GetPrice(items.Id).FinalPrice,
-                                    TotalPrice = pricingService.GetPrice(items.Id).FinalPrice*invoiceItems.Quantity
+                                    TotalPrice = pricingService.GetPrice(items.Id).FinalPrice * invoiceItems.Quantity
                                 });
         CustomerId = Invoice.CustomerId;
         InvoiceItemDto = new ObservableCollection<InvoiceItemDto>(itemsFromInvoice);
@@ -110,11 +100,13 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     {
         IsSet = true;
     }
+
     [RelayCommand]
     private void CloseSetCustomer()
     {
-        IsSet = false;  
+        IsSet = false;
     }
+
     private void UpdateFilter()
     {
         var customers = db.Customers.OrderBy(i => i.Id).ToList();
@@ -129,7 +121,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     }
     partial void OnSelectedCutomerChanged(Customer? oldValue, Customer newValue)
     {
-        if(newValue is null)
+        if (newValue is null)
         {
             return;
         }
@@ -138,11 +130,12 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
 
     public EditInvoiceVM(ApplicationDbContext db,
         INavigatorService<AllInvoicesVM> allInvoicesNavigator,
-        PricingService pricingService
-        )
+        PricingService pricingService,
+        InvoiceExporter invoiceExporter)
     {
         this.db = db;
         this.pricingService = pricingService;
+        this.invoiceExporter = invoiceExporter;
         AllInvoicesNavigator = allInvoicesNavigator;
     }
 
@@ -454,4 +447,10 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         });
     }
     // ========================= End Section Detail Item ===================================
+
+    [RelayCommand]
+    private async Task ExportPdf()
+    {
+        await invoiceExporter.ExportPdf(Invoice.Id);
+    }
 }

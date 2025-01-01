@@ -1,5 +1,6 @@
 ﻿using BookstoreManagement.Core.Shortcut;
 using BookstoreManagement.InvoiceUI.Dtos;
+using BookstoreManagement.InvoiceUI.Exporters;
 using BookstoreManagement.PricingUI.Services;
 using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
@@ -36,6 +37,7 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
     {
         CreateInvoiceNavigator.Navigate();
     }
+
     protected override bool FitlerItem(Invoice item)
     {
         string findString = item.EmployeeId.ToString() + item.CreatedAt.ToString() + item.CustomerId.ToString();
@@ -43,10 +45,12 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
         bool searchByDate = !_isDatePickerActive || item.CreatedAt.Date == FilterByDate.Date;
         return searchByText && searchByDate;
     }
+
     partial void OnSearchTextChanged(string value)
     {
         ItemsView.Refresh();
     }
+
     partial void OnFilterByDateChanged(DateTime oldValue)
     {
         _isDatePickerActive = true;
@@ -95,6 +99,7 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
 
 
     private readonly PricingService pricingService;
+    private readonly InvoiceExporter invoiceExporter;
 
     private decimal GetTotalPrice(int invoiceId)
     {
@@ -117,13 +122,15 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
         ApplicationDbContext db,
         IContextualNavigatorService<EditInvoiceVM, Invoice> editInvoiceNavigator,
         INavigatorService<CreateInvoiceVM> createInvoiceNavigator,
-        PricingService pricingService
+        PricingService pricingService,
+        InvoiceExporter invoiceExporter
         )
     {
         EditItemNavigator = editInvoiceNavigator;
         CreateInvoiceNavigator = createInvoiceNavigator;
         this.db = db;
-        this.pricingService = pricingService;   
+        this.pricingService = pricingService;
+        this.invoiceExporter = invoiceExporter;
     }
 
     private void WarningNotification()
@@ -141,5 +148,11 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
             FreezeOnMouseEnter = false,
             ShowCloseButton = true
         });
+    }
+
+    [RelayCommand]
+    private async Task ExportPdf(Invoice invoice)
+    {
+        await invoiceExporter.ExportPdf(invoice.Id);
     }
 }

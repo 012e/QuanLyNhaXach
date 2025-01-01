@@ -24,6 +24,7 @@ using BookstoreManagement.PricingUI.Dtos;
 using BookstoreManagement.Shared.Services;
 using BookstoreManagement.SettingUI;
 using Supabase;
+using BookstoreManagement.InvoiceUI.Exporters;
 using System.Net.Mail;
 
 namespace BookstoreManagement;
@@ -120,6 +121,9 @@ public partial class App : Application
         builder.Services.AddViewViewModel<MyProfileV, MyProfileVM>();
         builder.Services.AddViewViewModel<AccountV, AccountVM>();
         builder.Services.AddViewViewModel<AllNotificationV, AllNotificationVM>();
+
+        builder.Services.AddSingleton<InvoiceExporter>();
+
 
         builder.Services.AddViewViewModel<ForgotPasswordV, ForgotPasswordVM>();
 
