@@ -202,7 +202,7 @@ public partial class EditItemVM : EditItemVM<Item>
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error loading image: {ex.Message}");
+            ErrorImageNotification();
         }
     }
     [RelayCommand]
@@ -244,6 +244,14 @@ public partial class EditItemVM : EditItemVM<Item>
     private void SuccessNotification()
     {
         GetNotification.NotifierInstance.SuccessMessage("Success", "Submit successfully", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
+    private void ErrorImageNotification()
+    {
+        GetNotification.NotifierInstance.SuccessMessage("Error", "Can not load image from url!", NotificationType.Error, new MessageOptions
         {
             FreezeOnMouseEnter = false,
             ShowCloseButton = true

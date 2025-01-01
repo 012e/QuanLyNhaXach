@@ -161,25 +161,17 @@ namespace BookstoreManagement.ImportUI
             };
             try
             {
-                bool check = false;
-                foreach(var item in ListItem)
-                {
-                    if(item.ItemId == importItem.ItemId)
-                    {
-                        item.Quantity += importItem.Quantity;
-                        check = true;
-                        break;
-                    }
-                }
-                if (!check)
+                bool check = db.Items.Any(i => i.Id == importItem.ItemId);
+                
+                if (check)
                 {
                     ListItem.Add(importItem);
                 }
-                SuccessAddNotification();
+                ErrorDbNotification();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Could'n add item : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorDbNotification();
             }
             ResetValue();
         }
@@ -301,6 +293,15 @@ namespace BookstoreManagement.ImportUI
         // ===================================== END SECTION FOR IMPORT ITEM =============================================
 
         // Toast notification
+
+        private void ErrorDbNotification()
+        {
+            GetNotification.NotifierInstance.WarningMessage("Error", "Couldn't add item: Database Error", NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
         private void WarningNotification()
         {
             GetNotification.NotifierInstance.WarningMessage("Warning", "This action cannot be undone", NotificationType.Error, new MessageOptions

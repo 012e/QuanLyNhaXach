@@ -10,6 +10,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
+using System.Security.Principal;
+using System.Text.RegularExpressions;
 using System.Windows;
 using ToastNotifications.Core;
 
@@ -282,7 +286,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Could'n add item : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            ErrorDBNotification();
         }
     }
 
@@ -309,10 +313,47 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
             Quantity = SelectInvoiceItem.Quantity;
         }
     }
+    //check input
+    [ObservableProperty]
+    private string _errorMessage = string.Empty;
+    private bool IsOnlyNumber(string input)
+    {
+        return Regex.IsMatch(input, @"\d");
+    }
+    private bool Check_Valid_Input()
+    {
+        if (string.IsNullOrWhiteSpace(Invoice.EmployeeId.ToString()))
+        {
+            ErrorMessage = "Employee Id can not be empty!";
+            return false;
+        }
+        if (!IsOnlyNumber(Invoice.EmployeeId.ToString()))
+        {
+            ErrorMessage = "Employee Id must be a non-negative integer!";
+            return false;
+        }
+        if (!db.Employees.Any(e => e.Id == Invoice.EmployeeId))
+        {
+            ErrorMessage = "Employee Id is not exists!";
+            return false;
+        }
+        ErrorMessage = string.Empty;
+        return true;
+
+    }
     [ObservableProperty]
     private bool _isSubmitSuccess = false;
     protected override void SubmitItemHandler()
     {
+        if(!Check_Valid_Input())
+        {
+            GetNotification.NotifierInstance.ErrorMessage("Warning", ErrorMessage, NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+            return;
+        }
         SaveChange();
         IsSubmitSuccess = true;
     }
@@ -357,7 +398,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error saving changes: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            ErrorDBNotification();
         }
     }
 
@@ -421,7 +462,14 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
             ShowCloseButton = true
         });
     }
-
+    private void ErrorDBNotification()
+    {
+        GetNotification.NotifierInstance.ErrorMessage("Error", "Couldn't add item: Database Error", NotificationType.Error, new MessageOptions
+        {
+            FreezeOnMouseEnter = false,
+            ShowCloseButton = true
+        });
+    }
     private void SuccessSaveNotification()
     {
         GetNotification.NotifierInstance.SuccessMessage("Success", "Save successfully", NotificationType.Error, new MessageOptions

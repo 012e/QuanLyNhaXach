@@ -12,6 +12,9 @@
     Icon="/Shared/Images/icon_title.ico"
     WindowState="Maximized"
     mc:Ignorable="d">
+    <Window.InputBindings>
+        <KeyBinding Key="Esc" Command="{Binding CloseAppCommand}" />
+    </Window.InputBindings>
     <Grid>
         <Grid.Resources>
             <DataTemplate DataType="{x:Type main:MainVM}">
