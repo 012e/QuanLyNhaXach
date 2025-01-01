@@ -29,7 +29,20 @@ public partial class AllPricingVM(
     }
 
     [ObservableProperty]
-    private string _searchText;
+    private string _searchText = "";
+
+    protected override bool FitlerItem(PricingResponseDto item)
+    {
+        if (item is null || SearchText is null) return false;
+        var nameCond = item.Item.Name.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase);
+        var idCond = item.Item.Id.ToString().Contains(SearchText);
+        return nameCond || idCond;
+    }
+
+    partial void OnSearchTextChanged(string value)
+    {
+        ItemsView.Refresh();
+    }
 
 
     [RelayCommand]
