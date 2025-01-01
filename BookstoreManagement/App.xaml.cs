@@ -24,6 +24,7 @@ using BookstoreManagement.PricingUI.Dtos;
 using BookstoreManagement.Shared.Services;
 using BookstoreManagement.SettingUI;
 using Supabase;
+using System.Net.Mail;
 
 namespace BookstoreManagement;
 
@@ -52,6 +53,22 @@ public partial class App : Application
                 }
             );
         });
+
+        builder.Services.AddSingleton<SmtpClient>(p =>
+        {
+            return new SmtpClient
+            {
+                Host = "smtp.mailersend.net",
+                Port = 587,
+                Credentials = new System.Net.NetworkCredential(
+                    Environment.GetEnvironmentVariable("MAIL_USERNAME"),
+                    Environment.GetEnvironmentVariable("MAIL_PASSWORD")
+                ),
+                EnableSsl = true,
+            };
+
+        });
+        builder.Services.AddSingleton<MailService>();
 
         builder.Services.AddSingleton<ImageUploader>();
         builder.Services.AddHostedService<BucketSetupService>();
@@ -103,6 +120,9 @@ public partial class App : Application
         builder.Services.AddViewViewModel<MyProfileV, MyProfileVM>();
         builder.Services.AddViewViewModel<AccountV, AccountVM>();
         builder.Services.AddViewViewModel<AllNotificationV, AllNotificationVM>();
+
+        builder.Services.AddViewViewModel<ForgotPasswordV, ForgotPasswordVM>();
+
         builder.Services.AddKeyedSingleton<NavigatorStore>("default");
         builder.Services.AddKeyedSingleton<NavigatorStore>("global");
         builder.Services.AddKeyedSingleton<NavigatorStore>("setting");

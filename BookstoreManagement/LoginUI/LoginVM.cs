@@ -29,6 +29,7 @@ public partial class LoginVM : BaseViewModel
     private readonly INavigatorService<MainVM> mainUINavigator;
     private readonly LoginService loginService;
     private readonly INavigatorService<DashBoardVM> dashboardNavigator;
+    private readonly INavigatorService<ForgotPasswordVM> forgotPasswordNavigator;
     [ObservableProperty]
     private string _email;
     [ObservableProperty]
@@ -69,11 +70,13 @@ public partial class LoginVM : BaseViewModel
     }
 
     public LoginVM(INavigatorService<MainVM> mainUINavigator, LoginService loginService,
-        INavigatorService<DashBoardVM> dashboardNavigator)
+        INavigatorService<DashBoardVM> dashboardNavigator,
+        INavigatorService<ForgotPasswordVM> forgotPasswordNavigator)
     {
         this.mainUINavigator = mainUINavigator;
         this.loginService = loginService;
         this.dashboardNavigator = dashboardNavigator;
+        this.forgotPasswordNavigator = forgotPasswordNavigator;
     }
 
     [RelayCommand]
@@ -102,9 +105,9 @@ public partial class LoginVM : BaseViewModel
         });
     }
 
-  
-
-
-
-
+    [RelayCommand]
+    private void ForgotPassword()
+    {
+        forgotPasswordNavigator.Navigate("global");
+    }
 }

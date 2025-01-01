@@ -11,6 +11,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:myProfile="clr-namespace:BookstoreManagement.SettingUI"
     xmlns:notification="clr-namespace:BookstoreManagement.SettingUI"
+    d:DataContext="{d:DesignInstance local:AllSettingVM}"
     d:DesignHeight="800"
     d:DesignWidth="1000"
     mc:Ignorable="d">
@@ -197,42 +198,73 @@
                         Grid.Column="0"
                         BorderBrush="LightGray"
                         BorderThickness="0,0,1,0">
-                        <StackPanel>
-                            <RadioButton
-                                Height="50"
-                                Command="{Binding NavigateToMyProfileCommand}"
-                                IsChecked="True"
-                                Style="{DynamicResource sidebarRadioButton}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0">
+                                <RadioButton
+                                    Height="50"
+                                    Command="{Binding NavigateToMyProfileCommand}"
+                                    IsChecked="True"
+                                    Style="{DynamicResource sidebarRadioButton}">
+                                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                        <TextBlock
+                                            Padding="30,0,0,0"
+                                            Style="{DynamicResource sideBarRadioButtonText}"
+                                            Text="My profile" />
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton
+                                    Height="50"
+                                    Command="{Binding NavigateToAccountCommand}"
+                                    Style="{DynamicResource sidebarRadioButton}">
+                                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                        <TextBlock
+                                            Padding="30,0,0,0"
+                                            Style="{DynamicResource sideBarRadioButtonText}"
+                                            Text="Account" />
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton
+                                    Height="50"
+                                    Command="{Binding NavigateToNotificationCommand}"
+                                    Style="{DynamicResource sidebarRadioButton}">
+                                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                        <TextBlock
+                                            Padding="30,0,0,0"
+                                            Style="{DynamicResource sideBarRadioButtonText}"
+                                            Text="Note" />
+                                    </StackPanel>
+                                </RadioButton>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <TextBlock
-                                        Padding="30,0,0,0"
-                                        Style="{DynamicResource sideBarRadioButtonText}"
-                                        Text="My profile" />
+                                    <Button
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Command="{Binding LogoutCommand}">
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <materialDesign:PackIcon
+                                                Width="23"
+                                                Height="23"
+                                                HorizontalAlignment="Center"
+                                                Background="Transparent"
+                                                Foreground="PaleVioletRed"
+                                                Kind="Logout" />
+                                            <TextBlock
+                                                Padding="10,0,0,3"
+                                                Background="Transparent"
+                                                Foreground="PaleVioletRed"
+                                                Style="{DynamicResource sideBarRadioButtonText}"
+                                                Text="Logout" />
+                                        </StackPanel>
+                                    </Button>
                                 </StackPanel>
-                            </RadioButton>
-                            <RadioButton
-                                Height="50"
-                                Command="{Binding NavigateToAccountCommand}"
-                                Style="{DynamicResource sidebarRadioButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <TextBlock
-                                        Padding="30,0,0,0"
-                                        Style="{DynamicResource sideBarRadioButtonText}"
-                                        Text="Account" />
-                                </StackPanel>
-                            </RadioButton>
-                            <RadioButton
-                                Height="50"
-                                Command="{Binding NavigateToNotificationCommand}"
-                                Style="{DynamicResource sidebarRadioButton}">
-                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                    <TextBlock
-                                        Padding="30,0,0,0"
-                                        Style="{DynamicResource sideBarRadioButtonText}"
-                                        Text="Note" />
-                                </StackPanel>
-                            </RadioButton>
-                        </StackPanel>
+                            </StackPanel>
+                        </Grid>
                     </Border>
                     <!--  Setting Sidebar Column 0  -->
 

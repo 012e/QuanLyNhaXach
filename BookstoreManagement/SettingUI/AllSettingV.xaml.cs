@@ -24,10 +24,5 @@ namespace BookstoreManagement.SettingUI
         {
             InitializeComponent();
         }
-
-        private void Grid_GiveFeedback(object sender, GiveFeedbackEventArgs e)
-        {
-
-        }
     }
 }

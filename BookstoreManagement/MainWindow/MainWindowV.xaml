@@ -20,6 +20,9 @@
             <DataTemplate DataType="{x:Type login:LoginVM}">
                 <login:LoginV />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type login:ForgotPasswordVM}">
+                <login:ForgotPasswordV />
+            </DataTemplate>
         </Grid.Resources>
         <ContentControl
             HorizontalContentAlignment="Stretch"

@@ -44,7 +44,7 @@
                             Width="26"
                             Height="26"
                             Kind="Money" />
-                        Items
+                        Pricing
                     </TextBlock>
 
                     <!--  Loading spinner  -->

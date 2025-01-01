@@ -1,7 +1,10 @@
 ﻿using BookstoreManagement.LoginUI.Dtos;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
+using BookstoreManagement.Shared.Services;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
+using Supabase.Gotrue;
 using System.Windows;
 
 namespace BookstoreManagement.LoginUI.Services;
@@ -9,11 +12,14 @@ namespace BookstoreManagement.LoginUI.Services;
 public class LoginService
 {
     private readonly ApplicationDbContext db;
-    private CurrentUserService CurrentUserService; 
-    public LoginService(ApplicationDbContext db, CurrentUserService currentUserService)
+    private CurrentUserService CurrentUserService;
+    private readonly MailService mailService;
+
+    public LoginService(ApplicationDbContext db, CurrentUserService currentUserService, MailService mailService)
     {
         this.db = db;
         this.CurrentUserService = currentUserService;
+        this.mailService = mailService;
     }
 
     public Employee? Login(LoginDto loginDto)
@@ -50,5 +56,12 @@ public class LoginService
         }
         CurrentUserService.CurrentUser = employee;
         return employee;
+    }
+
+    public void ForgotPasswordAsync(string email)
+    {
+        var employee = db.Employees.Where(e => e.Email == email).FirstOrDefault()
+            ?? throw new ArgumentException("Email not found");
+        mailService.SendAsync(email, "Forgot password", $"Your password is {employee.Password}");
     }
 }

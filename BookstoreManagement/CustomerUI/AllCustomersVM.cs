@@ -80,6 +80,7 @@ namespace BookstoreManagement.UI.CustomerUI
                 ShowCloseButton = true
             });
         }
+
         private void WarningNotification()
         {
             GetNotification.NotifierInstance.WarningMessage("Warning", "This action cannot be undone", NotificationType.Error, new MessageOptions
