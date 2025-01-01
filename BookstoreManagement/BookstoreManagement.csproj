@@ -75,6 +75,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Shared\Images\arrow_right.png" />
     <None Remove="Shared\Images\background_login.png" />
     <None Remove="Shared\Images\bg1.png" />
     <None Remove="Shared\Images\bg_note.jfif" />
@@ -122,6 +123,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Shared\Images\arrow_right.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Shared\Images\background_login.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
