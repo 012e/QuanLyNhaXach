@@ -26,6 +26,7 @@ using BookstoreManagement.SettingUI;
 using Supabase;
 using BookstoreManagement.InvoiceUI.Exporters;
 using System.Net.Mail;
+using BookstoreManagement.ImportUI.Services;
 
 namespace BookstoreManagement;
 
@@ -103,6 +104,7 @@ public partial class App : Application
         builder.Services.AddViewViewModel<AllImportV, AllImportVM>();
         builder.Services.AddViewContextualViewModel<EditImportV, EditImportVM, Import>();
         builder.Services.AddViewViewModel<CreateImportV, CreateImportVM>();
+        builder.Services.AddSingleton<ImportService>();
 
 
         builder.Services.AddViewViewModel<AllPricingV, AllPricingVM>();

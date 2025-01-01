@@ -13,7 +13,7 @@
     mc:Ignorable="d">
     <Control.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <converter:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+        <converter:InvertedBoolToVisibilityConverter x:Key="InvertedBoolToVisibilityConverter" />
     </Control.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -67,6 +67,17 @@
                 CornerRadius="10">
 
                 <StackPanel Width="200" HorizontalAlignment="Center">
+                    <Button
+                        Grid.Column="0"
+                        Margin="10"
+                        Command="{Binding ApplyImportCommand}"
+                        Style="{DynamicResource MaterialDesignFlatButton}">
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Publish" />
+                            <Label Padding="10,0,0,4" Visibility="{Binding NotApplied, Converter={StaticResource BooleanToVisibilityConverter}}">Apply Import</Label>
+                            <Label Padding="10,0,0,4" Visibility="{Binding NotApplied, Converter={StaticResource InvertedBoolToVisibilityConverter}}">Import Is Applied</Label>
+                        </StackPanel>
+                    </Button>
 
                     <Label>Import Id</Label>
                     <TextBox IsReadOnly="True" Text="{Binding Item.Id}" />
@@ -96,7 +107,12 @@
                         </Button>
                     </StackPanel>
 
-                    <Button Command="{Binding SubmitItemCommand}">Submit</Button>
+                    <Button
+                        Margin="10"
+                        Command="{Binding SubmitItemCommand}"
+                        Visibility="{Binding NotApplied, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        Submit
+                    </Button>
                 </StackPanel>
             </Border>
             <!--  End Input information  -->

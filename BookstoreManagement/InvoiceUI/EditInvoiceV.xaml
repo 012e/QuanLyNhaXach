@@ -144,7 +144,7 @@
                     <TextBox Text="{Binding Invoice.Id}" />
 
                     <Label>Total</Label>
-                    <TextBox Text="{Binding Invoice.Total}" />
+                    <TextBox IsReadOnly="True" Text="{Binding Invoice.Total}" />
 
                     <Label>EmployeeID</Label>
                     <TextBox Text="{Binding Invoice.EmployeeId}" />

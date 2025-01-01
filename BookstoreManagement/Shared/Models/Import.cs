@@ -10,6 +10,8 @@ public partial class Import
 
     public DateTime CreatedAt { get; set; }
 
+    public bool Applied { get; set; } = false;
+
     public virtual ICollection<ImportItem> ImportItems { get; set; } = new List<ImportItem>();
 
     public virtual Provider Provider { get; set; } = null!;

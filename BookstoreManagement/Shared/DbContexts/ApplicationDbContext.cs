@@ -122,7 +122,9 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.TotalCost)
                 .HasColumnType("money")
                 .HasColumnName("total_cost");
-
+            entity.Property(e => e.Applied)
+                .HasColumnName("applied")
+                .HasDefaultValue(false);
             entity.HasOne(d => d.Provider).WithMany(p => p.Imports)
                 .HasForeignKey(d => d.ProviderId)
                 .HasConstraintName("imports_provider_id_fkey");

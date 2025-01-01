@@ -121,6 +121,10 @@
                     <DataGridTextColumn Binding="{Binding Id}" Header="Import Id" />
                     <DataGridTextColumn Binding="{Binding ProviderId}" Header="Provider Id" />
                     <DataGridTextColumn Binding="{Binding TotalCost, Converter={StaticResource CurrencyConverter}}" Header="Total Cost" />
+                    <DataGridCheckBoxColumn
+                        Binding="{Binding Applied}"
+                        Header="Applied"
+                        IsReadOnly="True" />
                     <DataGridTextColumn Binding="{Binding CreatedAt}" Header="Created At" />
 
                     <!--  Add Command  -->
