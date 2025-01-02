@@ -113,6 +113,7 @@
                             <ColumnDefinition Width="0.5*" />
                         </Grid.ColumnDefinitions>
                         <!--  Button Mode  -->
+                        <!--
                         <Grid Grid.Column="0" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
@@ -128,14 +129,16 @@
                                 <Button Width="70" Padding="0">Mode</Button>
                             </Grid>
                         </Grid>
+                        -->
                         <!--  End Button Mode  -->
                         <!--  Button New  -->
                         <Grid Grid.Column="1" HorizontalAlignment="Center">
                             <Button
                                 Width="70"
                                 Padding="0"
+                                Background="#0077D4"
                                 Command="{Binding OpenNewNoteCommand}"
-                                Content="New" />
+                                Content="New +" />
                         </Grid>
                         <!--  End Button New  -->
 
@@ -152,7 +155,17 @@
                         AutoGenerateColumns="False"
                         Background="#fff"
                         IsReadOnly="True"
-                        ItemsSource="{Binding NoteList}">
+                        ItemsSource="{Binding NoteList}"
+                        SelectedItem="{Binding SelectedNote, Mode=TwoWay}">
+
+                        <DataGrid.InputBindings>
+                            <!--  Double click on any row  -->
+                            <MouseBinding
+                                Command="{Binding DataContext.ButtonEditCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                CommandParameter="{Binding ElementName=NoteList, Path=SelectedNote}"
+                                Gesture="LeftDoubleClick" />
+                        </DataGrid.InputBindings>
+
                         <DataGrid.Resources>
                             <Style TargetType="DataGridColumnHeader">
                                 <Setter Property="BorderBrush" Value="Black" />
@@ -182,6 +195,10 @@
                                 </DataGridTextColumn.Binding>
                             </DataGridTextColumn>
                             <!--  End Binding full name  -->
+                            <DataGridTextColumn
+                                Width="0.2*"
+                                Binding="{Binding CreatedAt}"
+                                Header="Create at" />
 
 
                             <DataGridTemplateColumn
@@ -195,14 +212,14 @@
                                                 Margin="5"
                                                 Background="DarkBlue"
                                                 BorderThickness="0"
-                                                Command="{Binding DataContext.NavigateToEditItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                Command="{Binding DataContext.ButtonEditCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                                 CommandParameter="{Binding}">
                                                 <materialDesign:PackIcon Kind="pencil" />
                                             </Button>
                                             <Button
                                                 Background="IndianRed"
                                                 BorderThickness="0"
-                                                Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                Command="{Binding DataContext.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
                                                 CommandParameter="{Binding}">
                                                 <materialDesign:PackIcon Kind="TrashCanOutline" />
                                             </Button>
@@ -297,7 +314,7 @@
                             BorderThickness="0"
                             FontSize="30"
                             FontWeight="Medium"
-                            Text="{Binding Title, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <TextBlock
                             Padding="10"
@@ -349,20 +366,20 @@
                                 <DatePicker
                                     BorderBrush="Transparent"
                                     FontSize="18"
-                                    SelectedDate="" />
+                                    SelectedDate="{Binding CreateAt}" />
                             </StackPanel>
                             <StackPanel Margin="0,0,0,10">
                                 <TextBox
                                     BorderBrush="Transparent"
                                     FontSize="18"
                                     IsReadOnly="True"
-                                    Text="Current User" />
+                                    Text="{Binding CreateByName}" />
                             </StackPanel>
                             <StackPanel>
                                 <DatePicker
                                     BorderBrush="Transparent"
                                     FontSize="18"
-                                    SelectedDate="" />
+                                    SelectedDate="{Binding DueDate}" />
                             </StackPanel>
 
                         </StackPanel>
@@ -416,5 +433,7 @@
             </Grid>
         </Grid>
         <!--  End Create Note  -->
+
+
     </Grid>
 </UserControl>

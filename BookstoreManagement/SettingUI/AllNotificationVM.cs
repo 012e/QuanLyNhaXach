@@ -22,6 +22,10 @@ using BookstoreManagement.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using BookstoreManagement.Shared.CustomMessages;
 using ToastNotifications.Core;
+using System.ComponentModel.Design.Serialization;
+using System.Numerics;
+using DocumentFormat.OpenXml.Wordprocessing;
+using static ClosedXML.Excel.XLPredefinedFormat;
 
 namespace BookstoreManagement.SettingUI
 {
@@ -52,22 +56,29 @@ namespace BookstoreManagement.SettingUI
         private string _content;
 
         [ObservableProperty]
-        private DateTime _createAt;
+        private System.DateTime _createAt = System.DateTime.Now;
 
         [ObservableProperty]
-        private DateOnly _dueDate;
+        private System.DateTime _dueDate;
 
         [ObservableProperty]
         private string _createByName;
 
+        [ObservableProperty]
+        private bool _toggled;
+
+        [ObservableProperty]
+        private bool _createOrEditIsOpen;
+
         public override void ResetState()
         {
             base.ResetState();
-            LoadItem();
+            Task.Run(LoadItem);
         }
         private async Task LoadItem()
         {
-            DefaultValue();
+            CloseNewNote();
+            SetDefaultValue();
             // Load List Note
             var noteList = await db.Notes
                 .Include(n => n.Employee)
@@ -83,76 +94,174 @@ namespace BookstoreManagement.SettingUI
                     CreatedAt = n.CreatedAt,
                     DueDate = n.DueDate,
                     Employee = n.Employee
-                }) 
+                })
              );
         }
 
-        private void DefaultValue()
+
+        private void SetDefaultValue()
         {
-            WidthListNote = new GridLength(1, GridUnitType.Star);
-            WidthDetailNote = new GridLength(0, GridUnitType.Star);
-            CreateAt = DateTime.Now;
-            DueDate = DateOnly.FromDateTime(DateTime.Now);
+            CreateAt = System.DateTime.Now;
+            DueDate = System.DateTime.Now;
+            Title = "";
+            CreateByName = currentUserService.CurrentUser.FirstName + " " + currentUserService.CurrentUser.LastName;
+            Content = "";
         }
 
-        private async void CreateNewNote()
+        private async Task CreateNewNote()
         {
-            try
+
+            var newNote = new Note
             {
-                var newNote = new Note
-                {
-                    Title = Title,
-                    Content = Content,
-                    CreatedAt = CreateAt,
-                    DueDate = DueDate,
-                    Employee = currentUserService.CurrentUser
-                };
-                db.Notes.Add(newNote);
-                await db.SaveChangesAsync();
-                await LoadItem();
-            }
-            catch(Exception ex)
+                Title = Title,
+                Content = Content,
+                CreatedAt = CreateAt,
+                DueDate = DateOnly.FromDateTime(DueDate),
+                EmployeeId = currentUserService.CurrentUser!.Id
+            };
+            if(CreateAt > DueDate)
             {
-                    MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new Exception("Error");
             }
+            db.Notes.Add(newNote);
+            await db.SaveChangesAsync();
+            await LoadItem();
+            SetDefaultValue();
         }
 
+       
         [RelayCommand]
         private void OpenNewNote()
         {
-            WidthListNote = new GridLength(1, GridUnitType.Star);
-            WidthDetailNote = new GridLength(0.8, GridUnitType.Star);
+            CreateOrEditIsOpen = true;
+            if (!Toggled)
+            {
+                Toggled = true;
+                WidthListNote = new GridLength(1, GridUnitType.Star);
+                WidthDetailNote = new GridLength(0.8, GridUnitType.Star);
+                SetDefaultValue();
+            }
+            else
+            {
+                CloseNewNote();
+                Toggled = false;
+            }
         }
 
         [RelayCommand]
-        private void Submit()
+        private async Task Submit()
         {
-            CreateNewNote();
-        }
+            if (CreateOrEditIsOpen)
+            {
+                try
+                {
+                    await CreateNewNote();
+                    SuccessNotification("Create note successfully");
+                }
+                catch (Exception ex)
+                {
+                    ErrorNotification("Due day must langer create at");
+                }
+            }
+            else
+            {
+                SaveEdit();
+                SuccessNotification("Save note successfully");
+            }
 
+        }
         [RelayCommand]
         private void CloseNewNote()
         {
+            CreateOrEditIsOpen = false;
             WidthListNote = new GridLength(1, GridUnitType.Star);
             WidthDetailNote = new GridLength(0, GridUnitType.Star);
+            Toggled = false;
         }
 
-        private void SuccessNotification()
+        private void SuccessNotification(string content)
         {
-            GetNotification.NotifierInstance.SuccessMessage("Success", "Create note successfully", NotificationType.Error, new MessageOptions
+            GetNotification.NotifierInstance.SuccessMessage("Success", content, NotificationType.Error, new MessageOptions
             {
                 FreezeOnMouseEnter = false,
                 ShowCloseButton = true
             });
         }
-        private void ErrorNotification()
+        private void ErrorNotification(string content)
         {
-            GetNotification.NotifierInstance.ErrorMessage("Error", "Create note failure", NotificationType.Error, new MessageOptions
+            GetNotification.NotifierInstance.ErrorMessage("Error", content, NotificationType.Error, new MessageOptions
             {
                 FreezeOnMouseEnter = false,
                 ShowCloseButton = true
             });
         }
+        private void WarningNotification(string content)
+        {
+            GetNotification.NotifierInstance.WarningMessage("Warning", content, NotificationType.Error, new MessageOptions
+            {
+                FreezeOnMouseEnter = false,
+                ShowCloseButton = true
+            });
+        }
+
+        // ================================ Section for Edit =================================
+        [ObservableProperty]
+        private Note _selectedNote;
+
+
+        // Delete Note
+        [RelayCommand]
+        private async Task DeleteNote(Note note)
+        {
+            WarningNotification("This action can be undone");
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this note?", "Delete note", MessageBoxButton.YesNo);
+            if (result != MessageBoxResult.Yes) return;
+            
+            db.Notes.Where(i => i.Id == note.Id).ExecuteDelete();
+            await db.SaveChangesAsync();
+            await LoadItem();
+            SuccessNotification("Delete note successfully");
+        }
+
+        // Button to open edit
+
+        [RelayCommand]
+        private void ButtonEdit()
+        {
+            WarningNotification("This action can be undone");
+            WidthListNote = new GridLength(1, GridUnitType.Star);
+            WidthDetailNote = new GridLength(0.8, GridUnitType.Star);
+            EditNote();
+        }
+
+        // Binding data to display
+        private void EditNote()
+        {
+            if (SelectedNote != null)
+            {
+                Title = SelectedNote.Title;
+                Content = SelectedNote.Content;
+                CreateAt = SelectedNote.CreatedAt;
+                DueDate = SelectedNote.DueDate.ToDateTime(TimeOnly.MinValue);
+                CreateByName = $"{SelectedNote.Employee.FirstName} {SelectedNote.Employee.LastName}";
+            }
+        }
+
+        // Save edit changed
+        private async void SaveEdit()
+        {
+            var note = await db.Notes.Where(i => i.Id == SelectedNote.Id).FirstAsync();
+            note.Title = Title;
+            note.Content = Content;
+            note.CreatedAt = CreateAt;
+            note.DueDate = DateOnly.FromDateTime(DueDate);
+            db.Update(note);
+            await db.SaveChangesAsync();
+            await LoadItem();
+        }
+
+        // ================================ End Section for Edit =================================
+
 
     }
 }
