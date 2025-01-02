@@ -101,7 +101,7 @@
                         VerticalAlignment="Center">
                         <ui:Search
                             Height="50"
-                            PlaceHolder="Search for provider"
+                            PlaceHolder="Search title note"
                             Text="{Binding SearchText}" />
                     </Grid>
                     <!--  End Search Bar  -->

@@ -94,7 +94,7 @@ namespace BookstoreManagement.UI.DashboardUI
             }
             LoadDashBoardData();
         }
-
+        
         private void SetPercentProfit(double percent)
         {
             PercentProfit = GaugeGenerator.BuildSolidGauge(

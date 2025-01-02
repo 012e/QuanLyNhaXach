@@ -70,6 +70,37 @@ namespace BookstoreManagement.SettingUI
         [ObservableProperty]
         private bool _createOrEditIsOpen;
 
+        [ObservableProperty]
+        private string _searchText;
+
+        private async void Search()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                await LoadItem().ConfigureAwait(false);
+                return;
+            }
+            var filterNote = db.Notes
+                .Include(n => n.Employee)
+                .Where(n => n.Title.ToLower().Contains(SearchText.ToLower()))
+                .ToList();
+            NoteList = LoadNote(filterNote);
+        }
+
+        // Load note
+        private ObservableCollection<Note> LoadNote(IEnumerable<Note> notes)
+        {
+            return new ObservableCollection<Note>(notes.Select(n => new Note
+            {
+                Id = n.Id,
+                Title = n.Title,
+                Content = n.Content,
+                DueDate = n.DueDate,
+                Employee = n.Employee,
+                CreatedAt = n.CreatedAt
+            }));
+        }
+
         public override void ResetState()
         {
             base.ResetState();
@@ -79,25 +110,18 @@ namespace BookstoreManagement.SettingUI
         {
             CloseNewNote();
             SetDefaultValue();
-            // Load List Note
+
             var noteList = await db.Notes
                 .Include(n => n.Employee)
                 .ToListAsync();
 
-            // Construct NoteList
-            NoteList = new ObservableCollection<Note>(
-                noteList.Select(n => new Note
-                {
-                    Id = n.Id,
-                    Title = n.Title,
-                    Content = n.Content,
-                    CreatedAt = n.CreatedAt,
-                    DueDate = n.DueDate,
-                    Employee = n.Employee
-                })
-             );
+            NoteList = LoadNote(noteList);
         }
 
+        partial void OnSearchTextChanged(string value)
+        {
+            Search();
+        }
 
         private void SetDefaultValue()
         {
