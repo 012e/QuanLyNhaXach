@@ -67,18 +67,51 @@
                 <!--  End Hello User  -->
 
                 <!--  Time and Icon User  -->
-                <Grid Grid.Column="2">
+                <Grid Grid.Column="2" Margin="0,0,0,30">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="0.4*" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel
+
+                    <!--  Timer  -->
+                    <Border
                         Grid.Column="0"
-                        Width="270"
-                        Margin="20"
-                        HorizontalAlignment="Left">
-                        <ui:Search PlaceHolder="Search..." Text="{Binding SearchText}" />
-                    </StackPanel>
+                        Width="200"
+                        Height="50"
+                        VerticalAlignment="Center"
+                        CornerRadius="10">
+                        <Border BorderThickness="5" CornerRadius="10">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Direction="315"
+                                    Opacity="0.5"
+                                    ShadowDepth="5"
+                                    Color="Black" />
+                            </Border.Effect>
+                            <Border.BorderBrush>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="1" Color="LightBlue" />
+                                    <GradientStop Offset="0" Color="#174CFA" />
+                                </LinearGradientBrush>
+                            </Border.BorderBrush>
+                            <Grid>
+                                <Grid.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Offset="1" Color="LightBlue" />
+                                        <GradientStop Offset="0" Color="#174CFA" />
+                                    </LinearGradientBrush>
+                                </Grid.Background>
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock
+                                        FontSize="30"
+                                        FontWeight="Medium"
+                                        Text="{Binding TimerClock}" />
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Border>
+                    <!--  End Timer  -->
                     <Grid Grid.Column="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="70" />
@@ -88,10 +121,15 @@
                             Grid.Column="0"
                             Margin="0,25,0,0"
                             HorizontalAlignment="Left">
+
                             <Image
                                 Width="50"
                                 Height="50"
-                                Source="pack://application:,,,/Shared/Images/note.png" />
+                                Source="pack://application:,,,/Shared/Images/note.png">
+                                <Image.InputBindings>
+                                    <MouseBinding Command="{Binding NavigateNoteCommand}" Gesture="LeftClick" />
+                                </Image.InputBindings>
+                            </Image>
                         </StackPanel>
                         <StackPanel
                             Grid.Column="1"
