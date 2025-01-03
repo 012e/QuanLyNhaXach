@@ -197,7 +197,7 @@
                             <!--  End Binding full name  -->
                             <DataGridTextColumn
                                 Width="0.2*"
-                                Binding="{Binding CreatedAt}"
+                                Binding="{Binding CreatedAt, StringFormat='dd/MM/yyyy'}"
                                 Header="Create at" />
 
 

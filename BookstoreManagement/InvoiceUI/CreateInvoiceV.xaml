@@ -158,7 +158,7 @@
                     <TextBox Text="{Binding SelectedCutomer.Id}" />
 
                     <Label>Created at</Label>
-                    <TextBox Text="{Binding CreateAt}" />
+                    <DatePicker SelectedDate="{Binding CreateAt, StringFormat='dd/MM/yyyy'}" />
 
                     <Label>Total</Label>
                     <TextBox IsReadOnly="True" Text="{Binding TotalInvoice}" />

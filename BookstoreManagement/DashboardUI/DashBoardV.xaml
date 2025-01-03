@@ -78,7 +78,7 @@
                         Grid.Column="0"
                         Width="200"
                         Height="50"
-                        VerticalAlignment="Center"
+                        VerticalAlignment="Bottom"
                         CornerRadius="10">
                         <Border BorderThickness="5" CornerRadius="10">
                             <Border.Effect>
@@ -112,6 +112,7 @@
                         </Border>
                     </Border>
                     <!--  End Timer  -->
+
                     <Grid Grid.Column="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="70" />
@@ -120,7 +121,8 @@
                         <StackPanel
                             Grid.Column="0"
                             Margin="0,25,0,0"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
 
                             <Image
                                 Width="50"
@@ -134,7 +136,8 @@
                         <StackPanel
                             Grid.Column="1"
                             Margin="0,30,0,0"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
                             <Image
                                 Width="40"
                                 Height="40"
@@ -326,7 +329,8 @@
                                                 BorderBrush="Transparent"
                                                 BorderThickness="0"
                                                 FontSize="17"
-                                                SelectedDate="{Binding StartDateRevenue, Mode=TwoWay, StringFormat='dd/MM/yyyy'}" />
+                                                SelectedDate="{Binding StartDateRevenue, Mode=TwoWay, StringFormat='dd/MM/yyyy'}"
+                                                SelectedDateFormat="Short" />
                                         </StackPanel>
                                         <!--  End StartDate  -->
 

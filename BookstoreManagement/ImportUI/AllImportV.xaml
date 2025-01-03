@@ -125,7 +125,7 @@
                         Binding="{Binding Applied}"
                         Header="Applied"
                         IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding CreatedAt}" Header="Created At" />
+                    <DataGridTextColumn Binding="{Binding CreatedAt, StringFormat='dd/MM/yyyy'}" Header="Created At" />
 
                     <!--  Add Command  -->
                     <DataGridTemplateColumn CanUserResize="False">

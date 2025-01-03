@@ -152,7 +152,7 @@
                     <DataGridTextColumn Binding="{Binding Total}" Header="Total" />
                     <DataGridTextColumn Binding="{Binding EmployeeId}" Header="Employee Id" />
                     <DataGridTextColumn Binding="{Binding CustomerId}" Header="Customer Id" />
-                    <DataGridTextColumn Binding="{Binding CreatedAt}" Header="Created at" />
+                    <DataGridTextColumn Binding="{Binding CreatedAt, StringFormat='dd/MM/yyyy'}" Header="Created at" />
                     <DataGridTemplateColumn CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

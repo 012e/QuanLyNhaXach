@@ -27,7 +27,7 @@ public partial class AllInvoicesVM : ListVM<Invoice, EditInvoiceVM>
     private String _searchText = "";
 
     [ObservableProperty]
-    private DateTime _filterByDate = new DateTime(DateTime.Now.Year + 1,1,1);
+    private DateTime _filterByDate = new DateTime(DateTime.Now.Year ,1,1);
 
     private bool _isDatePickerActive;
 
