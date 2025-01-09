@@ -68,7 +68,6 @@
 
                 <StackPanel Width="200" HorizontalAlignment="Center">
                     <Label>Provider</Label>
-                    <!--<TextBox Text="{Binding ProviderId}" />-->
                     <ComboBox
                         ItemsSource="{Binding ProviderList}"
                         SelectedValue="{Binding ProviderId}"

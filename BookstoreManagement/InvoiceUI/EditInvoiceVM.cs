@@ -50,6 +50,9 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
     [ObservableProperty]
     private int _customerId;
 
+    [ObservableProperty]
+    private ObservableCollection<Item> _allItems = [];
+
     [RelayCommand]
     private void GoBack()
     {
@@ -81,6 +84,7 @@ public partial class EditInvoiceVM : EditItemVM<Invoice>
         InvoiceItemDto = new ObservableCollection<InvoiceItemDto>(itemsFromInvoice);
         var customers = db.Customers.OrderBy(i => i.Id).ToList();
         CustomerList = new ObservableCollection<Customer>(customers);
+        AllItems = new ObservableCollection<Item>(db.Items.OrderBy(i => i.Id).ToList());
         this.PropertyChanged += (sender, e) =>
         {
             if (e.PropertyName == nameof(SearchText))

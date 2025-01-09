@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
+using System.Collections.ObjectModel;
 using System.Windows;
 using ToastNotifications.Core;
 
@@ -46,6 +47,9 @@ public partial class EditImportVM : EditItemVM<Import>
     [ObservableProperty]
     private bool _notAllowEdit;
 
+    [ObservableProperty]
+    private ObservableCollection<Item> _allItems = [];
+
 
     public EditImportVM(ApplicationDbContext db,
         INavigatorService<AllImportVM> importNavigator,
@@ -70,6 +74,7 @@ public partial class EditImportVM : EditItemVM<Import>
         Item = default;
         var id = ViewModelContext.Id;
         Item = db.Imports.Include(import => import.ImportItems).Where(i => i.Id == id).First();
+        AllItems = new([.. db.Items]);
         NotApplied = !ViewModelContext.Applied;
     }
 
