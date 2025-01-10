@@ -5,19 +5,13 @@ using BookstoreManagement.Shared.CustomMessages;
 using BookstoreManagement.Shared.DbContexts;
 using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
-using BookstoreManagement.UI.ItemUI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Design.Serialization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Documents;
 using ToastNotifications.Core;
-using ToastNotifications.Messages.Error;
 
 namespace BookstoreManagement.UI.InvoicesUI;
 
@@ -78,6 +72,9 @@ public partial class CreateInvoiceVM : BaseViewModel
 
     [ObservableProperty]
     private bool _isIconSaveEdit;
+
+    [ObservableProperty]
+    private ObservableCollection<Item> _allItems = [];
 
     [ObservableProperty]
     private bool _notAllowEdit;
@@ -157,7 +154,8 @@ public partial class CreateInvoiceVM : BaseViewModel
         InvoiceItemDto = new ObservableCollection<InvoiceItemDto>();
         var customers = db.Customers.OrderBy(i => i.Id).ToList();
         CustomerList = new ObservableCollection<Customer>(customers);
-        this.PropertyChanged += (sender, e) =>
+        AllItems = new ObservableCollection<Item>(db.Items.ToList());
+        PropertyChanged += (sender, e) =>
         {
             if (e.PropertyName == nameof(SearchText))
             {

@@ -5,21 +5,10 @@ using BookstoreManagement.Shared.Models;
 using BookstoreManagement.Shared.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DocumentFormat.OpenXml.Drawing.Charts;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Animation;
 using ToastNotifications.Core;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace BookstoreManagement.ImportUI
 {
@@ -45,6 +34,9 @@ namespace BookstoreManagement.ImportUI
 
         [ObservableProperty]
         private DateTime _createdAt;
+
+        [ObservableProperty]
+        private ObservableCollection<Item> _allItems;
 
         // Declare in ImportItemTab
         [ObservableProperty]
@@ -97,7 +89,7 @@ namespace BookstoreManagement.ImportUI
                 db.Add(import);
                 db.SaveChanges();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show($"Could'n add Import : {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -119,6 +111,7 @@ namespace BookstoreManagement.ImportUI
             _createdAt = DateTime.Now;
             _totalCost = 0;
             IsImportItemVisible = false;
+            AllItems = new([.. db.Items]);
         }
 
         // Update Status
@@ -133,7 +126,7 @@ namespace BookstoreManagement.ImportUI
         private void SelectItem()
         {
             IsImportItemVisible = true;
-        }       
+        }
 
         // ====================================== SECTION FOR IMPORT ITEM ===============================================
 
@@ -162,7 +155,7 @@ namespace BookstoreManagement.ImportUI
             try
             {
                 bool check = db.Items.Any(i => i.Id == importItem.ItemId);
-                
+
                 if (check)
                 {
                     ListItem.Add(importItem);
@@ -180,7 +173,7 @@ namespace BookstoreManagement.ImportUI
         [RelayCommand]
         private void SubQuantity()
         {
-            if(Quantity > 0)
+            if (Quantity > 0)
             {
                 Quantity--;
             }
@@ -203,7 +196,7 @@ namespace BookstoreManagement.ImportUI
                 Filter = "Excel Files|*.xls;*.xlsx",
                 Title = "Select a file"
             };
-            if(openFileDialog.ShowDialog() == true)
+            if (openFileDialog.ShowDialog() == true)
             {
                 string filePath = openFileDialog.FileName;
                 LoadExcel(filePath);
@@ -217,7 +210,7 @@ namespace BookstoreManagement.ImportUI
             var worksheet = workbook.Worksheets.First();
             var rows = worksheet.RowsUsed().Skip(1); // skip header line
             ListItem.Clear();
-            foreach(var row in rows)
+            foreach (var row in rows)
             {
                 ListItem.Add(new ImportItem
                 {
@@ -264,8 +257,8 @@ namespace BookstoreManagement.ImportUI
                 return;
             }
             WarningNotification();
-            var result = MessageBox.Show("Are you sure you want to save changes?","Confirm",MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if(result == MessageBoxResult.Yes)
+            var result = MessageBox.Show("Are you sure you want to save changes?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
             {
                 NotAllowEdit = false;
                 IsIconSaveEdit = false;
